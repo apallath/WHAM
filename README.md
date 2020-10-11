@@ -3,13 +3,13 @@
 Optimized python code for constructing free energy profiles from umbrella sampling simulation data.
 
 ## Binned formulation
-- Implemented using log-likelihood maximization with superlinear convergence
+- Implemented using log-likelihood maximization for superlinear convergence
 
-## Binless formulation (MBAR) - accuracy
+## Binless formulation (MBAR) (preferred)
 - Implemented using self-consistent iteration (baseline/debugging)
-- Implemented using log-likelihood maximization with superlinear convergence
+- Implemented using log-likelihood maximization for superlinear convergence
 
-Log-likelihood maximization approaches can use multiple solvers. See the documentation to check which solvers are available.
+Log-likelihood maximization approaches can use multiple solvers. Read the documentation to see which solvers are available.
 
 ## References:
 - Shirts, M. R., & Chodera, J. D. (2008). Statistically optimal analysis of samples from multiple equilibrium states. Journal of Chemical Physics, 129(12). [DOI](https://doi.org/10.1063/1.2978177)
