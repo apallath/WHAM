@@ -9,7 +9,7 @@ Optimized python code for constructing free energy profiles from umbrella sampli
 - Implemented using self-consistent iteration (baseline/debugging)
 - Implemented using log-likelihood maximization for superlinear convergence
 
-Log-likelihood maximization approaches can use multiple solvers. Read the documentation to see which solvers are available.
+Both log-likelihood maximization approaches can use multiple nonlinear optimization algorithms. Read the documentation to see which algorithms are available.
 
 ## References:
 - Shirts, M. R., & Chodera, J. D. (2008). Statistically optimal analysis of samples from multiple equilibrium states. Journal of Chemical Physics, 129(12). [DOI](https://doi.org/10.1063/1.2978177)
