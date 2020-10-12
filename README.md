@@ -2,12 +2,22 @@
 
 Optimized python code for constructing free energy profiles from umbrella sampling simulation data.
 
+## Status
+
+[![Open Issues](https://img.shields.io/github/issues-raw/apallath/WHAM)](https://github.com/apallath/WHAM/issues)
+[![Closed Issues](https://img.shields.io/github/issues-closed-raw/apallath/WHAM)](https://github.com/apallath/WHAM/issues)
+
+## Code
+
+[![Python](https://img.shields.io/github/languages/top/apallath/WHAM)](https://www.python.org/downloads/release/python-370/)
+[![Google Python Style](https://img.shields.io/badge/Code%20Style-Google%20Python%20Style-brightgreen)](https://google.github.io/styleguide/pyguide.html)
+
 ## Binned formulation
-- Implemented using log-likelihood maximization for superlinear convergence
+- Implemented using log-likelihood maximization for superlinear convergence [In progress]
 
 ## Binless formulation (MBAR) (preferred)
-- Implemented using self-consistent iteration (baseline/debugging)
-- Implemented using log-likelihood maximization for superlinear convergence
+- Implemented using self-consistent iteration (baseline/debugging) [Todo]
+- Implemented using log-likelihood maximization for superlinear convergence [Todo]
 
 Both log-likelihood maximization approaches can use multiple nonlinear optimization algorithms. Read the documentation to see which algorithms are available.
 
