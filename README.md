@@ -1,4 +1,4 @@
-# WHAM
+# pyWHAM
 
 Optimized python code for constructing free energy profiles from umbrella sampling simulation data.
 
