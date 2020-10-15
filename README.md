@@ -13,6 +13,7 @@ Optimized python code for constructing free energy profiles from umbrella sampli
 [![Google Python Style](https://img.shields.io/badge/Code%20Style-Google%20Python%20Style-brightgreen)](https://google.github.io/styleguide/pyguide.html)
 
 ## Binned formulation
+- Implemented using self-consistent iteration (baseline/debugging) [In progress]
 - Implemented using log-likelihood maximization for superlinear convergence [In progress]
 
 ## Binless formulation (MBAR) (preferred)
@@ -20,6 +21,13 @@ Optimized python code for constructing free energy profiles from umbrella sampli
 - Implemented using log-likelihood maximization for superlinear convergence [Todo]
 
 Both log-likelihood maximization approaches can use multiple nonlinear optimization algorithms. Read the documentation to see which algorithms are available.
+
+## Tests
+Integration tests are in the directort `tests/` and unit tests are in the directory `tests/test_unit`. Run these tests by navigating to the directory and running
+
+```sh
+pytest
+```
 
 ## References:
 - Shirts, M. R., & Chodera, J. D. (2008). Statistically optimal analysis of samples from multiple equilibrium states. Journal of Chemical Physics, 129(12). [DOI](https://doi.org/10.1063/1.2978177)

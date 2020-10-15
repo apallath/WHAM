@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Plot beta F_N seanmarks
-file = "seanmarks_ref/F_N_WHAM.out"
+file = "F_N_WHAM.out"
 N = []
 betaF = []
 betaFerr = []
@@ -18,7 +18,7 @@ fig, ax = plt.subplots(figsize=(8, 4), dpi=300)
 ax.errorbar(N, betaF, yerr=betaFerr, capsize=3, label="$N_v$")
 
 # Plot beta F_Ntilde seanmarks
-file = "seanmarks_ref/F_Ntilde_WHAM.out"
+file = "F_Ntilde_WHAM.out"
 Nt = []
 betaF = []
 betaFerr = []
@@ -34,4 +34,28 @@ ax.errorbar(Nt, betaF, yerr=betaFerr, capsize=3, label=r"$\tilde{N}_v$")
 ax.set_xlabel(r"Probe waters, $N$")
 ax.set_ylabel(r"$\beta F$")
 ax.legend()
-fig.savefig("seanmarks_free_energy_profiles.png")
+fig.savefig("free_energy_profiles.png")
+
+np.save("bins.npy", Nt)
+np.save("betaF_Ntilde.npy", betaF)
+
+# Plot beta F_Ntilde biased seanmarks
+file = "F_Ntilde_biased.out"
+Nt = []
+betaF = []
+with open(file) as f:
+    for line in f:
+        if line.strip()[0] != "#":
+            vals = line.strip().split()
+            Nt.append(float(vals[0]))
+            betaF.append([float(val) for val in vals[1:]])
+
+betaF = np.array(betaF).T
+print(betaF.shape)
+
+fig, ax = plt.subplots(figsize=(8, 4), dpi=300)
+for i in range(betaF.shape[0]):
+    ax.plot(Nt, betaF[i, :])
+ax.set_xlabel(r"Probe waters, $N$")
+ax.set_ylabel(r"$\beta F$")
+fig.savefig("free_energy_profile_biased.png")

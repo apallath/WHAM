@@ -13,6 +13,9 @@ ext_modules = [Extension("WHAM.binned", ["WHAM/binned.pyx"],
                define_macros=[("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")]),
                Extension("WHAM.lib.potentials", ["WHAM/lib/potentials.pyx"],
                include_dirs=[numpy_include],
+               define_macros=[("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")]),
+               Extension("WHAM.lib.timeseries", ["WHAM/lib/timeseries.pyx"],
+               include_dirs=[numpy_include],
                define_macros=[("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")])]
 
 setup(

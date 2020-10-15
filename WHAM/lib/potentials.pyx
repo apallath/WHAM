@@ -1,3 +1,11 @@
-import numpy as np
+"""Contains definitions of commonly used Umbrella potentials"""
 
-cimport numpy as np
+
+def harmonic(kappa, xstar):
+    """
+    Returns umbrella potential
+    U(x) = kappa/2 (x - xstar)^2
+    """
+    def harmonic_potential(x):
+        return kappa / 2 * (x - xstar) ** 2
+    return harmonic_potential
