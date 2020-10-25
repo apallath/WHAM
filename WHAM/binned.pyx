@@ -18,13 +18,13 @@ def NLL(g_i, N_i, Ntot, M_l, W_il):
 
     Args:
         g_i (np.array of shape (S-1,)): Array of total free energies associated with the windows
-            0, 1, 2, ..., S-2. Free energy of the last window is fixed at 0 (reference value).
+            1, 2, ..., S-2, S-1. Free energy of the first window is fixed at 0 (reference value).
         N_i (np.array of shape (S-1,)): Array of total sample counts for the windows
-            0, 1, 2, ..., S-2.
+            1, 2, ..., S-2, S-1
         Ntot (float): Sum of sample counts over all windows.
         M_l (np.array of shape (M,)): Array of combined bin counts for each bin.
         W_il (np.array of shape (S-1, M)): Array of weights, W_il = -beta * U_i(x_l) for the windows
-            0, 1, 2, ..., S-2.
+            1, 2, ..., S-2, S-1
 
     Returns:
         A(g) (np.float): Negative log-likelihood objective function.
@@ -32,7 +32,11 @@ def NLL(g_i, N_i, Ntot, M_l, W_il):
     g_i_mat = np.repeat(g_i[:, np.newaxis], len(M_l), axis=1)
     N_i_mat = np.repeat(N_i[:, np.newaxis], len(M_l), axis=1)
 
-    A = -np.sum(N_i * g_i) - np.sum(M_l * (np.log(M_l) - logsumexp(g_i_mat + W_il, b=N_i_mat, axis=0)))
+    term1 = -np.sum(N_i * g_i) / Ntot
+    term2 = -np.sum(M_l / Ntot * np.log(M_l) - M_l / Ntot * logsumexp(g_i_mat + W_il, b=N_i_mat, axis=0))
+
+    A = term1 + term2
+    print(A)
 
     return A
 
@@ -42,12 +46,13 @@ def grad_NLL(g_i, N_i, Ntot, M_l, W_il):
 
     Args:
         g_i (np.array of shape (S-1,)): Array of total free energies associated with the windows
-            0, 1, 2, ..., S-2. Free energy of the last window is fixed at 0 (reference value).
+            1, 2, ..., S-2, S-1. Free energy of the first window is fixed at 0 (reference value).
         N_i (np.array of shape (S-1,)): Array of total sample counts for the windows
-            0, 1, 2, ..., S-2.
+            1, 2, ..., S-2, S-1
+        Ntot (float): Sum of sample counts over all windows.
         M_l (np.array of shape (M,)): Array of total bin counts for each bin.
         W_il (np.array of shape (S-1, M)): Array of weights, W_il = -beta * U_i(x_l) for the windows
-            0, 1, 2, ..., S-2.
+            1, 2, ..., S-2, S-1
 
     Returns:
         grad_g A (np.float): Gradient of negative log-likelihood objective function w.r.t. g.
@@ -55,10 +60,17 @@ def grad_NLL(g_i, N_i, Ntot, M_l, W_il):
     g_i_mat = np.repeat(g_i[:, np.newaxis], len(M_l), axis=1)
     N_i_mat = np.repeat(N_i[:, np.newaxis], len(M_l), axis=1)
 
-    return N_i * np.exp(g_i) * np.sum(np.exp(np.log(M_l) + W_il - logsumexp(np.exp(g_i_mat + W_il), b=N_i_mat, axis=0)))
+    log_p_l = np.log(M_l) - logsumexp(g_i_mat + W_il, b=N_i_mat, axis=0)
+    log_p_l_mat = np.repeat(log_p_l[np.newaxis, :], len(N_i), axis=0)
+
+    grad = N_i / Ntot * np.exp(logsumexp(g_i_mat + log_p_l_mat + W_il, axis=1))
+
+    print(grad)
+
+    return grad
 
 
-def minimize_NLL_solver(N_i, M_l, W_il, opt_method='BFGS'):
+def minimize_NLL_solver(N_i, M_l, W_il, opt_method='BFGS', tol=1e-7):
     """Computes optimal parameters g_i by minimizing the negative log-likelihood
     for jointly observing the bin counts in the indepedent windows in the dataset.
 
@@ -77,16 +89,23 @@ def minimize_NLL_solver(N_i, M_l, W_il, opt_method='BFGS'):
     M = len(M_l)
     Ntot = np.sum(N_i)
 
-    g_opt_0 = np.zeros((S - 1))  # Initial guess
+    # TODO: Read Zhu and Hummer paper for good initial guess
+    scf_g_i, _ = self_consistent_solver(N_i, M_l, W_il)
+    print(scf_g_i[1:])
+    print("Gradient at opt: ", grad_NLL(scf_g_i[1:], N_i[1:], Ntot, M_l, W_il[1:, :]))
+    g_opt_0 = np.random.normal(loc=1.0, scale=0.00001, size=(S - 1)) * scf_g_i[1:]
+    print(g_opt_0)
 
     # Optimize
-    res = scipy.optimize.minimize(NLL, g_opt_0, args=(N_i[:-1], Ntot, M_l, W_il[:-1, :]), method=opt_method)
+    res = scipy.optimize.minimize(NLL, g_opt_0, jac=grad_NLL,
+                                  args=(N_i[1:], Ntot, M_l, W_il[1:, :]),
+                                  method=opt_method, options={'disp': True, 'gtol': tol})
 
     g_opt = res.x
     g_i = np.zeros(S)
-    g_i[:-1] = g_opt
+    g_i[1:] = g_opt
 
-    return g_i, res.status
+    return g_i, res.success
 
 
 def self_consistent_solver(N_i, M_l, W_il, tol=1e-7, maxiter=100000, logevery=None):
@@ -241,7 +260,7 @@ def compute_betaF_profile(x_it, x_l, u_i, beta, solver='log-likelihood', scale_s
 
     return betaF_l, betaF_l_ref, betaF_il
     """
-    return betaF_l
+    return betaF_l, status
 
 
 def bootstrap_betaF_profile(Nboot, x_it, x_l, u_i, beta, solver='log-likelihood', track_progress=False, **solverkwargs):
@@ -267,7 +286,7 @@ def bootstrap_betaF_profile(Nboot, x_it, x_l, u_i, beta, solver='log-likelihood'
             x_it_bsample[i] = WHAM.lib.timeseries.bootstrap_independent_sample(x_it[i], g_vec[i])
 
         # Compute free energy
-        betaF_l_sample = compute_betaF_profile(x_it_bsample, x_l, u_i, beta, solver=solver, scale_stat_ineff=False, **solverkwargs)
+        betaF_l_sample, _ = compute_betaF_profile(x_it_bsample, x_l, u_i, beta, solver=solver, scale_stat_ineff=False, **solverkwargs)
 
         # Append to samples
         betaF_l_all_samples[:, sidx] = betaF_l_sample
