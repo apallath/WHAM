@@ -1,4 +1,4 @@
-"""Calculates free energy profile from test INDUS data using binned WHAM"""
+"""Calculates free energy profile of test INDUS data using binned WHAM"""
 import sys
 import inspect
 import re
@@ -10,7 +10,7 @@ from WHAM.lib.potentials import harmonic
 import WHAM.binned
 
 
-def tes_binned_Nt_self_consistent_stat_ineff():
+def test_binned_Nt_self_consistent_stat_ineff():
     # N* associated with each window
     n_star_win = [30, 25, 20, 15, 10, 5, 0, -5]
     # kappa associated with each window
@@ -53,9 +53,11 @@ def tes_binned_Nt_self_consistent_stat_ineff():
     beta = 1000 / (8.314 * 300)  # at 300 K, in kJ/mol units
 
     # Perform WHAM calculation
-    betaF_l = WHAM.binned.compute_betaF_profile(Ntw_win, bin_centers,
-                                                umbrella_win, beta, solver='self-consistent',
-                                                scale_stat_ineff=True, tol=1e-10)
+    betaF_l, status = WHAM.binned.compute_betaF_profile(Ntw_win, bin_centers,
+                                                        umbrella_win, beta, solver='self-consistent',
+                                                        scale_stat_ineff=False, tol=1e-10)
+    # Optimized?
+    print(status)
 
     betaF_l = betaF_l - betaF_l[30]  # reposition zero so that unbiased free energy is zero
 
@@ -115,8 +117,9 @@ def test_binned_Nt_log_likelihood_stat_ineff():
     # Perform WHAM calculation
     betaF_l, status = WHAM.binned.compute_betaF_profile(Ntw_win, bin_centers,
                                                         umbrella_win, beta, solver='log-likelihood',
-                                                        scale_stat_ineff=True, opt_method='nelder-mead')
+                                                        scale_stat_ineff=False, opt_method='BFGS')
 
+    # Optimized?
     print(status)
 
     betaF_l = betaF_l - betaF_l[30]  # reposition zero so that unbiased free energy is zero

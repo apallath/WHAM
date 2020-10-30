@@ -1,6 +1,9 @@
-"""Implementation of binned WHAM using
-- Negative log-likelihood maximization as described in Zhu, F., & Hummer, G. (2012)
-- Self-consistent iteration.
+"""
+Implementation of binless WHAM (described in Shirts M., & Chodera J. D. (2008)) using
+- Negative log-likelihood maximization, inspired from Zhu, F., & Hummer, G. (2012)
+- Self-consistent iteration
+
+# IN PROGRESS!!!
 """
 import numpy as np
 import WHAM.lib.potentials
@@ -18,93 +21,6 @@ from autograd import value_and_grad
 
 # Cython optimization for self-consistent iteration
 cimport numpy as np
-
-
-def alogsumexp(a, axis=None, b=None, keepdims=False, return_sign=False):
-    """Scipy logsumexp for autograd"""
-    if b is not None:
-        if anp.any(b == 0):
-            a = a + 0.  # Promote to at least float
-            a[b == 0] = -np.inf
-
-    a_max = anp.amax(a, axis=axis, keepdims=True)
-
-    if b is not None:
-        tmp = b * anp.exp(a - a_max)
-    else:
-        tmp = anp.exp(a - a_max)
-
-    # Suppress warnings about log of zero
-    with anp.errstate(divide='ignore'):
-        s = anp.sum(tmp, axis=axis, keepdims=keepdims)
-        if return_sign:
-            sgn = anp.sign(s)
-            s *= sgn  # /= makes more sense but we need zero -> zero
-        out = anp.log(s)
-
-    if not keepdims:
-        a_max = anp.squeeze(a_max, axis=axis)
-    out += a_max
-
-    if return_sign:
-        return out, sgn
-    else:
-        return out
-
-
-def NLL(g_i, N_i, M_l, W_il):
-    """Computes negative log-likelihood objective function.
-
-    Args:
-        g_i (np.array of shape (S,)) Array of total free energies associated with the windows
-            0, 1, 2, ..., S-1.
-        N_i (np.array of shape (S,)): Array of total sample counts for the windows
-            0, 1, 2, ..., S-1.
-        M_l (np.array of shape (M,)): Array of total bin counts for each bin.
-        W_il (np.array of shape (S, M)): Array of weights, W_il = -beta * U_i(x_l) for the windows
-            0, 1, 2, ..., S-1.
-
-    Returns:
-        A(g) (np.float): Negative log-likelihood objective function.
-    """
-    g_i_mat = anp.repeat(g_i[:, np.newaxis], len(M_l), axis=1)
-    N_i_mat = anp.repeat(N_i[:, np.newaxis], len(M_l), axis=1)
-
-    term1 = -anp.sum(N_i * g_i)
-    log_p_l = anp.log(M_l) - alogsumexp(g_i_mat + W_il, b=N_i_mat, axis=0)
-    term2 = -anp.sum(M_l * log_p_l)
-
-    A = term1 + term2
-
-    return A
-
-
-def minimize_NLL_solver(N_i, M_l, W_il, opt_method='BFGS', debug=False):
-    """Computes optimal parameters g_i by minimizing the negative log-likelihood
-    for jointly observing the bin counts in the indepedent windows in the dataset.
-
-    Args:
-        N_i (np.array of shape (S,)): Array of total sample counts for the windows
-            0, 1, 2, ..., S-1.
-        M_l (np.array of shape (M,)): Array of total bin counts for each bin.
-        W_il (np.array of shape (S, M)): Array of weights, W_il = -beta * U_i(x_l) for the windows
-            0, 1, 2, ..., S-1.
-        opt_method (string): Optimization algorithm to use (see options supported by scipy.optimize.minimize)
-
-    Returns:
-        (g_i (np.array of shape(S,)), status (bool, solution status))
-    """
-    g_opt_0 = np.random.rand(len(N_i))  # TODO: Smarter initial guess
-
-    # Optimize
-    res = scipy.optimize.minimize(value_and_grad(NLL), g_opt_0, jac=True,
-                                  args=(N_i, M_l, W_il),
-                                  method=opt_method, options={'disp': debug})
-
-    g_i = res.x
-    g_i = g_i - g_i[0]
-
-    return g_i, res.success
 
 
 cpdef self_consistent_solver(np.ndarray N_i, np.ndarray M_l, np.ndarray W_il, float tol=1e-7, int maxiter=100000, int logevery=0):
@@ -168,56 +84,22 @@ cpdef self_consistent_solver(np.ndarray N_i, np.ndarray M_l, np.ndarray W_il, fl
     return g_i, status
 
 
-def compute_betaF_profile(x_it, x_l, u_i, beta, solver='log-likelihood', scale_stat_ineff=False, **solverkwargs):
+def compute_betaF_profile(x_it, u_i, beta, solver='log-likelihood', **solverkwargs):
     """Computes the binned free energy profile.
 
     Args:
         x_it (list): Nested list of length S, x_it[i] is an array containing timeseries
             data from the i'th window.
-        x_l (np.array): Array of bin centers of length M.
         u_i (list): List of length S, u_i[i] is the umbrella potential function u_i(x)
             acting on the i'th window.
         beta: beta, in inverse units to the units of u_i(x).
         solver (string): Solution technique to use ['log-likelihood', 'self-consistent', default='log-likelihood'].
-        scale_stat_ineff (boolean): Compute and scale bin count by statistical inefficiency (default=False).
         **solverkwargs: Arguments for solver
 
     Returns:
-        betaF_l (np.array): Array of WHAM/consensus free energies of length M.
-        betaF_il (list(np.array)): S-length list of biased free energy profiles (M-length np.arrays) for each window.
+        (x (np.array), betaF (np.array), status): Free energy profile, and solver status.
     """
     S = len(u_i)
-    M = len(x_l)
-
-    # Compute bin edges
-    bin_edges = np.zeros(M + 1)
-
-    # add an artificial edge before the first center
-    bin_edges[0] = x_l[0] - (x_l[1] - x_l[0]) / 2
-
-    # add an artificial edge after the last center
-    bin_edges[-1] = x_l[-1] + (x_l[-1] - x_l[-2]) / 2
-
-    # bin edges are at the midpoints of bin centers
-    bin_edges[1:-1] = (x_l[1:] + x_l[:-1]) / 2
-
-    delta_x_l = bin_edges[1:] - bin_edges[:-1]
-
-    # Compute statistical inefficiencies if required, else set as 1 (=> no scaling)
-    # For now, use pymbar instead of WHAM.lib.timeseries function
-    stat_ineff = np.ones(S)
-    if scale_stat_ineff:
-        for i in range(S):
-            stat_ineff[i] = pymbar.timeseries.statisticalInefficiency(x_it[i], fft=True)
-
-    # Bin x_it
-    n_il = np.zeros((S, M))
-    for i in range(S):
-        n_il[i, :], _ = np.histogram(x_it[i], bins=bin_edges)
-        n_il[i, :] = n_il[i, :] / stat_ineff[i]
-
-    N_i = n_il.sum(axis=1)
-    M_l = n_il.sum(axis=0)
 
     """Debug
     # Compute biased free energy profiles for each window
