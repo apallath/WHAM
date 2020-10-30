@@ -109,7 +109,7 @@ def minimize_NLL_solver(N_i, M_l, W_il, opt_method='BFGS', debug=False):
 
 cpdef self_consistent_solver(np.ndarray N_i, np.ndarray M_l, np.ndarray W_il, float tol=1e-7, int maxiter=100000, int logevery=0):
     """Computes optimal parameters g_i by solving the coupled WHAM equations self-consistently
-    until convergence. Optimized using Cython
+    until convergence. Optimized using Cython.
 
     Args:
         N_i (np.array of shape (S,)): Array of total sample counts for the windows
@@ -121,12 +121,16 @@ cpdef self_consistent_solver(np.ndarray N_i, np.ndarray M_l, np.ndarray W_il, fl
         logevery (int): Interval to log self-consistent solver error.
 
     Returns:
-        (g_i (np.array of shape(S,)), status (bool, solution status))
+        (
+            g_i (np.array of shape(S,)),
+            status (bool): Solution status.
+        )
     """
+    cdef float EPS = 1e-24
     cdef int S = len(N_i)
     cdef int M = len(M_l)
 
-    cdef np.ndarray g_i = 1e-16 * np.ones(S, dtype=np.float)
+    cdef np.ndarray g_i = EPS * np.ones(S, dtype=np.float)
 
     # Solution obtained with required tolerance level?
     cdef bint status = False
@@ -149,8 +153,8 @@ cpdef self_consistent_solver(np.ndarray N_i, np.ndarray M_l, np.ndarray W_il, fl
         g_i = -logsumexp(W_il - G_l_mat, axis=1)
         g_i = g_i - g_i[0]
 
-        # Tolerance checek
-        g_i_prev[g_i_prev == 0] = 1e-16  # prevent divide by zero
+        # Tolerance check
+        g_i_prev[g_i_prev == 0] = EPS  # prevent divide by zero
         increment = (g_i - g_i_prev) / g_i_prev
 
         tol_check = increment[np.argmax(increment)]
@@ -168,23 +172,28 @@ cpdef self_consistent_solver(np.ndarray N_i, np.ndarray M_l, np.ndarray W_il, fl
     return g_i, status
 
 
-def compute_betaF_profile(x_it, x_l, u_i, beta, solver='log-likelihood', scale_stat_ineff=False, **solverkwargs):
+def compute_betaF_profile(x_it, x_l, u_i, beta, bin_style='left', solver='log-likelihood', scale_stat_ineff=False, **solverkwargs):
     """Computes the binned free energy profile.
 
     Args:
         x_it (list): Nested list of length S, x_it[i] is an array containing timeseries
             data from the i'th window.
-        x_l (np.array): Array of bin centers of length M.
+        x_l (np.array): Array of bin left-edges/centers of length M.
         u_i (list): List of length S, u_i[i] is the umbrella potential function u_i(x)
             acting on the i'th window.
         beta: beta, in inverse units to the units of u_i(x).
-        solver (string): Solution technique to use ['log-likelihood', 'self-consistent', default='log-likelihood'].
+        bin_style (string): 'left' or 'center'.
+        solver (string): Solution technique to use ['log-likelihood', 'self-consistent', 'debug', default='log-likelihood'].
         scale_stat_ineff (boolean): Compute and scale bin count by statistical inefficiency (default=False).
         **solverkwargs: Arguments for solver
 
     Returns:
-        betaF_l (np.array): Array of WHAM/consensus free energies of length M.
-        betaF_il (list(np.array)): S-length list of biased free energy profiles (M-length np.arrays) for each window.
+        (
+            betaF_l (np.array): Array of WHAM/consensus free energies of length M,
+            betaF_il (np.array): Array of biased free energies for each window,
+            g_i (np.array): Total window free energies,
+            status (bool): Solver status.
+        )
     """
     S = len(u_i)
     M = len(x_l)
@@ -192,14 +201,19 @@ def compute_betaF_profile(x_it, x_l, u_i, beta, solver='log-likelihood', scale_s
     # Compute bin edges
     bin_edges = np.zeros(M + 1)
 
-    # add an artificial edge before the first center
-    bin_edges[0] = x_l[0] - (x_l[1] - x_l[0]) / 2
-
-    # add an artificial edge after the last center
-    bin_edges[-1] = x_l[-1] + (x_l[-1] - x_l[-2]) / 2
-
-    # bin edges are at the midpoints of bin centers
-    bin_edges[1:-1] = (x_l[1:] + x_l[:-1]) / 2
+    if bin_style == 'left':
+        bin_edges[:-1] = x_l
+        # add an artificial edge after the last center
+        bin_edges[-1] = x_l[-1] + (x_l[-1] - x_l[-2])
+    elif bin_style == 'center':
+        # add an artificial edge before the first center
+        bin_edges[0] = x_l[0] - (x_l[1] - x_l[0]) / 2
+        # add an artificial edge after the last center
+        bin_edges[-1] = x_l[-1] + (x_l[-1] - x_l[-2]) / 2
+        # bin edges are at the midpoints of bin centers
+        bin_edges[1:-1] = (x_l[1:] + x_l[:-1]) / 2
+    else:
+        raise ValueError('Bin style not recognized.')
 
     delta_x_l = bin_edges[1:] - bin_edges[:-1]
 
@@ -219,13 +233,11 @@ def compute_betaF_profile(x_it, x_l, u_i, beta, solver='log-likelihood', scale_s
     N_i = n_il.sum(axis=1)
     M_l = n_il.sum(axis=0)
 
-    """Debug
     # Compute biased free energy profiles for each window
     betaF_il = np.zeros((S, M))
     for i in range(S):
         p_il = n_il[i, :] / N_i[i]
         betaF_il[i, :] = -np.log(p_il / delta_x_l)
-    """
 
     # Compute weights
     W_il = np.zeros((S, M))
@@ -237,6 +249,9 @@ def compute_betaF_profile(x_it, x_l, u_i, beta, solver='log-likelihood', scale_s
         g_i, status = minimize_NLL_solver(N_i, M_l, W_il, **solverkwargs)
     elif solver == 'self-consistent':
         g_i, status = self_consistent_solver(N_i, M_l, W_il, **solverkwargs)
+    elif solver == 'debug':
+        g_i = np.array(solverkwargs.get('g_i'))
+        status = True
     else:
         raise ValueError("Requested solution technique not a recognized option.")
 
@@ -247,7 +262,7 @@ def compute_betaF_profile(x_it, x_l, u_i, beta, solver='log-likelihood', scale_s
     # Compute consensus/WHAM free energy profile
     betaF_l = np.log(delta_x_l) + logsumexp(g_i_mat + W_il, b=N_i_mat, axis=0) - np.log(M_l)
 
-    return betaF_l, status
+    return betaF_l, betaF_il, g_i, status
 
 
 def bootstrap_betaF_profile(Nboot, x_it, x_l, u_i, beta, solver='log-likelihood', track_progress=False, **solverkwargs):
@@ -273,7 +288,7 @@ def bootstrap_betaF_profile(Nboot, x_it, x_l, u_i, beta, solver='log-likelihood'
             x_it_bsample[i] = WHAM.lib.timeseries.bootstrap_independent_sample(x_it[i], g_vec[i])
 
         # Compute free energy
-        betaF_l_sample, _ = compute_betaF_profile(x_it_bsample, x_l, u_i, beta, solver=solver, scale_stat_ineff=False, **solverkwargs)
+        betaF_l_sample, _, _ = compute_betaF_profile(x_it_bsample, x_l, u_i, beta, solver=solver, scale_stat_ineff=False, **solverkwargs)
 
         # Append to samples
         betaF_l_all_samples[:, sidx] = betaF_l_sample

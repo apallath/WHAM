@@ -15,7 +15,7 @@ from WHAM.lib.potentials import harmonic
 import WHAM.binless
 
 
-def test_binned_Nt_self_consistent_stat_ineff():
+def get_test_data():
     # N* associated with each window
     n_star_win = [30, 25, 20, 15, 10, 5, 0, -5]
     # kappa associated with each window
@@ -28,6 +28,9 @@ def test_binned_Nt_self_consistent_stat_ineff():
         kappa = kappa_win[i]
         n_star = n_star_win[i]
         umbrella_win.append(harmonic(kappa, n_star))
+
+    # List of bins to perform binning into
+    bin_points = np.linspace(0, 34, 34 + 1)
 
     # Raw, correlated timeseries CV data from each window
     Ntw_win = []
@@ -54,21 +57,31 @@ def test_binned_Nt_self_consistent_stat_ineff():
 
     beta = 1000 / (8.314 * 300)  # at 300 K, in kJ/mol units
 
+    return n_star_win, Ntw_win, bin_points, umbrella_win, beta
+
+
+def test_binless_self_consistent():
+    n_star_win, Ntw_win, bin_points, umbrella_win, beta = get_test_data()
+
     # Perform WHAM calculation
-    x, betaF_l, status = WHAM.binless.compute_betaF_profile(Ntw_win, umbrella_win, beta, solver='self-consistent',
-                                                            tol=1e-10)
+    betaF_bin, g_i, status = WHAM.binless.compute_betaF_profile(Ntw_win, bin_points, umbrella_win, beta,
+                                                                solver='self-consistent',
+                                                                tol=1e-12, logevery=100)
     # Optimized?
     print(status)
 
-    betaF_l = betaF_l - betaF_l[np.argmin((x - 30) ** 2)]  # reposition zero so that unbiased free energy is zero
+    # Useful for debugging:
+    print("Window free energies: ", g_i)
+
+    betaF_bin = betaF_bin - betaF_bin[30]  # reposition zero so that unbiased free energy is zero
 
     # Plot
     fig, ax = plt.subplots(figsize=(8, 4), dpi=300)
-    ax.plot(x, betaF_l, label="Self-consistent binless WHAM solution")
+    ax.plot(bin_points, betaF_bin, label="Self-consistent binless WHAM solution")
 
     bin_centers_ref = np.load("seanmarks_ref/bins.npy")
-    betaF_l_ref = np.load("seanmarks_ref/betaF_Ntilde.npy")
-    ax.plot(bin_centers_ref, betaF_l_ref, label="Reference (Sean Marks)")
+    betaF_bin_ref = np.load("seanmarks_ref/betaF_Ntilde.npy")
+    ax.plot(bin_centers_ref, betaF_bin_ref, label="seanmarks/wham (binless)")
     ax.legend()
     plt.savefig("binless_self_consistent.png")
 
