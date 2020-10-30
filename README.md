@@ -13,7 +13,7 @@ Optimized python code for constructing free energy profiles from umbrella sampli
 [![Google Python Style](https://img.shields.io/badge/Code%20Style-Google%20Python%20Style-brightgreen)](https://google.github.io/styleguide/pyguide.html)
 
 ## Binned formulation
-- Implemented using self-consistent iteration (baseline/debugging) [In progress]
+- Implemented using self-consistent iteration (baseline/debugging) [Todo]
 - Implemented using log-likelihood maximization for superlinear convergence [In progress]
 
 ## Binless formulation (MBAR) (preferred)
