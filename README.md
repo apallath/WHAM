@@ -4,6 +4,7 @@ Optimized python code for constructing free energy profiles from umbrella sampli
 
 ## Status
 
+[![Actions Status](https://img.shields.io/github/workflow/status/apallath/WHAM/build_test_WHAM)](https://github.com/apallath/WHAM/actions)
 [![Open Issues](https://img.shields.io/github/issues-raw/apallath/WHAM)](https://github.com/apallath/WHAM/issues)
 [![Closed Issues](https://img.shields.io/github/issues-closed-raw/apallath/WHAM)](https://github.com/apallath/WHAM/issues)
 
@@ -23,13 +24,11 @@ Optimized python code for constructing free energy profiles from umbrella sampli
 Both log-likelihood maximization approaches can use multiple nonlinear optimization algorithms. Read the documentation to see which algorithms are available.
 
 ## Tests
-Integration tests are in the directory `tests/` and unit tests are in the directory `tests/test_unit`. Run these tests by navigating to the directory and running
+Integration tests are in the directory `tests/` and unit tests are in the directory `tests/tests_unit`. To run all tests at once, navigate to the directory `tests/` and run
 
 ```sh
 pytest
 ```
-
-[TODO] Add Github actions scripts to run tests automatically on push.
 
 ## References:
 - Shirts, M. R., & Chodera, J. D. (2008). Statistically optimal analysis of samples from multiple equilibrium states. Journal of Chemical Physics, 129(12). [DOI](https://doi.org/10.1063/1.2978177)

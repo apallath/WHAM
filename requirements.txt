@@ -1,0 +1,15 @@
+#Basic requirements
+Cython
+numpy
+scipy
+matplotlib
+
+#Other requirements
+pymbar
+tqdm
+
+#Testing
+pytest
+
+#Docs
+sphinxcontrib-napoleon
