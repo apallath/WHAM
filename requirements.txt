@@ -6,6 +6,7 @@ matplotlib
 
 #Other requirements
 pymbar
+statsmodels
 tqdm
 
 #Testing
