@@ -1,8 +1,5 @@
 """
 Calculates free energy profile of test INDUS data using binless WHAM
-
-# IN PROGRESS!!!
-
 """
 import sys
 import inspect

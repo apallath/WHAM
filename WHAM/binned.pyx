@@ -21,7 +21,7 @@ cimport numpy as np
 
 
 def alogsumexp(a, axis=None, b=None, keepdims=False, return_sign=False):
-    """Scipy logsumexp for autograd"""
+    """Scipy logsumexp modified for autograd"""
     if b is not None:
         if anp.any(b == 0):
             a = a + 0.  # Promote to at least float
@@ -53,7 +53,7 @@ def alogsumexp(a, axis=None, b=None, keepdims=False, return_sign=False):
 
 
 def NLL(g_i, N_i, M_l, W_il):
-    """Computes negative log-likelihood objective function.
+    """Computes the negative log-likelihood objective function to minimize.
 
     Args:
         g_i (np.array of shape (S,)) Array of total free energies associated with the windows
@@ -80,8 +80,11 @@ def NLL(g_i, N_i, M_l, W_il):
 
 
 def minimize_NLL_solver(N_i, M_l, W_il, opt_method='BFGS', debug=False):
-    """Computes optimal parameters g_i by minimizing the negative log-likelihood
+    """Computes optimal g_i by minimizing the negative log-likelihood
     for jointly observing the bin counts in the indepedent windows in the dataset.
+
+    Any optimization method supported by scipy.optimize can be used. BFGS is used
+    by default. Gradient information required for BFGS is computed using autograd.
 
     Args:
         N_i (np.array of shape (S,)): Array of total sample counts for the windows
@@ -89,7 +92,7 @@ def minimize_NLL_solver(N_i, M_l, W_il, opt_method='BFGS', debug=False):
         M_l (np.array of shape (M,)): Array of total bin counts for each bin.
         W_il (np.array of shape (S, M)): Array of weights, W_il = -beta * U_i(x_l) for the windows
             0, 1, 2, ..., S-1.
-        opt_method (string): Optimization algorithm to use (see options supported by scipy.optimize.minimize)
+        opt_method (string): Optimization algorithm to use (default: BFGS)
 
     Returns:
         (g_i (np.array of shape(S,)), status (bool, solution status))
@@ -154,8 +157,9 @@ cpdef self_consistent_solver(np.ndarray N_i, np.ndarray M_l, np.ndarray W_il, fl
         g_i = g_i - g_i[0]
 
         # Tolerance check
+        g_i[g_i == 0] = EPS  # prevent divide by zero
         g_i_prev[g_i_prev == 0] = EPS  # prevent divide by zero
-        increment = (g_i - g_i_prev) / g_i_prev
+        increment = np.abs((g_i - g_i_prev) / g_i_prev)
 
         tol_check = increment[np.argmax(increment)]
 

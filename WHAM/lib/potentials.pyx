@@ -9,3 +9,13 @@ def harmonic(kappa, xstar):
     def harmonic_potential(x):
         return kappa / 2 * (x - xstar) ** 2
     return harmonic_potential
+
+
+def linear(phi):
+    """
+    Returns umbrella potential
+    U(x) = phi * x
+    """
+    def harmonic_potential(x):
+        return phi * x
+    return harmonic_potential

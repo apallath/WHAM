@@ -56,22 +56,17 @@ cpdef self_consistent_solver(np.ndarray x_l, np.ndarray N_i, np.ndarray W_il, fl
     cdef np.ndarray g_i_mat, N_i_mat, G_l, G_l_mat, g_i_prev, increment
 
     for iter in range(maxiter):
-        # Convert to matrices for efficient vectorized logsumexp
-        g_i_mat = np.repeat(g_i[:, np.newaxis], Ntot, axis=1)
-        N_i_mat = np.repeat(N_i[:, np.newaxis], Ntot, axis=1)
-
-        G_l = logsumexp(g_i_mat + W_il, b=N_i_mat, axis=0)
-
-        G_l_mat = np.repeat(G_l[np.newaxis, :], S, axis=0)
+        G_l = logsumexp(g_i[:, np.newaxis] + W_il, b=N_i[:, np.newaxis], axis=0)
 
         g_i_prev = g_i
 
-        g_i = -logsumexp(W_il - G_l_mat, axis=1)
+        g_i = -logsumexp(W_il - G_l[np.newaxis, :], axis=1)
         g_i = g_i - g_i[0]
 
         # Tolerance check
+        g_i[g_i == 0] = EPS  # prevent divide by zero
         g_i_prev[g_i_prev == 0] = EPS  # prevent divide by zero
-        increment = (g_i - g_i_prev) / g_i_prev
+        increment = np.abs((g_i - g_i_prev) / g_i_prev)
 
         tol_check = increment[np.argmax(increment)]
 

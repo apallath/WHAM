@@ -806,6 +806,7 @@ static const char *__pyx_f[] = {
 
 /*--- Type declarations ---*/
 struct __pyx_obj_4WHAM_3lib_10potentials___pyx_scope_struct__harmonic;
+struct __pyx_obj_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear;
 
 /* "WHAM/lib/potentials.pyx":4
  * 
@@ -818,6 +819,19 @@ struct __pyx_obj_4WHAM_3lib_10potentials___pyx_scope_struct__harmonic {
   PyObject_HEAD
   PyObject *__pyx_v_kappa;
   PyObject *__pyx_v_xstar;
+};
+
+
+/* "WHAM/lib/potentials.pyx":14
+ * 
+ * 
+ * def linear(phi):             # <<<<<<<<<<<<<<
+ *     """
+ *     Returns umbrella potential
+ */
+struct __pyx_obj_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear {
+  PyObject_HEAD
+  PyObject *__pyx_v_phi;
 };
 
 
@@ -1093,17 +1107,20 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from 'WHAM.lib.potentials' */
 static PyTypeObject *__pyx_ptype_4WHAM_3lib_10potentials___pyx_scope_struct__harmonic = 0;
+static PyTypeObject *__pyx_ptype_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear = 0;
 #define __Pyx_MODULE_NAME "WHAM.lib.potentials"
 extern int __pyx_module_is_main_WHAM__lib__potentials;
 int __pyx_module_is_main_WHAM__lib__potentials = 0;
 
 /* Implementation of 'WHAM.lib.potentials' */
 static const char __pyx_k_x[] = "x";
+static const char __pyx_k_phi[] = "phi";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_kappa[] = "kappa";
 static const char __pyx_k_xstar[] = "xstar";
+static const char __pyx_k_linear[] = "linear";
 static const char __pyx_k_harmonic[] = "harmonic";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_harmonic_potential[] = "harmonic_potential";
@@ -1111,6 +1128,7 @@ static const char __pyx_k_WHAM_lib_potentials[] = "WHAM.lib.potentials";
 static const char __pyx_k_WHAM_lib_potentials_pyx[] = "WHAM/lib/potentials.pyx";
 static const char __pyx_k_Contains_definitions_of_commonly[] = "Contains definitions of commonly used Umbrella potentials";
 static const char __pyx_k_harmonic_locals_harmonic_potenti[] = "harmonic.<locals>.harmonic_potential";
+static const char __pyx_k_linear_locals_harmonic_potential[] = "linear.<locals>.harmonic_potential";
 static PyObject *__pyx_n_s_WHAM_lib_potentials;
 static PyObject *__pyx_kp_s_WHAM_lib_potentials_pyx;
 static PyObject *__pyx_n_s_cline_in_traceback;
@@ -1118,19 +1136,29 @@ static PyObject *__pyx_n_s_harmonic;
 static PyObject *__pyx_n_s_harmonic_locals_harmonic_potenti;
 static PyObject *__pyx_n_s_harmonic_potential;
 static PyObject *__pyx_n_s_kappa;
+static PyObject *__pyx_n_s_linear;
+static PyObject *__pyx_n_s_linear_locals_harmonic_potential;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_name;
+static PyObject *__pyx_n_s_phi;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_x;
 static PyObject *__pyx_n_s_xstar;
 static PyObject *__pyx_pf_4WHAM_3lib_10potentials_8harmonic_harmonic_potential(PyObject *__pyx_self, PyObject *__pyx_v_x); /* proto */
 static PyObject *__pyx_pf_4WHAM_3lib_10potentials_harmonic(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_kappa, PyObject *__pyx_v_xstar); /* proto */
+static PyObject *__pyx_pf_4WHAM_3lib_10potentials_6linear_harmonic_potential(PyObject *__pyx_self, PyObject *__pyx_v_x); /* proto */
+static PyObject *__pyx_pf_4WHAM_3lib_10potentials_2linear(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_phi); /* proto */
 static PyObject *__pyx_tp_new_4WHAM_3lib_10potentials___pyx_scope_struct__harmonic(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_tp_new_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_int_2;
 static PyObject *__pyx_tuple_;
 static PyObject *__pyx_tuple__3;
+static PyObject *__pyx_tuple__5;
+static PyObject *__pyx_tuple__7;
 static PyObject *__pyx_codeobj__2;
 static PyObject *__pyx_codeobj__4;
+static PyObject *__pyx_codeobj__6;
+static PyObject *__pyx_codeobj__8;
 /* Late includes */
 
 /* "WHAM/lib/potentials.pyx":4
@@ -1243,6 +1271,7 @@ static PyObject *__pyx_pf_4WHAM_3lib_10potentials_8harmonic_harmonic_potential(P
  *     def harmonic_potential(x):
  *         return kappa / 2 * (x - xstar) ** 2             # <<<<<<<<<<<<<<
  *     return harmonic_potential
+ * 
  */
   __Pyx_XDECREF(__pyx_r);
   if (unlikely(!__pyx_cur_scope->__pyx_v_kappa)) { __Pyx_RaiseClosureNameError("kappa"); __PYX_ERR(0, 10, __pyx_L1_error) }
@@ -1329,6 +1358,8 @@ static PyObject *__pyx_pf_4WHAM_3lib_10potentials_harmonic(CYTHON_UNUSED PyObjec
  *     def harmonic_potential(x):
  *         return kappa / 2 * (x - xstar) ** 2
  *     return harmonic_potential             # <<<<<<<<<<<<<<
+ * 
+ * 
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_INCREF(__pyx_v_harmonic_potential);
@@ -1347,6 +1378,164 @@ static PyObject *__pyx_pf_4WHAM_3lib_10potentials_harmonic(CYTHON_UNUSED PyObjec
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_AddTraceback("WHAM.lib.potentials.harmonic", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_harmonic_potential);
+  __Pyx_DECREF(((PyObject *)__pyx_cur_scope));
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "WHAM/lib/potentials.pyx":14
+ * 
+ * 
+ * def linear(phi):             # <<<<<<<<<<<<<<
+ *     """
+ *     Returns umbrella potential
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_4WHAM_3lib_10potentials_3linear(PyObject *__pyx_self, PyObject *__pyx_v_phi); /*proto*/
+static char __pyx_doc_4WHAM_3lib_10potentials_2linear[] = "\n    Returns umbrella potential\n    U(x) = phi * x\n    ";
+static PyMethodDef __pyx_mdef_4WHAM_3lib_10potentials_3linear = {"linear", (PyCFunction)__pyx_pw_4WHAM_3lib_10potentials_3linear, METH_O, __pyx_doc_4WHAM_3lib_10potentials_2linear};
+static PyObject *__pyx_pw_4WHAM_3lib_10potentials_3linear(PyObject *__pyx_self, PyObject *__pyx_v_phi) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("linear (wrapper)", 0);
+  __pyx_r = __pyx_pf_4WHAM_3lib_10potentials_2linear(__pyx_self, ((PyObject *)__pyx_v_phi));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "WHAM/lib/potentials.pyx":19
+ *     U(x) = phi * x
+ *     """
+ *     def harmonic_potential(x):             # <<<<<<<<<<<<<<
+ *         return phi * x
+ *     return harmonic_potential
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_4WHAM_3lib_10potentials_6linear_1harmonic_potential(PyObject *__pyx_self, PyObject *__pyx_v_x); /*proto*/
+static PyMethodDef __pyx_mdef_4WHAM_3lib_10potentials_6linear_1harmonic_potential = {"harmonic_potential", (PyCFunction)__pyx_pw_4WHAM_3lib_10potentials_6linear_1harmonic_potential, METH_O, 0};
+static PyObject *__pyx_pw_4WHAM_3lib_10potentials_6linear_1harmonic_potential(PyObject *__pyx_self, PyObject *__pyx_v_x) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("harmonic_potential (wrapper)", 0);
+  __pyx_r = __pyx_pf_4WHAM_3lib_10potentials_6linear_harmonic_potential(__pyx_self, ((PyObject *)__pyx_v_x));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_4WHAM_3lib_10potentials_6linear_harmonic_potential(PyObject *__pyx_self, PyObject *__pyx_v_x) {
+  struct __pyx_obj_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear *__pyx_cur_scope;
+  struct __pyx_obj_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear *__pyx_outer_scope;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("harmonic_potential", 0);
+  __pyx_outer_scope = (struct __pyx_obj_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear *) __Pyx_CyFunction_GetClosure(__pyx_self);
+  __pyx_cur_scope = __pyx_outer_scope;
+
+  /* "WHAM/lib/potentials.pyx":20
+ *     """
+ *     def harmonic_potential(x):
+ *         return phi * x             # <<<<<<<<<<<<<<
+ *     return harmonic_potential
+ */
+  __Pyx_XDECREF(__pyx_r);
+  if (unlikely(!__pyx_cur_scope->__pyx_v_phi)) { __Pyx_RaiseClosureNameError("phi"); __PYX_ERR(0, 20, __pyx_L1_error) }
+  __pyx_t_1 = PyNumber_Multiply(__pyx_cur_scope->__pyx_v_phi, __pyx_v_x); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 20, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "WHAM/lib/potentials.pyx":19
+ *     U(x) = phi * x
+ *     """
+ *     def harmonic_potential(x):             # <<<<<<<<<<<<<<
+ *         return phi * x
+ *     return harmonic_potential
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("WHAM.lib.potentials.linear.harmonic_potential", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "WHAM/lib/potentials.pyx":14
+ * 
+ * 
+ * def linear(phi):             # <<<<<<<<<<<<<<
+ *     """
+ *     Returns umbrella potential
+ */
+
+static PyObject *__pyx_pf_4WHAM_3lib_10potentials_2linear(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_phi) {
+  struct __pyx_obj_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear *__pyx_cur_scope;
+  PyObject *__pyx_v_harmonic_potential = 0;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("linear", 0);
+  __pyx_cur_scope = (struct __pyx_obj_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear *)__pyx_tp_new_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear(__pyx_ptype_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear, __pyx_empty_tuple, NULL);
+  if (unlikely(!__pyx_cur_scope)) {
+    __pyx_cur_scope = ((struct __pyx_obj_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear *)Py_None);
+    __Pyx_INCREF(Py_None);
+    __PYX_ERR(0, 14, __pyx_L1_error)
+  } else {
+    __Pyx_GOTREF(__pyx_cur_scope);
+  }
+  __pyx_cur_scope->__pyx_v_phi = __pyx_v_phi;
+  __Pyx_INCREF(__pyx_cur_scope->__pyx_v_phi);
+  __Pyx_GIVEREF(__pyx_cur_scope->__pyx_v_phi);
+
+  /* "WHAM/lib/potentials.pyx":19
+ *     U(x) = phi * x
+ *     """
+ *     def harmonic_potential(x):             # <<<<<<<<<<<<<<
+ *         return phi * x
+ *     return harmonic_potential
+ */
+  __pyx_t_1 = __Pyx_CyFunction_NewEx(&__pyx_mdef_4WHAM_3lib_10potentials_6linear_1harmonic_potential, 0, __pyx_n_s_linear_locals_harmonic_potential, ((PyObject*)__pyx_cur_scope), __pyx_n_s_WHAM_lib_potentials, __pyx_d, ((PyObject *)__pyx_codeobj__4)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_harmonic_potential = __pyx_t_1;
+  __pyx_t_1 = 0;
+
+  /* "WHAM/lib/potentials.pyx":21
+ *     def harmonic_potential(x):
+ *         return phi * x
+ *     return harmonic_potential             # <<<<<<<<<<<<<<
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_harmonic_potential);
+  __pyx_r = __pyx_v_harmonic_potential;
+  goto __pyx_L0;
+
+  /* "WHAM/lib/potentials.pyx":14
+ * 
+ * 
+ * def linear(phi):             # <<<<<<<<<<<<<<
+ *     """
+ *     Returns umbrella potential
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("WHAM.lib.potentials.linear", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_harmonic_potential);
@@ -1478,6 +1667,121 @@ static PyTypeObject __pyx_type_4WHAM_3lib_10potentials___pyx_scope_struct__harmo
   #endif
 };
 
+static struct __pyx_obj_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear *__pyx_freelist_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear[8];
+static int __pyx_freecount_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear = 0;
+
+static PyObject *__pyx_tp_new_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+  PyObject *o;
+  if (CYTHON_COMPILING_IN_CPYTHON && likely((__pyx_freecount_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear > 0) & (t->tp_basicsize == sizeof(struct __pyx_obj_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear)))) {
+    o = (PyObject*)__pyx_freelist_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear[--__pyx_freecount_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear];
+    memset(o, 0, sizeof(struct __pyx_obj_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear));
+    (void) PyObject_INIT(o, t);
+    PyObject_GC_Track(o);
+  } else {
+    o = (*t->tp_alloc)(t, 0);
+    if (unlikely(!o)) return 0;
+  }
+  return o;
+}
+
+static void __pyx_tp_dealloc_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear(PyObject *o) {
+  struct __pyx_obj_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear *p = (struct __pyx_obj_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear *)o;
+  PyObject_GC_UnTrack(o);
+  Py_CLEAR(p->__pyx_v_phi);
+  if (CYTHON_COMPILING_IN_CPYTHON && ((__pyx_freecount_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear < 8) & (Py_TYPE(o)->tp_basicsize == sizeof(struct __pyx_obj_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear)))) {
+    __pyx_freelist_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear[__pyx_freecount_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear++] = ((struct __pyx_obj_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear *)o);
+  } else {
+    (*Py_TYPE(o)->tp_free)(o);
+  }
+}
+
+static int __pyx_tp_traverse_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear(PyObject *o, visitproc v, void *a) {
+  int e;
+  struct __pyx_obj_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear *p = (struct __pyx_obj_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear *)o;
+  if (p->__pyx_v_phi) {
+    e = (*v)(p->__pyx_v_phi, a); if (e) return e;
+  }
+  return 0;
+}
+
+static int __pyx_tp_clear_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear(PyObject *o) {
+  PyObject* tmp;
+  struct __pyx_obj_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear *p = (struct __pyx_obj_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear *)o;
+  tmp = ((PyObject*)p->__pyx_v_phi);
+  p->__pyx_v_phi = Py_None; Py_INCREF(Py_None);
+  Py_XDECREF(tmp);
+  return 0;
+}
+
+static PyTypeObject __pyx_type_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear = {
+  PyVarObject_HEAD_INIT(0, 0)
+  "WHAM.lib.potentials.__pyx_scope_struct_1_linear", /*tp_name*/
+  sizeof(struct __pyx_obj_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear), /*tp_basicsize*/
+  0, /*tp_itemsize*/
+  __pyx_tp_dealloc_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear, /*tp_dealloc*/
+  #if PY_VERSION_HEX < 0x030800b4
+  0, /*tp_print*/
+  #endif
+  #if PY_VERSION_HEX >= 0x030800b4
+  0, /*tp_vectorcall_offset*/
+  #endif
+  0, /*tp_getattr*/
+  0, /*tp_setattr*/
+  #if PY_MAJOR_VERSION < 3
+  0, /*tp_compare*/
+  #endif
+  #if PY_MAJOR_VERSION >= 3
+  0, /*tp_as_async*/
+  #endif
+  0, /*tp_repr*/
+  0, /*tp_as_number*/
+  0, /*tp_as_sequence*/
+  0, /*tp_as_mapping*/
+  0, /*tp_hash*/
+  0, /*tp_call*/
+  0, /*tp_str*/
+  0, /*tp_getattro*/
+  0, /*tp_setattro*/
+  0, /*tp_as_buffer*/
+  Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
+  0, /*tp_doc*/
+  __pyx_tp_traverse_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear, /*tp_traverse*/
+  __pyx_tp_clear_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear, /*tp_clear*/
+  0, /*tp_richcompare*/
+  0, /*tp_weaklistoffset*/
+  0, /*tp_iter*/
+  0, /*tp_iternext*/
+  0, /*tp_methods*/
+  0, /*tp_members*/
+  0, /*tp_getset*/
+  0, /*tp_base*/
+  0, /*tp_dict*/
+  0, /*tp_descr_get*/
+  0, /*tp_descr_set*/
+  0, /*tp_dictoffset*/
+  0, /*tp_init*/
+  0, /*tp_alloc*/
+  __pyx_tp_new_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear, /*tp_new*/
+  0, /*tp_free*/
+  0, /*tp_is_gc*/
+  0, /*tp_bases*/
+  0, /*tp_mro*/
+  0, /*tp_cache*/
+  0, /*tp_subclasses*/
+  0, /*tp_weaklist*/
+  0, /*tp_del*/
+  0, /*tp_version_tag*/
+  #if PY_VERSION_HEX >= 0x030400a1
+  0, /*tp_finalize*/
+  #endif
+  #if PY_VERSION_HEX >= 0x030800b1
+  0, /*tp_vectorcall*/
+  #endif
+  #if PY_VERSION_HEX >= 0x030800b4 && PY_VERSION_HEX < 0x03090000
+  0, /*tp_print*/
+  #endif
+};
+
 static PyMethodDef __pyx_methods[] = {
   {0, 0, 0, 0}
 };
@@ -1531,8 +1835,11 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_harmonic_locals_harmonic_potenti, __pyx_k_harmonic_locals_harmonic_potenti, sizeof(__pyx_k_harmonic_locals_harmonic_potenti), 0, 0, 1, 1},
   {&__pyx_n_s_harmonic_potential, __pyx_k_harmonic_potential, sizeof(__pyx_k_harmonic_potential), 0, 0, 1, 1},
   {&__pyx_n_s_kappa, __pyx_k_kappa, sizeof(__pyx_k_kappa), 0, 0, 1, 1},
+  {&__pyx_n_s_linear, __pyx_k_linear, sizeof(__pyx_k_linear), 0, 0, 1, 1},
+  {&__pyx_n_s_linear_locals_harmonic_potential, __pyx_k_linear_locals_harmonic_potential, sizeof(__pyx_k_linear_locals_harmonic_potential), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
+  {&__pyx_n_s_phi, __pyx_k_phi, sizeof(__pyx_k_phi), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_x, __pyx_k_x, sizeof(__pyx_k_x), 0, 0, 1, 1},
   {&__pyx_n_s_xstar, __pyx_k_xstar, sizeof(__pyx_k_xstar), 0, 0, 1, 1},
@@ -1558,6 +1865,18 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple_);
   __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple_, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_WHAM_lib_potentials_pyx, __pyx_n_s_harmonic_potential, 9, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 9, __pyx_L1_error)
 
+  /* "WHAM/lib/potentials.pyx":19
+ *     U(x) = phi * x
+ *     """
+ *     def harmonic_potential(x):             # <<<<<<<<<<<<<<
+ *         return phi * x
+ *     return harmonic_potential
+ */
+  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_n_s_x); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__3);
+  __Pyx_GIVEREF(__pyx_tuple__3);
+  __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_WHAM_lib_potentials_pyx, __pyx_n_s_harmonic_potential, 19, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 19, __pyx_L1_error)
+
   /* "WHAM/lib/potentials.pyx":4
  * 
  * 
@@ -1565,10 +1884,22 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *     """
  *     Returns umbrella potential
  */
-  __pyx_tuple__3 = PyTuple_Pack(4, __pyx_n_s_kappa, __pyx_n_s_xstar, __pyx_n_s_harmonic_potential, __pyx_n_s_harmonic_potential); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 4, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__3);
-  __Pyx_GIVEREF(__pyx_tuple__3);
-  __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(2, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_WHAM_lib_potentials_pyx, __pyx_n_s_harmonic, 4, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_tuple__5 = PyTuple_Pack(4, __pyx_n_s_kappa, __pyx_n_s_xstar, __pyx_n_s_harmonic_potential, __pyx_n_s_harmonic_potential); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__5);
+  __Pyx_GIVEREF(__pyx_tuple__5);
+  __pyx_codeobj__6 = (PyObject*)__Pyx_PyCode_New(2, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__5, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_WHAM_lib_potentials_pyx, __pyx_n_s_harmonic, 4, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__6)) __PYX_ERR(0, 4, __pyx_L1_error)
+
+  /* "WHAM/lib/potentials.pyx":14
+ * 
+ * 
+ * def linear(phi):             # <<<<<<<<<<<<<<
+ *     """
+ *     Returns umbrella potential
+ */
+  __pyx_tuple__7 = PyTuple_Pack(3, __pyx_n_s_phi, __pyx_n_s_harmonic_potential, __pyx_n_s_harmonic_potential); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__7);
+  __Pyx_GIVEREF(__pyx_tuple__7);
+  __pyx_codeobj__8 = (PyObject*)__Pyx_PyCode_New(1, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__7, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_WHAM_lib_potentials_pyx, __pyx_n_s_linear, 14, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__8)) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -1628,6 +1959,14 @@ static int __Pyx_modinit_type_init_code(void) {
     __pyx_type_4WHAM_3lib_10potentials___pyx_scope_struct__harmonic.tp_getattro = __Pyx_PyObject_GenericGetAttrNoDict;
   }
   __pyx_ptype_4WHAM_3lib_10potentials___pyx_scope_struct__harmonic = &__pyx_type_4WHAM_3lib_10potentials___pyx_scope_struct__harmonic;
+  if (PyType_Ready(&__pyx_type_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear) < 0) __PYX_ERR(0, 14, __pyx_L1_error)
+  #if PY_VERSION_HEX < 0x030800B1
+  __pyx_type_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear.tp_print = 0;
+  #endif
+  if ((CYTHON_USE_TYPE_SLOTS && CYTHON_USE_PYTYPE_LOOKUP) && likely(!__pyx_type_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear.tp_dictoffset && __pyx_type_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear.tp_getattro == PyObject_GenericGetAttr)) {
+    __pyx_type_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear.tp_getattro = __Pyx_PyObject_GenericGetAttrNoDict;
+  }
+  __pyx_ptype_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear = &__pyx_type_4WHAM_3lib_10potentials___pyx_scope_struct_1_linear;
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -1866,6 +2205,18 @@ if (!__Pyx_RefNanny) {
   __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_4WHAM_3lib_10potentials_1harmonic, NULL, __pyx_n_s_WHAM_lib_potentials); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_harmonic, __pyx_t_1) < 0) __PYX_ERR(0, 4, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "WHAM/lib/potentials.pyx":14
+ * 
+ * 
+ * def linear(phi):             # <<<<<<<<<<<<<<
+ *     """
+ *     Returns umbrella potential
+ */
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_4WHAM_3lib_10potentials_3linear, NULL, __pyx_n_s_WHAM_lib_potentials); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_linear, __pyx_t_1) < 0) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "WHAM/lib/potentials.pyx":1
