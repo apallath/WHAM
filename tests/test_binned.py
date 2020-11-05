@@ -8,7 +8,7 @@ import re
 import numpy as np
 import matplotlib.pyplot as plt
 
-from WHAM.lib.potentials import harmonic
+from WHAM.lib import potentials
 import WHAM.binned
 
 
@@ -24,7 +24,7 @@ def get_test_data():
     for i in range(1, len(n_star_win)):
         kappa = kappa_win[i]
         n_star = n_star_win[i]
-        umbrella_win.append(harmonic(kappa, n_star))
+        umbrella_win.append(potentials.harmonic(kappa, n_star))
 
     # List of bins to perform binning into
     bin_points = np.linspace(0, 34, 34 + 1)
@@ -57,14 +57,14 @@ def get_test_data():
     return n_star_win, Ntw_win, bin_points, umbrella_win, beta
 
 
-def test_binned_Nt_self_consistent():
+def test_binned_self_consistent():
     n_star_win, Ntw_win, bin_points, umbrella_win, beta = get_test_data()
 
     # Perform WHAM calculation
     betaF_l, betaF_il, g_i, status = WHAM.binned.compute_betaF_profile(Ntw_win, bin_points,
                                                                        umbrella_win, beta, bin_style='left',
                                                                        solver='self-consistent', scale_stat_ineff=True,
-                                                                       tol=1e-12, logevery=100)  # solver kwargs
+                                                                       tol=1e-7, logevery=100)  # solver kwargs
 
     # Optimized?
     print(status)
@@ -91,8 +91,31 @@ def test_binned_Nt_self_consistent():
     ax.legend()
     plt.savefig("self_consistent_biased.png")
 
+    # Save free energy
+    np.save("binned_scf_gi.npy", g_i)
 
-def test_binned_Nt_log_likelihood():
+
+def test_binned_self_consistent_restart():
+    n_star_win, Ntw_win, bin_points, umbrella_win, beta = get_test_data()
+
+    print("Restarting from saved g_i's")
+
+    g_i = np.load("binned_scf_gi.npy")
+
+    # Perform WHAM calculation
+    betaF_l, betaF_il, g_i, status = WHAM.binned.compute_betaF_profile(Ntw_win, bin_points,
+                                                                       umbrella_win, beta, bin_style='left',
+                                                                       solver='self-consistent', scale_stat_ineff=True,
+                                                                       g_i=g_i, tol=1e-12, logevery=100)  # solver kwargs
+
+    # Optimized?
+    print(status)
+
+    # Useful for debugging:
+    print("Window free energies: ", g_i)
+
+
+def test_binned_log_likelihood():
     n_star_win, Ntw_win, bin_points, umbrella_win, beta = get_test_data()
 
     # Perform WHAM calculation

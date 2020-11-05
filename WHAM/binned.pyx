@@ -3,12 +3,14 @@
 - Self-consistent iteration.
 """
 import numpy as np
+
 import WHAM.lib.potentials
 import WHAM.lib.timeseries
+from WHAM.lib import numeric
+
 import pymbar.timeseries
 
 import scipy.optimize
-from scipy.special import logsumexp
 
 from tqdm import tqdm
 
@@ -18,38 +20,6 @@ from autograd import value_and_grad
 
 # Cython optimization for self-consistent iteration
 cimport numpy as np
-
-
-def alogsumexp(a, axis=None, b=None, keepdims=False, return_sign=False):
-    """Scipy logsumexp modified for autograd"""
-    if b is not None:
-        if anp.any(b == 0):
-            a = a + 0.  # Promote to at least float
-            a[b == 0] = -np.inf
-
-    a_max = anp.amax(a, axis=axis, keepdims=True)
-
-    if b is not None:
-        tmp = b * anp.exp(a - a_max)
-    else:
-        tmp = anp.exp(a - a_max)
-
-    # Suppress warnings about log of zero
-    with anp.errstate(divide='ignore'):
-        s = anp.sum(tmp, axis=axis, keepdims=keepdims)
-        if return_sign:
-            sgn = anp.sign(s)
-            s *= sgn  # /= makes more sense but we need zero -> zero
-        out = anp.log(s)
-
-    if not keepdims:
-        a_max = anp.squeeze(a_max, axis=axis)
-    out += a_max
-
-    if return_sign:
-        return out, sgn
-    else:
-        return out
 
 
 def NLL(g_i, N_i, M_l, W_il):
@@ -67,11 +37,8 @@ def NLL(g_i, N_i, M_l, W_il):
     Returns:
         A(g) (np.float): Negative log-likelihood objective function.
     """
-    g_i_mat = anp.repeat(g_i[:, np.newaxis], len(M_l), axis=1)
-    N_i_mat = anp.repeat(N_i[:, np.newaxis], len(M_l), axis=1)
-
     term1 = -anp.sum(N_i * g_i)
-    log_p_l = anp.log(M_l) - alogsumexp(g_i_mat + W_il, b=N_i_mat, axis=0)
+    log_p_l = anp.log(M_l) - numeric.alogsumexp(g_i[:, np.newaxis] + W_il, b=N_i[:, np.newaxis], axis=0)
     term2 = -anp.sum(M_l * log_p_l)
 
     A = term1 + term2
@@ -79,7 +46,7 @@ def NLL(g_i, N_i, M_l, W_il):
     return A
 
 
-def minimize_NLL_solver(N_i, M_l, W_il, opt_method='BFGS', debug=False):
+def minimize_NLL_solver(N_i, M_l, W_il, g_i=None, opt_method='BFGS', debug=False):
     """Computes optimal g_i by minimizing the negative log-likelihood
     for jointly observing the bin counts in the indepedent windows in the dataset.
 
@@ -92,15 +59,21 @@ def minimize_NLL_solver(N_i, M_l, W_il, opt_method='BFGS', debug=False):
         M_l (np.array of shape (M,)): Array of total bin counts for each bin.
         W_il (np.array of shape (S, M)): Array of weights, W_il = -beta * U_i(x_l) for the windows
             0, 1, 2, ..., S-1.
-        opt_method (string): Optimization algorithm to use (default: BFGS)
+        g_i (np.array of shape (S,)): Total free energy initial guess.
+        opt_method (string): Optimization algorithm to use (default: BFGS).
+        debug (bool): Display optimization algorithm progress (default=False).
 
     Returns:
-        (g_i (np.array of shape(S,)), status (bool, solution status))
+        (
+            g_i (np.array of shape(S,)),
+            status (bool): Solution status.
+        )
     """
-    g_opt_0 = np.random.rand(len(N_i))  # TODO: Smarter initial guess
+    if g_i is None:
+        g_i = np.random.rand(len(N_i))  # TODO: Smarter initial guess
 
     # Optimize
-    res = scipy.optimize.minimize(value_and_grad(NLL), g_opt_0, jac=True,
+    res = scipy.optimize.minimize(value_and_grad(NLL), g_i, jac=True,
                                   args=(N_i, M_l, W_il),
                                   method=opt_method, options={'disp': debug})
 
@@ -110,7 +83,8 @@ def minimize_NLL_solver(N_i, M_l, W_il, opt_method='BFGS', debug=False):
     return g_i, res.success
 
 
-cpdef self_consistent_solver(np.ndarray N_i, np.ndarray M_l, np.ndarray W_il, float tol=1e-7, int maxiter=100000, int logevery=0):
+cpdef self_consistent_solver(np.ndarray N_i, np.ndarray M_l, np.ndarray W_il,
+                             np.ndarray g_i=np.zeros(1), float tol=1e-7, int maxiter=100000, int logevery=0):
     """Computes optimal parameters g_i by solving the coupled WHAM equations self-consistently
     until convergence. Optimized using Cython.
 
@@ -120,8 +94,10 @@ cpdef self_consistent_solver(np.ndarray N_i, np.ndarray M_l, np.ndarray W_il, fl
         M_l (np.array of shape (M,)): Array of total bin counts for each bin.
         W_il (np.array of shape (S, M)): Array of weights, W_il = -beta * U_i(x_l) for the windows
             0, 1, 2, ..., S-1.
-        maxiter (int): Maximum number of iterations to run solver for (default = 100000).
-        logevery (int): Interval to log self-consistent solver error.
+        g_i (np.array of shape (S,)): Total free energy initial guess.
+        tol (float): Relative tolerance to stop solver iterations at (defaul=1e-7).
+        maxiter (int): Maximum number of iterations to run solver for (default=100000).
+        logevery (int): Interval to log self-consistent solver error (default=0, i.e. no logging).
 
     Returns:
         (
@@ -133,7 +109,10 @@ cpdef self_consistent_solver(np.ndarray N_i, np.ndarray M_l, np.ndarray W_il, fl
     cdef int S = len(N_i)
     cdef int M = len(M_l)
 
-    cdef np.ndarray g_i = EPS * np.ones(S, dtype=np.float)
+    if np.allclose(g_i, np.zeros(1)):
+        g_i = EPS * np.ones(S, dtype=np.float)
+    else:
+        g_i[g_i == 0] = EPS
 
     # Solution obtained with required tolerance level?
     cdef bint status = False
@@ -143,17 +122,11 @@ cpdef self_consistent_solver(np.ndarray N_i, np.ndarray M_l, np.ndarray W_il, fl
     cdef np.ndarray g_i_mat, N_i_mat, G_l, G_l_mat, g_i_prev, increment
 
     for iter in range(maxiter):
-        # Convert to matrices for efficient vectorized logsumexp
-        g_i_mat = np.repeat(g_i[:, np.newaxis], M, axis=1)
-        N_i_mat = np.repeat(N_i[:, np.newaxis], M, axis=1)
-
-        G_l = logsumexp(g_i_mat + W_il, b=N_i_mat, axis=0) - np.log(M_l)
-
-        G_l_mat = np.repeat(G_l[np.newaxis, :], S, axis=0)
+        G_l = numeric.clogsumexp(g_i[:, np.newaxis] + W_il, b=N_i[:, np.newaxis], axis=0) - np.log(M_l)
 
         g_i_prev = g_i
 
-        g_i = -logsumexp(W_il - G_l_mat, axis=1)
+        g_i = -numeric.clogsumexp(W_il - G_l[np.newaxis, :], axis=1)
         g_i = g_i - g_i[0]
 
         # Tolerance check
@@ -259,12 +232,8 @@ def compute_betaF_profile(x_it, x_l, u_i, beta, bin_style='left', solver='log-li
     else:
         raise ValueError("Requested solution technique not a recognized option.")
 
-    # Convert to matrices for efficient vectorized logsumexp
-    g_i_mat = np.repeat(g_i[:, np.newaxis], M, axis=1)
-    N_i_mat = np.repeat(N_i[:, np.newaxis], M, axis=1)
-
     # Compute consensus/WHAM free energy profile
-    betaF_l = np.log(delta_x_l) + logsumexp(g_i_mat + W_il, b=N_i_mat, axis=0) - np.log(M_l)
+    betaF_l = np.log(delta_x_l) + numeric.clogsumexp(g_i[:, np.newaxis] + W_il, b=N_i[:, np.newaxis], axis=0) - np.log(M_l)
 
     return betaF_l, betaF_il, g_i, status
 

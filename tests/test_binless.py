@@ -8,7 +8,7 @@ import re
 import numpy as np
 import matplotlib.pyplot as plt
 
-from WHAM.lib.potentials import harmonic
+from WHAM.lib import potentials
 import WHAM.binless
 
 
@@ -24,7 +24,7 @@ def get_test_data():
     for i in range(1, len(n_star_win)):
         kappa = kappa_win[i]
         n_star = n_star_win[i]
-        umbrella_win.append(harmonic(kappa, n_star))
+        umbrella_win.append(potentials.harmonic(kappa, n_star))
 
     # List of bins to perform binning into
     bin_points = np.linspace(0, 34, 34 + 1)
@@ -62,8 +62,8 @@ def test_binless_self_consistent():
 
     # Perform WHAM calculation
     betaF_bin, g_i, status = WHAM.binless.compute_betaF_profile(Ntw_win, bin_points, umbrella_win, beta,
-                                                                solver='self-consistent',
-                                                                tol=1e-12, logevery=100)
+                                                                bin_style='left', solver='self-consistent',
+                                                                tol=1e-7, logevery=100)
     # Optimized?
     print(status)
 
@@ -81,6 +81,53 @@ def test_binless_self_consistent():
     ax.plot(bin_centers_ref, betaF_bin_ref, label="seanmarks/wham (binless)")
     ax.legend()
     plt.savefig("binless_self_consistent.png")
+
+    # Save free energy
+    np.save("binless_scf_gi.npy", g_i)
+
+
+def test_binless_self_consistent_restart():
+    n_star_win, Ntw_win, bin_points, umbrella_win, beta = get_test_data()
+
+    print("Restarting from saved g_i's")
+
+    g_i = np.load("binless_scf_gi.npy")
+
+    # Perform WHAM calculation
+    betaF_bin, g_i, status = WHAM.binless.compute_betaF_profile(Ntw_win, bin_points, umbrella_win, beta,
+                                                                bin_style='left', solver='self-consistent',
+                                                                g_i=g_i, tol=1e-12, logevery=100)
+    # Optimized?
+    print(status)
+
+    # Useful for debugging:
+    print("Window free energies: ", g_i)
+
+
+def test_binless_log_likelihood():
+    n_star_win, Ntw_win, bin_points, umbrella_win, beta = get_test_data()
+
+    # Perform WHAM calculation
+    betaF_bin, g_i, status = WHAM.binless.compute_betaF_profile(Ntw_win, bin_points, umbrella_win, beta,
+                                                                bin_style='left', solver='log-likelihood',
+                                                                opt_method='BFGS')
+    # Optimized?
+    print(status)
+
+    # Useful for debugging:
+    print("Window free energies: ", g_i)
+
+    betaF_bin = betaF_bin - betaF_bin[30]  # reposition zero so that unbiased free energy is zero
+
+    # Plot
+    fig, ax = plt.subplots(figsize=(8, 4), dpi=300)
+    ax.plot(bin_points, betaF_bin, label="Log-likelihood binless WHAM solution")
+
+    bin_centers_ref = np.load("seanmarks_ref/bins.npy")
+    betaF_bin_ref = np.load("seanmarks_ref/betaF_Ntilde.npy")
+    ax.plot(bin_centers_ref, betaF_bin_ref, label="seanmarks/wham (binless)")
+    ax.legend()
+    plt.savefig("binless_log_likelihood.png")
 
 
 if __name__ == "__main__":

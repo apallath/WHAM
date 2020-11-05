@@ -2,7 +2,7 @@
 Cython
 numpy
 scipy
-autograd
+autograd    
 matplotlib
 
 #Other requirements
