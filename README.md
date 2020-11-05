@@ -19,7 +19,7 @@ Optimized python code for constructing free energy profiles from umbrella sampli
 
 ## Binless formulation (MBAR) (preferred)
 - Implemented using self-consistent iteration (baseline/debugging)
-- Implemented using log-likelihood maximization for superlinear convergence [Todo]
+- Implemented using log-likelihood maximization for superlinear convergence
 
 Both log-likelihood maximization approaches can use multiple nonlinear optimization algorithms. Read the documentation to see which algorithms are available.
 
