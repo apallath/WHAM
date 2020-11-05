@@ -38,13 +38,14 @@ def NLL(g_i, x_l, N_i, W_il):
     Returns:
         A(g) (np.float): Negative log-likelihood objective function.
     """
-    Ntot = anp.sum(N_i)
-    term1 = -anp.sum(N_i / Ntot * g_i)
-    term2 = 1 / Ntot * anp.sum(numeric.alogsumexp(g_i[:, np.newaxis] + W_il, b=N_i[:, np.newaxis] / Ntot, axis=0))
+    with anp.errstate(divide='ignore'):
+        Ntot = anp.sum(N_i)
+        term1 = -anp.sum(N_i / Ntot * g_i)
+        term2 = 1 / Ntot * anp.sum(numeric.alogsumexp(g_i[:, np.newaxis] + W_il, b=N_i[:, np.newaxis] / Ntot, axis=0))
 
-    A = term1 + term2
+        A = term1 + term2
 
-    return A
+        return A
 
 
 def minimize_NLL_solver(x_l, N_i, W_il, g_i=None, opt_method='BFGS', debug=False):
@@ -147,7 +148,7 @@ cpdef self_consistent_solver(np.ndarray x_l, np.ndarray N_i, np.ndarray W_il,
                 print("Self-consistent solver error = {:.2e}.".format(tol_check))
 
         if increment[np.argmax(increment)] < tol:
-            if logevery is not None:
+            if logevery > 0:
                 print("Self-consistent solver error = {:.2e}.".format(tol_check))
             status = True
             break

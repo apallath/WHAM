@@ -37,6 +37,7 @@ def NLL(g_i, N_i, M_l, W_il):
     Returns:
         A(g) (np.float): Negative log-likelihood objective function.
     """
+    anp.errstate(divide='ignore')  # ignore divide by zero warnings
     term1 = -anp.sum(N_i * g_i)
     log_p_l = anp.log(M_l) - numeric.alogsumexp(g_i[:, np.newaxis] + W_il, b=N_i[:, np.newaxis], axis=0)
     term2 = -anp.sum(M_l * log_p_l)
@@ -105,6 +106,7 @@ cpdef self_consistent_solver(np.ndarray N_i, np.ndarray M_l, np.ndarray W_il,
             status (bool): Solution status.
         )
     """
+    np.errstate(divide='ignore')
     cdef float EPS = 1e-24
     cdef int S = len(N_i)
     cdef int M = len(M_l)
@@ -141,7 +143,7 @@ cpdef self_consistent_solver(np.ndarray N_i, np.ndarray M_l, np.ndarray W_il,
                 print("Self-consistent solver error = {:.2e}.".format(tol_check))
 
         if increment[np.argmax(increment)] < tol:
-            if logevery is not None:
+            if logevery > 0:
                 print("Self-consistent solver error = {:.2e}.".format(tol_check))
             status = True
             break
@@ -172,6 +174,7 @@ def compute_betaF_profile(x_it, x_l, u_i, beta, bin_style='left', solver='log-li
             status (bool): Solver status.
         )
     """
+    np.errstate(divide='ignore')
     S = len(u_i)
     M = len(x_l)
 
@@ -209,6 +212,8 @@ def compute_betaF_profile(x_it, x_l, u_i, beta, bin_style='left', solver='log-li
 
     N_i = n_il.sum(axis=1)
     M_l = n_il.sum(axis=0)
+
+    print(N_i, M_l)
 
     # Compute biased free energy profiles for each window
     betaF_il = np.zeros((S, M))
@@ -270,6 +275,6 @@ def bootstrap_betaF_profile(Nboot, x_it, x_l, u_i, beta, solver='log-likelihood'
     betaF_l = betaF_l_all_samples.mean(axis=1)
 
     # Calculate bootstrap error
-    betaF_l_berr = betaF_l_all_samples.std(axis=1) / np.sqrt(Nboot)
+    betaF_l_berr = betaF_l_all_samples.std(axis=1)
 
     return betaF_l, betaF_l_berr
