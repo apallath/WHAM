@@ -1,0 +1,524 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>WHAM package &mdash; WHAM 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="WHAM" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> WHAM
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">WHAM package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-WHAM.binless">WHAM.binless module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-WHAM.binned">WHAM.binned module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">WHAM</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>WHAM package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/WHAM/WHAM.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="wham-package">
+<h1>WHAM package<a class="headerlink" href="#wham-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-WHAM.binless">
+<span id="wham-binless-module"></span><h2>WHAM.binless module<a class="headerlink" href="#module-WHAM.binless" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>Implementation of binless WHAM (described in Shirts M., &amp; Chodera J. D. (2008)) using</dt><dd><ul class="simple">
+<li><p>Negative log-likelihood maximization, inspired from Zhu, F., &amp; Hummer, G. (2012)</p></li>
+<li><p>Self-consistent iteration.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py class">
+<dt id="WHAM.binless.Calc1D">
+<em class="property">class </em><code class="sig-prename descclassname">WHAM.binless.</code><code class="sig-name descname">Calc1D</code><a class="headerlink" href="#WHAM.binless.Calc1D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class containing methods to compute free energy profiles
+from umbrella sampling data using binless WHAM.
+Handles empty bins when computing free energy profiels by setting
+bin free energy to inf.</p>
+<p>For a complete usage example, look at tests/test_binless.py.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">calc</span> <span class="o">=</span> <span class="n">Calc1D</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">betaF_l</span><span class="p">,</span> <span class="n">g_i</span><span class="p">,</span> <span class="n">status</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">compute_betaF_profile</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="WHAM.binless.Calc1D.NLL">
+<code class="sig-name descname">NLL</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.NLL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the negative log-likelihood objective function to minimize.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g_i</strong> (<em>np.array of shape</em><em> (</em><em>S</em><em>,</em><em>)</em>) – 0, 1, 2, …, S-1.</p></li>
+<li><p><strong>x_l</strong> (<em>np.array of shape</em><em> (</em><em>Ntot</em><em>,</em><em>)</em>) – Array containing each sample.</p></li>
+<li><p><strong>N_i</strong> (<em>np.array of shape</em><em> (</em><em>S</em><em>,</em><em>)</em>) – Array of total sample counts for the windows
+0, 1, 2, …, S-1.</p></li>
+<li><p><strong>W_il</strong> (<em>np.array of shape</em><em> (</em><em>S</em><em>, </em><em>Ntot</em><em>)</em>) – Array of weights, W_il = -beta * U_i(x_l) for the windows
+0, 1, 2, …, S-1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Negative log-likelihood objective function.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>A(g) (np.float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="WHAM.binless.Calc1D.compute_betaF_profile">
+<code class="sig-name descname">compute_betaF_profile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.compute_betaF_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the binned free energy profile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_it</strong> (<em>list</em>) – Nested list of length S, x_it[i] is an array containing timeseries
+data from the i’th window.</p></li>
+<li><p><strong>x_bin</strong> (<em>list</em>) – Array of bin left-edges/centers of length M. Used only for computing final PMF.</p></li>
+<li><p><strong>u_i</strong> (<em>list</em>) – List of length S, u_i[i] is the umbrella potential function u_i(x)
+acting on the i’th window.</p></li>
+<li><p><strong>beta</strong> – beta, in inverse units to the units of u_i(x).</p></li>
+<li><p><strong>bin_style</strong> (<em>string</em>) – ‘left’ or ‘center’.</p></li>
+<li><p><strong>solver</strong> (<em>string</em>) – Solution technique to use [‘log-likelihood’, ‘self-consistent’, default=’log-likelihood’].</p></li>
+<li><p><strong>**solverkwargs</strong> – Arguments for solver.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>tuple(betaF_bin, g_i, status)</dt><dd><ul class="simple">
+<li><p>betaF_bin (np.array): Array of MBAR/consensus free energies of length M,</p></li>
+<li><p>g_i (np.array): Total window free energies,</p></li>
+<li><p>status (bool): Solver status.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="WHAM.binless.Calc1D.min_ctr">
+<code class="sig-name descname">min_ctr</code><a class="headerlink" href="#WHAM.binless.Calc1D.min_ctr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="WHAM.binless.Calc1D.minimize_NLL_solver">
+<code class="sig-name descname">minimize_NLL_solver</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.minimize_NLL_solver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes optimal g_i by minimizing the negative log-likelihood
+for jointly observing the bin counts in the indepedent windows in the dataset.</p>
+<p>Any optimization method supported by scipy.optimize can be used. L-BFGS-B is used
+by default. Gradient information required for L-BFGS-B is computed using autograd.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_l</strong> (<em>np.array of shape</em><em> (</em><em>Ntot</em><em>,</em><em>)</em>) – Array containing each sample.</p></li>
+<li><p><strong>N_i</strong> (<em>np.array of shape</em><em> (</em><em>S</em><em>,</em><em>)</em>) – Array of total sample counts for the windows
+0, 1, 2, …, S-1.</p></li>
+<li><p><strong>W_il</strong> (<em>np.array of shape</em><em> (</em><em>S</em><em>, </em><em>Ntot</em><em>)</em>) – Array of weights, W_il = -beta * U_i(x_l) for the windows
+0, 1, 2, …, S-1.</p></li>
+<li><p><strong>g_i</strong> (<em>np.array of shape</em><em> (</em><em>S</em><em>,</em><em>)</em>) – Total free energy initial guess.</p></li>
+<li><p><strong>opt_method</strong> (<em>string</em>) – Optimization algorithm to use (default: L-BFGS-B).</p></li>
+<li><p><strong>logevery</strong> (<em>int</em>) – Interval to log negative log-likelihood (default=0, i.e. no logging).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>tuple(bG_l, g_i, status)</dt><dd><ul class="simple">
+<li><p>bG_l (np.array of shape (Ntot,)): Free energy for each sample point,</p></li>
+<li><p>g_i (np.array of shape (S,)): Total free energy for each window,</p></li>
+<li><p>status (bool): Solution status.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="WHAM.binless.Calc1D.self_consistent_solver">
+<code class="sig-name descname">self_consistent_solver</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.self_consistent_solver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes optimal parameters g_i by solving the coupled MBAR equations self-consistently
+until convergence. Optimized using Cython.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_l</strong> (<em>np.array of shape</em><em> (</em><em>Ntot</em><em>,</em><em>)</em>) – Array containing each sample.</p></li>
+<li><p><strong>N_i</strong> (<em>np.array of shape</em><em> (</em><em>S</em><em>,</em><em>)</em>) – Array of total sample counts for the windows
+0, 1, 2, …, S-1.</p></li>
+<li><p><strong>W_il</strong> (<em>np.array of shape</em><em> (</em><em>S</em><em>, </em><em>Ntot</em><em>)</em>) – Array of weights, W_il = -beta * U_i(x_l) for the windows
+0, 1, 2, …, S-1.</p></li>
+<li><p><strong>g_i</strong> (<em>np.array of shape</em><em> (</em><em>S</em><em>,</em><em>)</em>) – Total free energy initial guess.</p></li>
+<li><p><strong>tol</strong> (<em>float</em>) – Relative tolerance to stop solver iterations at (defaul=1e-7).</p></li>
+<li><p><strong>maxiter</strong> (<em>int</em>) – Maximum number of iterations to run solver for (default=100000).</p></li>
+<li><p><strong>logevery</strong> (<em>int</em>) – Interval to log self-consistent solver error (default=0, i.e. no logging).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>tuple(bG_l, g_i, status)</dt><dd><ul class="simple">
+<li><p>bG_l (np.array of shape (Ntot,)): Free energy for each sample point,</p></li>
+<li><p>g_i (np.array of shape (S,)): Total free energy for each window,</p></li>
+<li><p>status (bool): Solution status.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-WHAM.binned">
+<span id="wham-binned-module"></span><h2>WHAM.binned module<a class="headerlink" href="#module-WHAM.binned" title="Permalink to this headline">¶</a></h2>
+<dl class="simple">
+<dt>Implementation of binned WHAM using</dt><dd><ul class="simple">
+<li><p>Negative log-likelihood maximization as described in Zhu, F., &amp; Hummer, G. (2012)</p></li>
+<li><p>Self-consistent iteration.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py class">
+<dt id="WHAM.binned.Calc1D">
+<em class="property">class </em><code class="sig-prename descclassname">WHAM.binned.</code><code class="sig-name descname">Calc1D</code><a class="headerlink" href="#WHAM.binned.Calc1D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class containing methods to compute free energy profiles
+from umbrella sampling data using binned WHAM. Cannot perform
+WHAM calculations if bins are empty.</p>
+<p>For a complete usage example, look at tests/test_binned.py.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">calc</span> <span class="o">=</span> <span class="n">Calc1D</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">betaF_l</span><span class="p">,</span> <span class="n">betaF_il</span><span class="p">,</span> <span class="n">g_i</span><span class="p">,</span> <span class="n">status</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">compute_betaF_profile</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt id="WHAM.binned.Calc1D.NLL">
+<code class="sig-name descname">NLL</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binned.Calc1D.NLL" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the negative log-likelihood objective function to minimize.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>g_i</strong> (<em>np.array of shape</em><em> (</em><em>S</em><em>,</em><em>)</em>) – 0, 1, 2, …, S-1.</p></li>
+<li><p><strong>N_i</strong> (<em>np.array of shape</em><em> (</em><em>S</em><em>,</em><em>)</em>) – Array of total sample counts for the windows
+0, 1, 2, …, S-1.</p></li>
+<li><p><strong>M_l</strong> (<em>np.array of shape</em><em> (</em><em>M</em><em>,</em><em>)</em>) – Array of total bin counts for each bin.</p></li>
+<li><p><strong>W_il</strong> (<em>np.array of shape</em><em> (</em><em>S</em><em>, </em><em>M</em><em>)</em>) – Array of weights, W_il = -beta * U_i(x_l) for the windows
+0, 1, 2, …, S-1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Negative log-likelihood objective function.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>A(g) (np.float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="WHAM.binned.Calc1D.compute_betaF_profile">
+<code class="sig-name descname">compute_betaF_profile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binned.Calc1D.compute_betaF_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the binned free energy profile. Raises an Exception if any of the
+bins are empty.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_it</strong> (<em>list</em>) – Nested list of length S, x_it[i] is an array containing timeseries
+data from the i’th window.</p></li>
+<li><p><strong>x_l</strong> (<em>np.array</em>) – Array of bin left-edges/centers of length M.</p></li>
+<li><p><strong>u_i</strong> (<em>list</em>) – List of length S, u_i[i] is the umbrella potential function u_i(x)
+acting on the i’th window.</p></li>
+<li><p><strong>beta</strong> – beta, in inverse units to the units of u_i(x).</p></li>
+<li><p><strong>bin_style</strong> (<em>string</em>) – ‘left’ or ‘center’.</p></li>
+<li><p><strong>solver</strong> (<em>string</em>) – Solution technique to use [‘log-likelihood’, ‘self-consistent’, ‘debug’, default=’log-likelihood’].</p></li>
+<li><p><strong>scale_stat_ineff</strong> (<em>boolean</em>) – Compute and scale bin count by statistical inefficiency (default=False).</p></li>
+<li><p><strong>**solverkwargs</strong> – Arguments for solver</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>tuple(betaF_l, betaF_il, g_i, status)</dt><dd><ul class="simple">
+<li><p>betaF_l (np.array): Array of WHAM/consensus free energies of length M,</p></li>
+<li><p>betaF_il (np.array): Array of biased free energies for each window,</p></li>
+<li><p>g_i (np.array): Total window free energies,</p></li>
+<li><p>status (bool): Solver status.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="WHAM.binned.Calc1D.min_ctr">
+<code class="sig-name descname">min_ctr</code><a class="headerlink" href="#WHAM.binned.Calc1D.min_ctr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="WHAM.binned.Calc1D.minimize_NLL_solver">
+<code class="sig-name descname">minimize_NLL_solver</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binned.Calc1D.minimize_NLL_solver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes optimal g_i by minimizing the negative log-likelihood
+for jointly observing the bin counts in the indepedent windows in the dataset.</p>
+<p>Any optimization method supported by scipy.optimize can be used. L-BFGS-B is used
+by default. Gradient information required for L-BFGS-B is computed using autograd.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N_i</strong> (<em>np.array of shape</em><em> (</em><em>S</em><em>,</em><em>)</em>) – Array of total sample counts for the windows
+0, 1, 2, …, S-1.</p></li>
+<li><p><strong>M_l</strong> (<em>np.array of shape</em><em> (</em><em>M</em><em>,</em><em>)</em>) – Array of total bin counts for each bin.</p></li>
+<li><p><strong>W_il</strong> (<em>np.array of shape</em><em> (</em><em>S</em><em>, </em><em>M</em><em>)</em>) – Array of weights, W_il = -beta * U_i(x_l) for the windows
+0, 1, 2, …, S-1.</p></li>
+<li><p><strong>g_i</strong> (<em>np.array of shape</em><em> (</em><em>S</em><em>,</em><em>)</em>) – Total free energy initial guess.</p></li>
+<li><p><strong>opt_method</strong> (<em>string</em>) – Optimization algorithm to use (default: L-BFGS-B).</p></li>
+<li><p><strong>logevery</strong> (<em>int</em>) – Interval to log negative log-likelihood (default=0, i.e. no logging).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>tuple(g_i, status)</dt><dd><ul class="simple">
+<li><p>g_i: np.array of shape(S,))</p></li>
+<li><p>status (bool): Solution status.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt id="WHAM.binned.Calc1D.self_consistent_solver">
+<code class="sig-name descname">self_consistent_solver</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binned.Calc1D.self_consistent_solver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes optimal parameters g_i by solving the coupled WHAM equations self-consistently
+until convergence. Optimized using Cython.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>N_i</strong> (<em>np.array of shape</em><em> (</em><em>S</em><em>,</em><em>)</em>) – Array of total sample counts for the windows
+0, 1, 2, …, S-1.</p></li>
+<li><p><strong>M_l</strong> (<em>np.array of shape</em><em> (</em><em>M</em><em>,</em><em>)</em>) – Array of total bin counts for each bin.</p></li>
+<li><p><strong>W_il</strong> (<em>np.array of shape</em><em> (</em><em>S</em><em>, </em><em>M</em><em>)</em>) – Array of weights, W_il = -beta * U_i(x_l) for the windows
+0, 1, 2, …, S-1.</p></li>
+<li><p><strong>g_i</strong> (<em>np.array of shape</em><em> (</em><em>S</em><em>,</em><em>)</em>) – Total free energy initial guess.</p></li>
+<li><p><strong>tol</strong> (<em>float</em>) – Relative tolerance to stop solver iterations at (defaul=1e-7).</p></li>
+<li><p><strong>maxiter</strong> (<em>int</em>) – Maximum number of iterations to run solver for (default=100000).</p></li>
+<li><p><strong>logevery</strong> (<em>int</em>) – Interval to log self-consistent solver error (default=0, i.e. no logging).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>tuple(g_i, status)</dt><dd><ul class="simple">
+<li><p>g_i (np.array of shape(S,)),</p></li>
+<li><p>status (bool): Solution status.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="../index.html" class="btn btn-neutral float-left" title="WHAM" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Akash Pallath.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

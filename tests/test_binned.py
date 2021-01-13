@@ -11,6 +11,9 @@ import matplotlib.pyplot as plt
 from WHAM.lib import potentials
 import WHAM.binned
 
+import matplotlib
+matplotlib.use('Agg')
+
 
 def get_test_data():
     # N* associated with each window
@@ -61,10 +64,30 @@ def test_binned_self_consistent():
     n_star_win, Ntw_win, bin_points, umbrella_win, beta = get_test_data()
 
     # Perform WHAM calculation
-    betaF_l, betaF_il, g_i, status = WHAM.binned.compute_betaF_profile(Ntw_win, bin_points,
-                                                                       umbrella_win, beta, bin_style='left',
-                                                                       solver='self-consistent', scale_stat_ineff=True,
-                                                                       tol=1e-7, logevery=100)  # solver kwargs
+    calc = WHAM.binned.Calc1D()
+    betaF_l, betaF_il, g_i, status = calc.compute_betaF_profile(Ntw_win, bin_points,
+                                                                umbrella_win, beta, bin_style='left',
+                                                                solver='self-consistent', scale_stat_ineff=True,
+                                                                tol=1e-7, logevery=100)  # solver kwargs
+
+    # Optimized?
+    print(status)
+
+    # Useful for debugging:
+    print("Window free energies: ", g_i)
+
+    # Save free energy
+    np.save("test_out/binned_scf_gi.npy", g_i)
+
+    print("Restarting from saved g_i's")
+
+    g_i = np.load("test_out/binned_scf_gi.npy")
+
+    # Perform WHAM calculation
+    betaF_l, betaF_il, g_i, status = calc.compute_betaF_profile(Ntw_win, bin_points,
+                                                                umbrella_win, beta, bin_style='left',
+                                                                solver='self-consistent', scale_stat_ineff=True,
+                                                                g_i=g_i, tol=1e-12, logevery=100)  # solver kwargs
 
     # Optimized?
     print(status)
@@ -74,55 +97,31 @@ def test_binned_self_consistent():
 
     betaF_l = betaF_l - betaF_l[30]  # reposition zero so that unbiased free energy is zero
 
-    # Plot consensus
+    # Plot
     fig, ax = plt.subplots(figsize=(8, 4), dpi=300)
-    ax.plot(bin_points, betaF_l, label="Self-consistent WHAM solution")
+    ax.plot(bin_points, betaF_l, 'x-', label="Self-consistent binned WHAM solution")
 
-    bin_points_ref = np.load("seanmarks_ref/bins.npy")
-    betaF_l_ref = np.load("seanmarks_ref/betaF_Ntilde.npy")
-    ax.plot(bin_points_ref, betaF_l_ref, label="seanmarks/wham (binless)")
+    bin_centers_ref = np.load("seanmarks_ref/bins.npy")
+    betaF_bin_ref = np.load("seanmarks_ref/betaF_Ntilde.npy")
+    ax.plot(bin_centers_ref, betaF_bin_ref, 'x-', label="seanmarks/wham (binless)")
+
     ax.legend()
-    plt.savefig("self_consistent.png")
+    plt.savefig("test_out/binned_self_consistent.png")
 
-    # Plot window
-    fig, ax = plt.subplots(figsize=(8, 4), dpi=300)
-    for i in range(betaF_il.shape[0]):
-        ax.plot(bin_points, betaF_il[i], label=r"$N^*$ = {}".format(n_star_win[i]))
-    ax.legend()
-    plt.savefig("self_consistent_biased.png")
-
-    # Save free energy
-    np.save("binned_scf_gi.npy", g_i)
-
-
-def test_binned_self_consistent_restart():
-    n_star_win, Ntw_win, bin_points, umbrella_win, beta = get_test_data()
-
-    print("Restarting from saved g_i's")
-
-    g_i = np.load("binned_scf_gi.npy")
-
-    # Perform WHAM calculation
-    betaF_l, betaF_il, g_i, status = WHAM.binned.compute_betaF_profile(Ntw_win, bin_points,
-                                                                       umbrella_win, beta, bin_style='left',
-                                                                       solver='self-consistent', scale_stat_ineff=True,
-                                                                       g_i=g_i, tol=1e-12, logevery=100)  # solver kwargs
-
-    # Optimized?
-    print(status)
-
-    # Useful for debugging:
-    print("Window free energies: ", g_i)
+    # benchmark against seanmarks/wham
+    assert(np.max(np.abs(betaF_l - betaF_bin_ref)) < 5)
+    assert(np.sum(np.sqrt((betaF_l - betaF_bin_ref) ** 2)) < 100)
 
 
 def test_binned_log_likelihood():
     n_star_win, Ntw_win, bin_points, umbrella_win, beta = get_test_data()
 
     # Perform WHAM calculation
-    betaF_l, betaF_il, g_i, status = WHAM.binned.compute_betaF_profile(Ntw_win, bin_points,
-                                                                       umbrella_win, beta, bin_style='left',
-                                                                       solver='log-likelihood', scale_stat_ineff=True,
-                                                                       opt_method='BFGS')  # solver kwargs
+    calc = WHAM.binned.Calc1D()
+    betaF_l, betaF_il, g_i, status = calc.compute_betaF_profile(Ntw_win, bin_points,
+                                                                umbrella_win, beta, bin_style='left',
+                                                                solver='log-likelihood', scale_stat_ineff=True,
+                                                                logevery=1)  # solver kwargs
 
     # Optimized?
     print(status)
@@ -134,20 +133,24 @@ def test_binned_log_likelihood():
 
     # Plot consensus
     fig, ax = plt.subplots(figsize=(8, 4), dpi=300)
-    ax.plot(bin_points, betaF_l, label="Log-likelihood WHAM solution")
+    ax.plot(bin_points, betaF_l, 'x-', label="Log-likelihood binned WHAM solution")
 
     bin_points_ref = np.load("seanmarks_ref/bins.npy")
-    betaF_l_ref = np.load("seanmarks_ref/betaF_Ntilde.npy")
-    ax.plot(bin_points_ref, betaF_l_ref, label="seanmarks/wham (binless)")
+    betaF_bin_ref = np.load("seanmarks_ref/betaF_Ntilde.npy")
+    ax.plot(bin_points_ref, betaF_bin_ref, 'x-', label="seanmarks/wham (binless)")
     ax.legend()
-    plt.savefig("log_likelihood.png")
+    plt.savefig("test_out/binned_log_likelihood.png")
+
+    # benchmark against seanmarks/wham
+    assert(np.max(np.abs(betaF_l - betaF_bin_ref)) < 5)
+    assert(np.sum(np.sqrt((betaF_l - betaF_bin_ref) ** 2)) < 100)
 
     # Plot window
     fig, ax = plt.subplots(figsize=(8, 4), dpi=300)
     for i in range(betaF_il.shape[0]):
         ax.plot(bin_points, betaF_il[i], label=r"$N^*$ = {}".format(n_star_win[i]))
     ax.legend()
-    plt.savefig("log_likelihood_biased.png")
+    plt.savefig("test_out/biased.png")
 
 
 if __name__ == "__main__":

@@ -13,15 +13,37 @@ Optimized python code for constructing free energy profiles from umbrella sampli
 [![Python](https://img.shields.io/github/languages/top/apallath/WHAM)](https://www.python.org/downloads/release/python-370/)
 [![Google Python Style](https://img.shields.io/badge/Code%20Style-Google%20Python%20Style-brightgreen)](https://google.github.io/styleguide/pyguide.html)
 
-## Binned formulation
+## Details
+
+### Binned formulation (`WHAM.binned`)
 - Implemented using self-consistent iteration (baseline/debugging)
 - Implemented using log-likelihood maximization for superlinear convergence
 
-## Binless formulation (MBAR) (preferred)
+### Binless formulation/MBAR (`WHAM.binless`) [preferred]
 - Implemented using self-consistent iteration (baseline/debugging)
 - Implemented using log-likelihood maximization for superlinear convergence
 
 Both log-likelihood maximization approaches can use multiple nonlinear optimization algorithms. Read the documentation to see which algorithms are available.
+
+## Installation
+
+1. Install requirements
+
+```sh
+pip install -r requirements.txt
+```
+
+2. Build C extensions
+
+```sh
+python setup.py build_ext --inplace
+```
+
+2. Install package
+
+```sh
+pip install .
+```
 
 ## Tests
 Integration tests are in the directory `tests/` and unit tests are in the directory `tests/tests_unit`. To run all tests at once, navigate to the directory `tests/` and run
