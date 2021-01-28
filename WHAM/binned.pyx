@@ -9,6 +9,9 @@ import WHAM.lib.potentials
 import WHAM.lib.timeseries
 from WHAM.lib import numeric
 
+# from pymbar.timeseries import statisticalInefficiency
+from WHAM.lib.timeseries import statisticalInefficiency
+
 import pymbar.timeseries
 
 import scipy.optimize
@@ -21,6 +24,7 @@ from autograd import value_and_grad
 
 # Cython optimization for self-consistent iteration
 cimport numpy as np
+from libcpp cimport bool
 
 from functools import partial
 
@@ -32,16 +36,29 @@ cdef class Calc1D:
 
     For a complete usage example, look at tests/test_binned.py.
 
+    Attributes:
+        x_l (ndarray): 1-dimensional array of bin left-edges/centers
+        betaF_l (ndarray): 1-dimensional array of size M (=no of bins) containing
+            computed consensus free energy profile
+        g_i (ndarray): 1-dimensional array of size N (=no of windows) containing
+            free energies for each window
+
     Example:
         >>> calc = Calc1D()
-        >>> betaF_l, betaF_il, g_i, status = calc.compute_betaF_profile(...)
+        >>> status = calc.compute_betaF_profile(...)
+        >>> status
+        True
+        >>> betaF_l = calc.betaF_l
+        >>> g_i = calc.g_i
     """
 
     # Counter for log-likelihood minimizer
-    cdef public int min_ctr
+    cdef int _min_ctr
 
-    def __cinit__(self):
-        self.min_ctr = 1
+    # Output arrays
+    cdef public np.ndarray x_l
+    cdef public np.ndarray betaF_l
+    cdef public np.ndarray g_i
 
     def NLL(self, g_i, N_i, M_l, W_il):
         """Computes the negative log-likelihood objective function to minimize.
@@ -69,9 +86,9 @@ cdef class Calc1D:
         return A
 
     def _min_callback(self, g_i, args, logevery=0):
-        if self.min_ctr % logevery == 0:
-            print("{:10d} {:.5f}".format(self.min_ctr, self.NLL(g_i, *args)))
-        self.min_ctr += 1
+        if self._min_ctr % logevery == 0:
+            print("{:10d} {:.5f}".format(self._min_ctr, self.NLL(g_i, *args)))
+        self._min_ctr += 1
 
     cpdef minimize_NLL_solver(self, N_i, M_l, W_il, g_i=None, opt_method='L-BFGS-B', logevery=0):
         """Computes optimal g_i by minimizing the negative log-likelihood
@@ -100,7 +117,7 @@ cdef class Calc1D:
 
         # Optimize
         print("      Iter NLL")
-        self.min_ctr = 0
+        self._min_ctr = 0
         res = scipy.optimize.minimize(value_and_grad(self.NLL), g_i, jac=True,
                                       args=(N_i, M_l, W_il),
                                       method=opt_method,
@@ -178,9 +195,12 @@ cdef class Calc1D:
 
         return g_i, status
 
+    ###############################
+    # Main computation call       #
+    ###############################
     def compute_betaF_profile(self, x_it, x_l, u_i, beta, bin_style='left', solver='log-likelihood', scale_stat_ineff=False, **solverkwargs):
-        """Computes the binned free energy profile. Raises an Exception if any of the
-        bins are empty.
+        """Computes the binned free energy profile and window total free energies.
+        Raises an Exception if any of the bins are empty.
 
         Args:
             x_it (list): Nested list of length S, x_it[i] is an array containing timeseries
@@ -195,13 +215,11 @@ cdef class Calc1D:
             **solverkwargs: Arguments for solver
 
         Returns:
-            tuple(betaF_l, betaF_il, g_i, status)
-                - betaF_l (np.array): Array of WHAM/consensus free energies of length M,
-                - betaF_il (np.array): Array of biased free energies for each window,
-                - g_i (np.array): Total window free energies,
-                - status (bool): Solver status.
+            status (bool): Solver status.
         """
         np.errstate(divide='ignore')
+
+        self.x_l = x_l
 
         S = len(u_i)
         M = len(x_l)
@@ -226,11 +244,10 @@ cdef class Calc1D:
         delta_x_l = bin_edges[1:] - bin_edges[:-1]
 
         # Compute statistical inefficiencies if required, else set as 1 (=> no scaling)
-        # For now, use pymbar instead of WHAM.lib.timeseries function
         stat_ineff = np.ones(S)
         if scale_stat_ineff:
             for i in range(S):
-                stat_ineff[i] = pymbar.timeseries.statisticalInefficiency(x_it[i], fft=True)
+                stat_ineff[i] = statisticalInefficiency(x_it[i], fft=True)
 
         # Bin x_it
         n_il = np.zeros((S, M))
@@ -244,12 +261,6 @@ cdef class Calc1D:
         # Raise exception if any of the bins have no data points
         if np.any(M_l == 0):
              raise Exception("Some bins are empty. Check for no-overlap regions or adjust binning so that no bins remain empty.")
-
-        # Compute biased free energy profiles for each window
-        betaF_il = np.zeros((S, M))
-        for i in range(S):
-            p_il = n_il[i, :] / N_i[i]
-            betaF_il[i, :] = -np.log(p_il / delta_x_l)
 
         # Compute weights
         W_il = np.zeros((S, M))
@@ -267,4 +278,7 @@ cdef class Calc1D:
         # Compute consensus/WHAM free energy profile
         betaF_l = np.log(delta_x_l) + numeric.clogsumexp(g_i[:, np.newaxis] + W_il, b=N_i[:, np.newaxis], axis=0) - np.log(M_l)
 
-        return betaF_l, betaF_il, g_i, status
+        self.betaF_l = betaF_l
+        self.g_i = g_i
+
+        return status

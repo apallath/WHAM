@@ -2,6 +2,8 @@
 
 Optimized python code for constructing free energy profiles from umbrella sampling simulation data.
 
+Link to [documentation](https://apallath.github.io/WHAM).
+
 ## Status
 
 [![Actions Status](https://img.shields.io/github/workflow/status/apallath/WHAM/build_test_WHAM)](https://github.com/apallath/WHAM/actions)
@@ -24,6 +26,8 @@ Optimized python code for constructing free energy profiles from umbrella sampli
 - Implemented using log-likelihood maximization for superlinear convergence
 
 Both log-likelihood maximization approaches can use multiple nonlinear optimization algorithms. Read the documentation to see which algorithms are available.
+
+Binless WHAM supports reweighting and binning 2D free energy profiles given a related (unbiased) order parameter.
 
 ## Installation
 

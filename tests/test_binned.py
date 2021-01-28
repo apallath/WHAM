@@ -65,10 +65,12 @@ def test_binned_self_consistent():
 
     # Perform WHAM calculation
     calc = WHAM.binned.Calc1D()
-    betaF_l, betaF_il, g_i, status = calc.compute_betaF_profile(Ntw_win, bin_points,
-                                                                umbrella_win, beta, bin_style='left',
-                                                                solver='self-consistent', scale_stat_ineff=True,
-                                                                tol=1e-7, logevery=100)  # solver kwargs
+    status = calc.compute_betaF_profile(Ntw_win, bin_points,
+                                        umbrella_win, beta, bin_style='left',
+                                        solver='self-consistent', scale_stat_ineff=True,
+                                        tol=1e-7, logevery=100)  # solver kwargs
+    betaF_l = calc.betaF_l
+    g_i = calc.g_i
 
     # Optimized?
     print(status)
@@ -84,11 +86,13 @@ def test_binned_self_consistent():
     g_i = np.load("test_out/binned_scf_gi.npy")
 
     # Perform WHAM calculation
-    betaF_l, betaF_il, g_i, status = calc.compute_betaF_profile(Ntw_win, bin_points,
-                                                                umbrella_win, beta, bin_style='left',
-                                                                solver='self-consistent', scale_stat_ineff=True,
-                                                                g_i=g_i, tol=1e-12, logevery=100)  # solver kwargs
-
+    status = calc.compute_betaF_profile(Ntw_win, bin_points,
+                                        umbrella_win, beta, bin_style='left',
+                                        solver='self-consistent', scale_stat_ineff=True,
+                                        g_i=g_i, tol=1e-12, logevery=100)  # solver kwargs
+    betaF_l = calc.betaF_l
+    g_i = calc.g_i
+    
     # Optimized?
     print(status)
 
@@ -118,10 +122,12 @@ def test_binned_log_likelihood():
 
     # Perform WHAM calculation
     calc = WHAM.binned.Calc1D()
-    betaF_l, betaF_il, g_i, status = calc.compute_betaF_profile(Ntw_win, bin_points,
-                                                                umbrella_win, beta, bin_style='left',
-                                                                solver='log-likelihood', scale_stat_ineff=True,
-                                                                logevery=1)  # solver kwargs
+    status = calc.compute_betaF_profile(Ntw_win, bin_points,
+                                        umbrella_win, beta, bin_style='left',
+                                        solver='log-likelihood', scale_stat_ineff=True,
+                                        logevery=1)  # solver kwargs
+    betaF_l = calc.betaF_l
+    g_i = calc.g_i
 
     # Optimized?
     print(status)
@@ -144,13 +150,6 @@ def test_binned_log_likelihood():
     # benchmark against seanmarks/wham
     assert(np.max(np.abs(betaF_l - betaF_bin_ref)) < 5)
     assert(np.sum(np.sqrt((betaF_l - betaF_bin_ref) ** 2)) < 100)
-
-    # Plot window
-    fig, ax = plt.subplots(figsize=(8, 4), dpi=300)
-    for i in range(betaF_il.shape[0]):
-        ax.plot(bin_points, betaF_il[i], label=r"$N^*$ = {}".format(n_star_win[i]))
-    ax.legend()
-    plt.savefig("test_out/biased.png")
 
 
 if __name__ == "__main__":

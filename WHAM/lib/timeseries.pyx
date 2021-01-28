@@ -3,9 +3,9 @@ import numpy as np
 from statsmodels.tsa import stattools
 
 
-def statistical_inefficiency(x):
+def statisticalInefficiency(x, fft=True):
     """Computes the statistical inefficiency of x."""
-    acf = stattools.acf(x, nlags=len(x), fft=True)
+    acf = stattools.acf(x, nlags=len(x), fft=fft)
     acf_cross_point = np.argmax(acf < 0) - 1
 
     t = np.array(range(len(x[:acf_cross_point])))
@@ -21,6 +21,6 @@ def bootstrap_independent_sample(x, g=None):
     x. If the statistical inefficiency g is not passed as a parameter,
     it will be calculated first."""
     if g is None:
-        g = statistical_inefficiency(x)
+        g = statisticalInefficiency(x)
 
     return np.random.choice(x, size=int(len(x) / g))

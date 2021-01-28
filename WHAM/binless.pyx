@@ -9,8 +9,6 @@ import WHAM.lib.potentials
 import WHAM.lib.timeseries
 from WHAM.lib import numeric
 
-import pymbar.timeseries
-
 import scipy.optimize
 
 from tqdm import tqdm
@@ -28,30 +26,61 @@ from functools import partial
 cdef class Calc1D:
     """Class containing methods to compute free energy profiles
     from umbrella sampling data using binless WHAM.
-    Handles empty bins when computing free energy profiels by setting
+    Handles empty bins when computing free energy profiles by setting
     bin free energy to inf.
+
+    Contains several features which are not part of binned WHAM, such as:
+        - Reweighting
+        - Binning 2D free energy profile given a related (unbiased) order
+          parameter
+
+    Note that usage patterns for this module differ from binned WHAM.
 
     For a complete usage example, look at tests/test_binless.py.
 
+    Attributes:
+        x_l (ndarray): 1-dimensional array containing unrolled order parameter
+            which is being biased.
+        G_l (ndarray): 1-dimensional array containing weights corresponding to
+            each (unrolled) order parameter.
+        g_i (ndarray): 1-dimensional array of size N (=no of windows) containing
+            free energies for each window
+
     Example:
         >>> calc = Calc1D()
-        >>> betaF_l, g_i, status = calc.compute_betaF_profile(...)
+        >>> status = calc.compute_point_weights(x_l, ...)
+        >>> status
+        True
+        >>> G_l = calc.G_l
+        >>> g_i = calc.g_i
+        >>> betaF_x = calc.bin_betaF_profile(x_l, G_l, x_bin, ...)
+        >>> betaF_xy = calc.bin_2D_betaF_profile(x_l, y_l, G_l, x_bin, y_bin, ...)
     """
 
     # Counter for log-likelihood minimizer
-    cdef public int min_ctr
+    cdef int _min_ctr
 
+    # Output arrays
+    cdef public np.ndarray x_l
+    cdef public np.ndarray G_l
+    cdef public np.ndarray g_i
+
+    def __cinit__(self):
+        self._min_ctr = 0
+        self.x_l = None
+        self.G_l = None
+        self.g_i = None
 
     def NLL(self, g_i, x_l, N_i, W_il):
         """Computes the negative log-likelihood objective function to minimize.
 
         Args:
-            g_i (np.array of shape (S,)) Array of total free energies associated with the windows
+            g_i (ndarray of shape (S,)) Array of total free energies associated with the windows
                 0, 1, 2, ..., S-1.
-            x_l (np.array of shape (Ntot,)): Array containing each sample.
-            N_i (np.array of shape (S,)): Array of total sample counts for the windows
+            x_l (ndarray of shape (Ntot,)): Array containing each sample.
+            N_i (ndarray of shape (S,)): Array of total sample counts for the windows
                 0, 1, 2, ..., S-1.
-            W_il (np.array of shape (S, Ntot)): Array of weights, W_il = -beta * U_i(x_l) for the windows
+            W_il (ndarray of shape (S, Ntot)): Array of weights, W_il = -beta * U_i(x_l) for the windows
                 0, 1, 2, ..., S-1.
 
         Returns:
@@ -67,9 +96,9 @@ cdef class Calc1D:
             return A
 
     def _min_callback(self, g_i, args, logevery=0):
-        if self.min_ctr % logevery == 0:
-            print("{:10d} {:.5f}".format(self.min_ctr, self.NLL(g_i, *args)))
-        self.min_ctr += 1
+        if self._min_ctr % logevery == 0:
+            print("{:10d} {:.5f}".format(self._min_ctr, self.NLL(g_i, *args)))
+        self._min_ctr += 1
 
     def minimize_NLL_solver(self, x_l, N_i, W_il, g_i=None, opt_method='L-BFGS-B', logevery=0):
         """Computes optimal g_i by minimizing the negative log-likelihood
@@ -79,19 +108,19 @@ cdef class Calc1D:
         by default. Gradient information required for L-BFGS-B is computed using autograd.
 
         Args:
-            x_l (np.array of shape (Ntot,)): Array containing each sample.
-            N_i (np.array of shape (S,)): Array of total sample counts for the windows
+            x_l (ndarray of shape (Ntot,)): Array containing each sample.
+            N_i (ndarray of shape (S,)): Array of total sample counts for the windows
                 0, 1, 2, ..., S-1.
-            W_il (np.array of shape (S, Ntot)): Array of weights, W_il = -beta * U_i(x_l) for the windows
+            W_il (ndarray of shape (S, Ntot)): Array of weights, W_il = -beta * U_i(x_l) for the windows
                 0, 1, 2, ..., S-1.
-            g_i (np.array of shape (S,)): Total free energy initial guess.
+            g_i (ndarray of shape (S,)): Total free energy initial guess.
             opt_method (string): Optimization algorithm to use (default: L-BFGS-B).
             logevery (int): Interval to log negative log-likelihood (default=0, i.e. no logging).
 
         Returns:
             tuple(bG_l, g_i, status)
-                - bG_l (np.array of shape (Ntot,)): Free energy for each sample point,
-                - g_i (np.array of shape (S,)): Total free energy for each window,
+                - bG_l (ndarray of shape (Ntot,)): Free energy for each sample point,
+                - g_i (ndarray of shape (S,)): Total free energy for each window,
                 - status (bool): Solution status.
         """
         if g_i is None:
@@ -99,7 +128,7 @@ cdef class Calc1D:
 
         # Optimize
         print("      Iter NLL")
-        self.min_ctr = 0
+        self._min_ctr = 0
         res = scipy.optimize.minimize(value_and_grad(self.NLL), g_i, jac=True,
                                       args=(x_l, N_i, W_il),
                                       method=opt_method,
@@ -119,20 +148,20 @@ cdef class Calc1D:
         until convergence. Optimized using Cython.
 
         Args:
-            x_l (np.array of shape (Ntot,)): Array containing each sample.
-            N_i (np.array of shape (S,)): Array of total sample counts for the windows
+            x_l (ndarray of shape (Ntot,)): Array containing each sample.
+            N_i (ndarray of shape (S,)): Array of total sample counts for the windows
                 0, 1, 2, ..., S-1.
-            W_il (np.array of shape (S, Ntot)): Array of weights, W_il = -beta * U_i(x_l) for the windows
+            W_il (ndarray of shape (S, Ntot)): Array of weights, W_il = -beta * U_i(x_l) for the windows
                 0, 1, 2, ..., S-1.
-            g_i (np.array of shape (S,)): Total free energy initial guess.
+            g_i (ndarray of shape (S,)): Total free energy initial guess.
             tol (float): Relative tolerance to stop solver iterations at (defaul=1e-7).
             maxiter (int): Maximum number of iterations to run solver for (default=100000).
             logevery (int): Interval to log self-consistent solver error (default=0, i.e. no logging).
 
         Returns:
             tuple(bG_l, g_i, status)
-                - bG_l (np.array of shape (Ntot,)): Free energy for each sample point,
-                - g_i (np.array of shape (S,)): Total free energy for each window,
+                - bG_l (ndarray of shape (Ntot,)): Free energy for each sample point,
+                - g_i (ndarray of shape (S,)): Total free energy for each window,
                 - status (bool): Solution status.
         """
         cdef float EPS = 1e-24
@@ -179,27 +208,106 @@ cdef class Calc1D:
 
         return G_l, g_i, status
 
-    def compute_betaF_profile(self, x_it, x_bin, u_i, beta, bin_style='left', solver='log-likelihood', **solverkwargs):
-        """Computes the binned free energy profile.
+    ###############################
+    # Main computation call       #
+    ###############################
+    def compute_point_weights(self, x_l, N_i, u_i, beta, solver='log-likelihood', **solverkwargs):
+        """Computes WHAM weights corresponding to each order parameter sample
+        and total window free energies. This is the main computation call
+        for the Calc1D class.
 
         Args:
-            x_it (list): Nested list of length S, x_it[i] is an array containing timeseries
-                data from the i'th window.
-            x_bin (list): Array of bin left-edges/centers of length M. Used only for computing final PMF.
+            x_l (ndarray): Array containing each sample (unrolled).
+            N_i (ndarray): Counts for each window.
             u_i (list): List of length S, u_i[i] is the umbrella potential function u_i(x)
                 acting on the i'th window.
             beta: beta, in inverse units to the units of u_i(x).
-            bin_style (string): 'left' or 'center'.
             solver (string): Solution technique to use ['log-likelihood', 'self-consistent', default='log-likelihood'].
             **solverkwargs: Arguments for solver.
+        """
+        self.x_l = x_l
+
+        S = len(u_i)
+        Ntot = len(x_l)
+
+        # Compute weights for each data point
+        W_il = np.zeros((S, Ntot))
+        for i in range(S):
+            W_il[i, :] = -beta * u_i[i](x_l)
+
+        # Get free energy profile through binless WHAM/MBAR
+        if solver == 'log-likelihood':
+            G_l, g_i, status = self.minimize_NLL_solver(x_l, N_i, W_il, **solverkwargs)
+        elif solver == 'self-consistent':
+            G_l, g_i, status = self.self_consistent_solver(x_l, N_i, W_il, **solverkwargs)
+        else:
+            raise ValueError("Requested solution technique not a recognized option.")
+
+        self.G_l = G_l
+        self.g_i = g_i
+
+        return status
+
+    ###############################
+    # Checks                      #
+    ###############################
+    def check_data(self):
+        """Verifies that x_l is not None, else raises RuntimeError"""
+        if self.x_l is None:
+            raise RuntimeError("Data points not available.")
+
+    def check_weights(self):
+        """Verifies that g_i and G_l are not None, else raises RuntimeError"""
+        if self.g_i is None:
+            raise RuntimeError("Window free energies not available.")
+        if self.G_l is None:
+            raise RuntimeError("Point weights not available.")
+
+    ###############################
+    # Post processing             #
+    ###############################
+    def reweight(self, beta, u_bias):
+        """Reweights sample weights to a biased ensemble. Does not change computed
+        WHAM weights.
+
+        This is a post-processing calculation, and needs to be performed after
+        computing weights through `compute_point_weights`.
+
+        Args:
+            u_bias: Biasing function applied to order parameter x_l
 
         Returns:
-            tuple(betaF_bin, g_i, status)
-                - betaF_bin (np.array): Array of MBAR/consensus free energies of length M,
-                - g_i (np.array): Total window free energies,
-                - status (bool): Solver status.
+            G_l_bias (ndarray): Biased weights for each data point x_l
         """
-        S = len(u_i)
+        self.check_data()
+        self.check_weights()
+
+        G_l_bias = self.G_l + beta * u_bias(self.x_l)
+        return G_l_bias
+
+    def bin_betaF_profile(self, x_bin, G_l=None, bin_style='left'):
+        """Bins weights corresponding to each sample into a 1D free energy
+        profile. If weights are not passed as an argument, then computed WHAM weights are
+        used for binning. Passing weights allows for computing reweighted
+        free energy profiles.
+
+        This calculation requires that the order parameter samples [self.x_l] (which the
+        weights correspond to) are available.
+
+        Args:
+            x_bin (list): Array of bin left-edges/centers of length M. Used only for computing final PMF.
+            G_l (ndarray): Array of weights corresponding to each data point/order parameter x_l.
+            bin_style (string): 'left' or 'center'.
+
+        Returns:
+            betaF_bin (ndarray): Free energy profile, binned as per x_bin.
+        """
+        self.check_data()
+        x_l = self.x_l
+        if G_l is None:
+            self.check_weights()
+            G_l = self.G_l
+
         M = len(x_bin)
 
         # Compute bin edges
@@ -221,28 +329,6 @@ cdef class Calc1D:
 
         delta_x_bin = bin_edges[1:] - bin_edges[:-1]
 
-        # Combine x_it into x_l, where each data point is its own bin
-        x_l = x_it[0]
-        for i in range(1, S):
-            x_l = np.hstack((x_l, x_it[i]))
-        Ntot = len(x_l)
-
-        # Compute window counts
-        N_i = np.array([len(arr) for arr in x_it])
-
-        # Compute weights for each data point
-        W_il = np.zeros((S, Ntot))
-        for i in range(S):
-            W_il[i, :] = -beta * u_i[i](x_l)
-
-        # Get free energy profile through binless WHAM/MBAR
-        if solver == 'log-likelihood':
-            G_l, g_i, status = self.minimize_NLL_solver(x_l, N_i, W_il, **solverkwargs)
-        elif solver == 'self-consistent':
-            G_l, g_i, status = self.self_consistent_solver(x_l, N_i, W_il, **solverkwargs)
-        else:
-            raise ValueError("Requested solution technique not a recognized option.")
-
         # Construct consensus free energy profiles by constructing weighted histogram
         # using individual point weights G_l obtained from solver
         betaF_bin = np.zeros(M)
@@ -255,4 +341,45 @@ cdef class Calc1D:
             else:
                 betaF_bin[b - 1] = np.inf
 
-        return betaF_bin, g_i, status
+        return betaF_bin
+
+    def bin_2D_betaF_profile(self, y_l, x_bin, y_bin, G_l=None, x_bin_style='left', y_bin_style='left'):
+        self.check_data()
+        if G_l is None:
+            self.check_weights()
+            G_l = self.G_l
+        #TODO: Implement
+
+    ###############################
+    # Alternate API call          #
+    ###############################
+    def compute_betaF_profile(self, x_it, x_bin, u_i, beta, bin_style='left', solver='log-likelihood', **solverkwargs):
+        """Computes the binned free energy profile and window total free energies.
+
+        Args:
+            x_it (list): Nested list of length S, x_it[i] is an array containing timeseries
+                data from the i'th window.
+            x_bin (list): Array of bin left-edges/centers of length M. Used only for computing final PMF.
+            u_i (list): List of length S, u_i[i] is the umbrella potential function u_i(x)
+                acting on the i'th window.
+            beta: beta, in inverse units to the units of u_i(x).
+            bin_style (string): 'left' or 'center'.
+            solver (string): Solution technique to use ['log-likelihood', 'self-consistent', default='log-likelihood'].
+            **solverkwargs: Arguments for solver.
+
+        Returns:
+            betaF_bin (ndarray): Free energy profile, binned as per x_bin.
+            status (bool): Solver status.
+        """
+        # Unroll x_it into a single array
+        x_l = x_it[0]
+        for i in range(1, len(x_it)):
+            x_l = np.hstack((x_l, x_it[i]))
+
+        # Compute window counts
+        N_i = np.array([len(arr) for arr in x_it])
+
+        status = self.compute_point_weights(x_l, N_i, u_i, beta, solver=solver, **solverkwargs)
+        betaF_bin = self.bin_betaF_profile(x_bin, bin_style='left')
+
+        return betaF_bin, status
