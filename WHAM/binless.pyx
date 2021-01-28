@@ -266,7 +266,7 @@ cdef class Calc1D:
     ###############################
     # Post processing             #
     ###############################
-    def reweight(self, beta, u_bias):
+    def reweight(self, beta, u_bias, g_i_bias=0):
         """Reweights sample weights to a biased ensemble. Does not change computed
         WHAM weights.
 
@@ -274,15 +274,19 @@ cdef class Calc1D:
         computing weights through `compute_point_weights`.
 
         Args:
-            u_bias: Biasing function applied to order parameter x_l
+            beta: beta: beta, in inverse units to the units of u_i(x).
+            u_bias: Biasing function applied to order parameter x_l.
+            g_i_bias: Total window free energy for window corresponding to biasing
+                function. This determines how much to shift free energy profile down to match
+                window. Default = 0, which means no shifting.
 
         Returns:
-            G_l_bias (ndarray): Biased weights for each data point x_l
+            G_l_bias (ndarray): Biased weights for each data point x_l.
         """
         self.check_data()
         self.check_weights()
 
-        G_l_bias = self.G_l + beta * u_bias(self.x_l)
+        G_l_bias = self.G_l + beta * u_bias(self.x_l) - g_i_bias
         return G_l_bias
 
     def bin_betaF_profile(self, x_bin, G_l=None, bin_style='left'):
@@ -344,11 +348,121 @@ cdef class Calc1D:
         return betaF_bin
 
     def bin_2D_betaF_profile(self, y_l, x_bin, y_bin, G_l=None, x_bin_style='left', y_bin_style='left'):
+        """Bins weights corresponding to each sample into a 2D free energy
+        profile, given a related order parameter y_l.
+        If weights are not passed as an argument, then computed WHAM weights are
+        used for binning. Passing weights allows for computing reweighted
+        free energy profiles.
+
+        This calculation requires that the order parameter samples [self.x_l] (which the
+        weights correspond to) are available.
+
+        Args:
+            y_l (ndarray): Second dimension order parameter values.
+            x_bin (list): Array of x-bin left-edges/centers of length M_x.
+            y_bin (list): Array of y-bin left-edges/centers of length M_y.
+            G_l (ndarray): Array of weights corresponding to each data point/order parameter x_l.
+            x_bin_style (string): 'left' or 'center'.
+            y_bin_style (string): 'left' or 'center'.
+
+        Returns:
+            betaF_bin (ndarray): 2-D free energy profile of shape (M_x, M_y),
+                binned as per x_bin (1st dim) and y-bin (2nd dim).
+        """
         self.check_data()
+        x_l = self.x_l
         if G_l is None:
             self.check_weights()
             G_l = self.G_l
-        #TODO: Implement
+
+        M_x = len(x_bin)
+        M_y = len(y_bin)
+
+        # Compute x-bin edges
+        x_bin_edges = np.zeros(M_x + 1)
+
+        if x_bin_style == 'left':
+            x_bin_edges[:-1] = x_bin
+            # add an artificial edge after the last center
+            x_bin_edges[-1] = x_bin[-1] + (x_bin[-1] - x_bin[-2])
+        elif x_bin_style == 'center':
+            # add an artificial edge before the first center
+            x_bin_edges[0] = x_bin[0] - (x_bin[1] - x_bin[0]) / 2
+            # add an artificial edge after the last center
+            x_bin_edges[-1] = x_bin[-1] + (x_bin[-1] - x_bin[-2]) / 2
+            # bin edges are at the midpoints of bin centers
+            x_bin_edges[1:-1] = (x_bin[1:] + x_bin[:-1]) / 2
+        else:
+            raise ValueError('x-bin style not recognized.')
+
+        delta_x_bin = x_bin_edges[1:] - x_bin_edges[:-1]
+
+        # Compute y-bin edges
+        y_bin_edges = np.zeros(M_y + 1)
+
+        if y_bin_style == 'left':
+            y_bin_edges[:-1] = y_bin
+            # add an artificial edge after the last center
+            y_bin_edges[-1] = y_bin[-1] + (y_bin[-1] - y_bin[-2])
+        elif y_bin_style == 'center':
+            # add an artificial edge before the first center
+            y_bin_edges[0] = y_bin[0] - (y_bin[1] - y_bin[0]) / 2
+            # add an artificial edge after the last center
+            y_bin_edges[-1] = y_bin[-1] + (y_bin[-1] - y_bin[-2]) / 2
+            # bin edges are at the midpoints of bin centers
+            y_bin_edges[1:-1] = (y_bin[1:] + y_bin[:-1]) / 2
+        else:
+            raise ValueError('y-bin style not recognized.')
+
+        delta_y_bin = y_bin_edges[1:] - y_bin_edges[:-1]
+
+        # Construct consensus free energy profiles by constructing weighted histogram
+        # using individual point weights G_l obtained from solver
+        betaF_bin = np.zeros((M_x, M_y))
+
+        for b_x in range(1, M_x + 1):
+            for b_y in range(1, M_y + 1):
+                sel_mask = np.logical_and.reduce((x_l >= x_bin_edges[b_x - 1],
+                                                  x_l < x_bin_edges[b_x],
+                                                  y_l >= y_bin_edges[b_y - 1],
+                                                  y_l < y_bin_edges[b_y]))
+
+                if np.any(sel_mask != False):
+                    G_l_bin = G_l[sel_mask]
+                    betaF_bin[b_x - 1, b_y - 1] = np.log(delta_x_bin[b_x - 1]) + np.log(delta_y_bin[b_y - 1]) - numeric.clogsumexp(-G_l_bin)
+                else:
+                    betaF_bin[b_x - 1, b_y - 1] = np.inf
+
+        return betaF_bin, (delta_x_bin, delta_y_bin)
+
+    def bin_second_betaF_profile(self, y_l, x_bin, y_bin, G_l=None, x_bin_style='left', y_bin_style='left'):
+        """Bins weights corresponding to each sample into a 2D free energy
+        profile of x_l related order parameter y_l, then integrates out x_l
+        to get a free energy profile in terms of y_l.
+        If weights are not passed as an argument, then computed WHAM weights are
+        used for binning. Passing weights allows for computing reweighted
+        free energy profiles.
+
+        This calculation requires that the order parameter samples [self.x_l] (which the
+        weights correspond to) are available.
+
+        Args:
+            y_l (ndarray): Second dimension order parameter values.
+            x_bin (list): Array of x-bin left-edges/centers of length M_x.
+            y_bin (list): Array of y-bin left-edges/centers of length M_y.
+            G_l (ndarray): Array of weights corresponding to each data point/order parameter x_l.
+            x_bin_style (string): 'left' or 'center'.
+            y_bin_style (string): 'left' or 'center'.
+
+        Returns:
+            betaF_y (ndarray): Free energy profile of length M_y,
+                binned as per y-bin (2nd dim).
+        """
+        betaF_xy, (delta_x_bin, delta_y_bin) = self.bin_2D_betaF_profile(y_l, x_bin, y_bin, G_l=G_l, x_bin_style=x_bin_style, y_bin_style=y_bin_style)
+        betaF_xy = np.nan_to_num(betaF_xy)
+        print(betaF_xy)
+        betaF_y = -numeric.clogsumexp(-betaF_xy, b=delta_x_bin[np.newaxis, :] ** 2, axis=0)
+        return betaF_y
 
     ###############################
     # Alternate API call          #

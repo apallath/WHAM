@@ -16,6 +16,7 @@ with open(file) as f:
 
 fig, ax = plt.subplots(figsize=(8, 4), dpi=300)
 ax.errorbar(N, betaF, yerr=betaFerr, capsize=3, label="$N_v$")
+np.save("betaF_N.npy", betaF)
 
 # Plot beta F_Ntilde seanmarks
 file = "F_Ntilde_WHAM.out"
@@ -59,3 +60,21 @@ for i in range(betaF.shape[0]):
 ax.set_xlabel(r"Probe waters, $N$")
 ax.set_ylabel(r"$\beta F$")
 fig.savefig("free_energy_profile_biased.png")
+
+# Plot beta F_Ntilde_N seanmarks
+file = "F_Ntilde_N_WHAM.out"
+betaF = []
+with open(file) as f:
+    for line in f:
+        if line.strip()[0] != "#":
+            vals = line.strip().split()
+            betaF.append([float(val) for val in vals])
+
+betaF = np.array(betaF)
+print(betaF.shape)
+
+fig, ax = plt.subplots(figsize=(8, 4), dpi=300)
+ax.imshow(betaF)
+fig.savefig("2D_free_energy_profile.png")
+
+np.save("2D_profile.npy", betaF)
