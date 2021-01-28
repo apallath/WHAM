@@ -1,0 +1,311 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>WHAM.lib package &mdash; WHAM 0.1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="WHAM package" href="WHAM.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> WHAM
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="WHAM.html">WHAM package</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">WHAM.lib package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-WHAM.lib.timeseries">WHAM.lib.timeseries module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-WHAM.lib.numeric">WHAM.lib.numeric module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-WHAM.lib.potentials">WHAM.lib.potentials module</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">WHAM</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>WHAM.lib package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/WHAM/WHAM.lib.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="wham-lib-package">
+<h1>WHAM.lib package<a class="headerlink" href="#wham-lib-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-WHAM.lib.timeseries">
+<span id="wham-lib-timeseries-module"></span><h2>WHAM.lib.timeseries module<a class="headerlink" href="#module-WHAM.lib.timeseries" title="Permalink to this headline">¶</a></h2>
+<p>Defines functions for dealing with correlated timeseries data.</p>
+<dl class="py function">
+<dt id="WHAM.lib.timeseries.bootstrap_independent_sample">
+<code class="sig-prename descclassname">WHAM.lib.timeseries.</code><code class="sig-name descname">bootstrap_independent_sample</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.timeseries.bootstrap_independent_sample" title="Permalink to this definition">¶</a></dt>
+<dd><p>Draws an independent sample of size N_ind = N/g from
+x. If the statistical inefficiency g is not passed as a parameter,
+it will be calculated first.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em>) – 1-dimensional array of length N containing correlated data to draw (uncorrelated) sample from.</p></li>
+<li><p><strong>g</strong> (<em>float</em>) – Statistical inefficiency (default=None).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>1-dimensional array of length N/g containing random samples drawn from x (with replacement).</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>y (ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="WHAM.lib.timeseries.statisticalInefficiency">
+<code class="sig-prename descclassname">WHAM.lib.timeseries.</code><code class="sig-name descname">statisticalInefficiency</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.timeseries.statisticalInefficiency" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes the statistical inefficiency of x.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>ndarray</em>) – 1-dimensional array containing correlated data.</p></li>
+<li><p><strong>fft</strong> (<em>bool</em>) – Use fft when computing autocorrelation function (default=True).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Statistical inefficiency of x.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>g (float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-WHAM.lib.numeric">
+<span id="wham-lib-numeric-module"></span><h2>WHAM.lib.numeric module<a class="headerlink" href="#module-WHAM.lib.numeric" title="Permalink to this headline">¶</a></h2>
+<p>Functions defning numeric routines for fast WHAM calculations.</p>
+<dl class="py function">
+<dt id="WHAM.lib.numeric.alogsumexp">
+<code class="sig-prename descclassname">WHAM.lib.numeric.</code><code class="sig-name descname">alogsumexp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.numeric.alogsumexp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scipy logsumexp modified for autograd.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="WHAM.lib.numeric.clogsumexp">
+<code class="sig-prename descclassname">WHAM.lib.numeric.</code><code class="sig-name descname">clogsumexp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.numeric.clogsumexp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cython-compiled Scipy logsumexp.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-WHAM.lib.potentials">
+<span id="wham-lib-potentials-module"></span><h2>WHAM.lib.potentials module<a class="headerlink" href="#module-WHAM.lib.potentials" title="Permalink to this headline">¶</a></h2>
+<p>Contains definitions of commonly used Umbrella potentials.</p>
+<dl class="py function">
+<dt id="WHAM.lib.potentials.harmonic">
+<code class="sig-prename descclassname">WHAM.lib.potentials.</code><code class="sig-name descname">harmonic</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.potentials.harmonic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns umbrella potential
+U(x) = kappa/2 (x - xstar)^2</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>kappa</strong> (<em>float</em>) – </p></li>
+<li><p><strong>xstar</strong> (<em>float</em>) – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="WHAM.lib.potentials.linear">
+<code class="sig-prename descclassname">WHAM.lib.potentials.</code><code class="sig-name descname">linear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.potentials.linear" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns umbrella potential
+U(x) = phi * x</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>phi</strong> (<em>float</em>) – </p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="WHAM.html" class="btn btn-neutral float-left" title="WHAM package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Akash Pallath.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

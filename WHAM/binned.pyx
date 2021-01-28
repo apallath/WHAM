@@ -92,10 +92,11 @@ cdef class Calc1D:
 
     cpdef minimize_NLL_solver(self, N_i, M_l, W_il, g_i=None, opt_method='L-BFGS-B', logevery=0):
         """Computes optimal g_i by minimizing the negative log-likelihood
-        for jointly observing the bin counts in the indepedent windows in the dataset.
+        for jointly observing the bin counts in the independent windows in the dataset.
 
-        Any optimization method supported by scipy.optimize can be used. L-BFGS-B is used
-        by default. Gradient information required for L-BFGS-B is computed using autograd.
+        Note:
+            Any optimization method supported by scipy.optimize can be used. L-BFGS-B is used
+            by default. Gradient information required for L-BFGS-B is computed using autograd.
 
         Args:
             N_i (np.array of shape (S,)): Array of total sample counts for the windows

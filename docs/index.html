@@ -87,6 +87,7 @@
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="WHAM/WHAM.html">WHAM package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="WHAM/WHAM.lib.html">WHAM.lib package</a></li>
 </ul>
 
             
@@ -199,10 +200,15 @@ pytest
 </div>
 <div class="section" id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<p>Binless WHAM is generally a better choice for accuracy. Log-likelihood
-maximization is a better approach than self-consistent iteration, which can suffer
-from slow convergence. However, binned WHAM is faster and uses less memory than
-binless WHAM. Choose between the two different WHAM formulations and solution
+<p>Binless WHAM is generally a better choice for accuracy, and implements
+more features than binned WHAM (such as reweighting, binning 2D profiles
+given a related order parameter, and integrating these profiles to obtain
+free energy profiles in terms of a related unbiased order parameter).
+However, binned WHAM is faster and uses less memory than
+binless WHAM.</p>
+<p>Log-likelihood maximization is a better approach than self-consistent iteration, which can suffer
+from slow convergence.</p>
+<p>Choose between the two different WHAM formulations and solution
 approaches based on your needs.</p>
 <p>To compute a 1-D free energy profile betaF_l using binned WHAM:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">WHAM.binned</span>
@@ -216,8 +222,11 @@ approaches based on your needs.</p>
 <span class="n">betaF_bin</span><span class="p">,</span> <span class="n">g_i</span><span class="p">,</span> <span class="n">status</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">compute_betaF_profile</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>Look at the documentation of the statistics module to understand how to
+use statistical checks to verify the consistency of binless WHAM
+calculations. (Only binless WHAM stats are supported at the moment.)</p>
 <p>For complete examples demonstrating free energy profile calculation
-(on <a class="reference external" href="https://github.com/seanmarks/INDUS">INDUS</a> data), see <cite>tests/test_binned.py</cite> and <cite>tests/test_binless.py</cite>
+(on <a class="reference external" href="https://github.com/seanmarks/INDUS">INDUS</a> data), see <a class="reference external" href="https://github.com/apallath/WHAM/blob/master/tests/test_binned.py">tests/test_binned.py</a> and <a class="reference external" href="https://github.com/apallath/WHAM/blob/master/tests/test_binless.py">tests/test_binless.py</a>
 in the WHAM source directory.</p>
 </div>
 <div class="section" id="references">
@@ -235,6 +244,14 @@ in the WHAM source directory.</p>
 <li class="toctree-l2"><a class="reference internal" href="WHAM/WHAM.html#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="WHAM/WHAM.html#module-WHAM.binless">WHAM.binless module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="WHAM/WHAM.html#module-WHAM.binned">WHAM.binned module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="WHAM/WHAM.html#module-WHAM.statistics">WHAM.statistics module</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="WHAM/WHAM.lib.html">WHAM.lib package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="WHAM/WHAM.lib.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="WHAM/WHAM.lib.html#module-WHAM.lib.timeseries">WHAM.lib.timeseries module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="WHAM/WHAM.lib.html#module-WHAM.lib.numeric">WHAM.lib.numeric module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="WHAM/WHAM.lib.html#module-WHAM.lib.potentials">WHAM.lib.potentials module</a></li>
 </ul>
 </li>
 </ul>

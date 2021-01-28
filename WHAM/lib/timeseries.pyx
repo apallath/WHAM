@@ -1,10 +1,17 @@
-"""Functions for dealing with correlated timeseries data"""
+"""Defines functions for dealing with correlated timeseries data."""
 import numpy as np
 from statsmodels.tsa import stattools
 
 
 def statisticalInefficiency(x, fft=True):
-    """Computes the statistical inefficiency of x."""
+    """Computes the statistical inefficiency of x.
+
+    Args:
+        x (ndarray): 1-dimensional array containing correlated data.
+        fft (bool): Use fft when computing autocorrelation function (default=True).
+
+    Returns:
+        g (float): Statistical inefficiency of x."""
     acf = stattools.acf(x, nlags=len(x), fft=fft)
     acf_cross_point = np.argmax(acf < 0) - 1
 
@@ -19,7 +26,14 @@ def statisticalInefficiency(x, fft=True):
 def bootstrap_independent_sample(x, g=None):
     """Draws an independent sample of size N_ind = N/g from
     x. If the statistical inefficiency g is not passed as a parameter,
-    it will be calculated first."""
+    it will be calculated first.
+
+    Args:
+        x (ndarray): 1-dimensional array of length N containing correlated data to draw (uncorrelated) sample from.
+        g (float): Statistical inefficiency (default=None).
+
+    Returns:
+        y (ndarray): 1-dimensional array of length N/g containing random samples drawn from x (with replacement)."""
     if g is None:
         g = statisticalInefficiency(x)
 

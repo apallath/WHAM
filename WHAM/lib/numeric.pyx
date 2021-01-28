@@ -1,4 +1,4 @@
-"""Functions for dealing with correlated timeseries data"""
+"""Functions defning numeric routines for fast WHAM calculations."""
 import numpy as np
 import autograd.numpy as anp
 
@@ -6,7 +6,7 @@ cimport numpy as np
 
 
 def alogsumexp(a, axis=None, b=None, keepdims=False, return_sign=False):
-    """Scipy logsumexp modified for autograd"""
+    """Scipy logsumexp modified for autograd."""
     if b is not None:
         if anp.any(b == 0):
             a = a + 0.  # Promote to at least float
@@ -37,8 +37,8 @@ def alogsumexp(a, axis=None, b=None, keepdims=False, return_sign=False):
         return out
 
 
-def clogsumexp(a, axis=None, b=None, keepdims=False, return_sign=False):
-    """Cython-compiled Scipy logsumexp"""
+cpdef clogsumexp(a, axis=None, b=None, keepdims=False, return_sign=False):
+    """Cython-compiled Scipy logsumexp."""
     if b is not None:
         if np.any(b == 0):
             a = a + 0.  # Promote to at least float

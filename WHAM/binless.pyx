@@ -29,22 +29,12 @@ cdef class Calc1D:
     Handles empty bins when computing free energy profiles by setting
     bin free energy to inf.
 
-    Contains several features which are not part of binned WHAM, such as:
-        - Reweighting
-        - Binning 2D free energy profile given a related (unbiased) order
-          parameter
+    Note:
+        Binless WHAM implements several features which are not part of binned WHAM, such as reweighting,
+        and binning 2D free energy profile given a related (unbiased) order parameter.f
 
-    Note that usage patterns for this module differ from binned WHAM.
-
-    For a complete usage example, look at tests/test_binless.py.
-
-    Attributes:
-        x_l (ndarray): 1-dimensional array containing unrolled order parameter
-            which is being biased.
-        G_l (ndarray): 1-dimensional array containing weights corresponding to
-            each (unrolled) order parameter.
-        g_i (ndarray): 1-dimensional array of size N (=no of windows) containing
-            free energies for each window
+    Important:
+        Usage patterns for this module differ from binned WHAM. For a complete usage example, look at tests/test_binless.py.
 
     Example:
         >>> calc = Calc1D()
@@ -55,6 +45,14 @@ cdef class Calc1D:
         >>> g_i = calc.g_i
         >>> betaF_x = calc.bin_betaF_profile(x_l, G_l, x_bin, ...)
         >>> betaF_xy = calc.bin_2D_betaF_profile(x_l, y_l, G_l, x_bin, y_bin, ...)
+
+    Attributes:
+        x_l (ndarray): 1-dimensional array containing unrolled order parameter
+            which is being biased.
+        G_l (ndarray): 1-dimensional array containing weights corresponding to
+            each (unrolled) order parameter.
+        g_i (ndarray): 1-dimensional array of size N (=no of windows) containing
+            free energies for each window.
     """
 
     # Counter for log-likelihood minimizer
@@ -102,10 +100,11 @@ cdef class Calc1D:
 
     def minimize_NLL_solver(self, x_l, N_i, W_il, g_i=None, opt_method='L-BFGS-B', logevery=0):
         """Computes optimal g_i by minimizing the negative log-likelihood
-        for jointly observing the bin counts in the indepedent windows in the dataset.
+        for jointly observing the bin counts in the independent windows in the dataset.
 
-        Any optimization method supported by scipy.optimize can be used. L-BFGS-B is used
-        by default. Gradient information required for L-BFGS-B is computed using autograd.
+        Note:
+            Any optimization method supported by scipy.optimize can be used. L-BFGS-B is used
+            by default. Gradient information required for L-BFGS-B is computed using autograd.
 
         Args:
             x_l (ndarray of shape (Ntot,)): Array containing each sample.
@@ -252,12 +251,18 @@ cdef class Calc1D:
     # Checks                      #
     ###############################
     def check_data(self):
-        """Verifies that x_l is not None, else raises RuntimeError"""
+        """Verifies that x_l is not None, else raises RuntimeError.
+
+        Raises:
+            RuntimeError"""
         if self.x_l is None:
             raise RuntimeError("Data points not available.")
 
     def check_weights(self):
-        """Verifies that g_i and G_l are not None, else raises RuntimeError"""
+        """Verifies that g_i and G_l are not None, else raises RuntimeError.
+
+        Raises:
+            RuntimeError"""
         if self.g_i is None:
             raise RuntimeError("Window free energies not available.")
         if self.G_l is None:
@@ -270,8 +275,9 @@ cdef class Calc1D:
         """Reweights sample weights to a biased ensemble. Does not change computed
         WHAM weights.
 
-        This is a post-processing calculation, and needs to be performed after
-        computing weights through `compute_point_weights`.
+        Caution:
+            This is a post-processing calculation, and needs to be performed after
+            computing weights through `compute_point_weights`.
 
         Args:
             beta: beta: beta, in inverse units to the units of u_i(x).
@@ -295,8 +301,9 @@ cdef class Calc1D:
         used for binning. Passing weights allows for computing reweighted
         free energy profiles.
 
-        This calculation requires that the order parameter samples [self.x_l] (which the
-        weights correspond to) are available.
+        Caution:
+            This calculation requires that the order parameter samples [self.x_l] (which the
+            weights correspond to) are available.
 
         Args:
             x_bin (list): Array of bin left-edges/centers of length M. Used only for computing final PMF.
@@ -354,8 +361,9 @@ cdef class Calc1D:
         used for binning. Passing weights allows for computing reweighted
         free energy profiles.
 
-        This calculation requires that the order parameter samples [self.x_l] (which the
-        weights correspond to) are available.
+        Caution:
+            This calculation requires that the order parameter samples [self.x_l] (which the
+            weights correspond to) are available.
 
         Args:
             y_l (ndarray): Second dimension order parameter values.
@@ -366,8 +374,10 @@ cdef class Calc1D:
             y_bin_style (string): 'left' or 'center'.
 
         Returns:
-            betaF_bin (ndarray): 2-D free energy profile of shape (M_x, M_y),
-                binned as per x_bin (1st dim) and y-bin (2nd dim).
+            tuple(betaF_bin, tuple(delta_x_bin, delta_y_bin))
+                - betaF_bin (ndarray): 2-D free energy profile of shape (M_x, M_y), binned as per x_bin (1st dim) and y-bin (2nd dim).
+                - delta_x_bin: Array of length M_x containing bin intervals along x.
+                - delta_y_bin: Array of length M_y containing bin intervals along y.
         """
         self.check_data()
         x_l = self.x_l
@@ -443,8 +453,9 @@ cdef class Calc1D:
         used for binning. Passing weights allows for computing reweighted
         free energy profiles.
 
-        This calculation requires that the order parameter samples [self.x_l] (which the
-        weights correspond to) are available.
+        Caution:
+            This calculation requires that the order parameter samples [self.x_l] (which the
+            weights correspond to) are available.
 
         Args:
             y_l (ndarray): Second dimension order parameter values.

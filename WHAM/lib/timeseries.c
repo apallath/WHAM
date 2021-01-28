@@ -1163,7 +1163,7 @@ static const char __pyx_k_WHAM_lib_timeseries[] = "WHAM.lib.timeseries";
 static const char __pyx_k_WHAM_lib_timeseries_pyx[] = "WHAM/lib/timeseries.pyx";
 static const char __pyx_k_statisticalInefficiency[] = "statisticalInefficiency";
 static const char __pyx_k_bootstrap_independent_sample[] = "bootstrap_independent_sample";
-static const char __pyx_k_Functions_for_dealing_with_corre[] = "Functions for dealing with correlated timeseries data";
+static const char __pyx_k_Defines_functions_for_dealing_wi[] = "Defines functions for dealing with correlated timeseries data.";
 static PyObject *__pyx_n_s_T;
 static PyObject *__pyx_n_s_WHAM_lib_timeseries;
 static PyObject *__pyx_kp_s_WHAM_lib_timeseries_pyx;
@@ -1209,13 +1209,13 @@ static PyObject *__pyx_codeobj__4;
  * 
  * 
  * def statisticalInefficiency(x, fft=True):             # <<<<<<<<<<<<<<
- *     """Computes the statistical inefficiency of x."""
- *     acf = stattools.acf(x, nlags=len(x), fft=fft)
+ *     """Computes the statistical inefficiency of x.
+ * 
  */
 
 /* Python wrapper */
 static PyObject *__pyx_pw_4WHAM_3lib_10timeseries_1statisticalInefficiency(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_4WHAM_3lib_10timeseries_statisticalInefficiency[] = "Computes the statistical inefficiency of x.";
+static char __pyx_doc_4WHAM_3lib_10timeseries_statisticalInefficiency[] = "Computes the statistical inefficiency of x.\n\n    Args:\n        x (ndarray): 1-dimensional array containing correlated data.\n        fft (bool): Use fft when computing autocorrelation function (default=True).\n\n    Returns:\n        g (float): Statistical inefficiency of x.";
 static PyMethodDef __pyx_mdef_4WHAM_3lib_10timeseries_1statisticalInefficiency = {"statisticalInefficiency", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_4WHAM_3lib_10timeseries_1statisticalInefficiency, METH_VARARGS|METH_KEYWORDS, __pyx_doc_4WHAM_3lib_10timeseries_statisticalInefficiency};
 static PyObject *__pyx_pw_4WHAM_3lib_10timeseries_1statisticalInefficiency(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_x = 0;
@@ -1307,32 +1307,32 @@ static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_statisticalInefficiency(CYTHON
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("statisticalInefficiency", 0);
 
-  /* "WHAM/lib/timeseries.pyx":8
- * def statisticalInefficiency(x, fft=True):
- *     """Computes the statistical inefficiency of x."""
+  /* "WHAM/lib/timeseries.pyx":15
+ *     Returns:
+ *         g (float): Statistical inefficiency of x."""
  *     acf = stattools.acf(x, nlags=len(x), fft=fft)             # <<<<<<<<<<<<<<
  *     acf_cross_point = np.argmax(acf < 0) - 1
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_stattools); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_stattools); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_acf); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_acf); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_x);
   __Pyx_GIVEREF(__pyx_v_x);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_x);
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = PyObject_Length(__pyx_v_x); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 8, __pyx_L1_error)
-  __pyx_t_5 = PyInt_FromSsize_t(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 8, __pyx_L1_error)
+  __pyx_t_4 = PyObject_Length(__pyx_v_x); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_t_5 = PyInt_FromSsize_t(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_nlags, __pyx_t_5) < 0) __PYX_ERR(0, 8, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_nlags, __pyx_t_5) < 0) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_fft, __pyx_v_fft) < 0) __PYX_ERR(0, 8, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 8, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_fft, __pyx_v_fft) < 0) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -1340,19 +1340,19 @@ static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_statisticalInefficiency(CYTHON
   __pyx_v_acf = __pyx_t_5;
   __pyx_t_5 = 0;
 
-  /* "WHAM/lib/timeseries.pyx":9
- *     """Computes the statistical inefficiency of x."""
+  /* "WHAM/lib/timeseries.pyx":16
+ *         g (float): Statistical inefficiency of x."""
  *     acf = stattools.acf(x, nlags=len(x), fft=fft)
  *     acf_cross_point = np.argmax(acf < 0) - 1             # <<<<<<<<<<<<<<
  * 
  *     t = np.array(range(len(x[:acf_cross_point])))
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 9, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_argmax); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 9, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_argmax); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyObject_RichCompare(__pyx_v_acf, __pyx_int_0, Py_LT); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 9, __pyx_L1_error)
+  __pyx_t_3 = PyObject_RichCompare(__pyx_v_acf, __pyx_int_0, Py_LT); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 16, __pyx_L1_error)
   __pyx_t_2 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
     __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_1);
@@ -1366,34 +1366,34 @@ static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_statisticalInefficiency(CYTHON
   __pyx_t_5 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3);
   __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 9, __pyx_L1_error)
+  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyInt_SubtractObjC(__pyx_t_5, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 9, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_SubtractObjC(__pyx_t_5, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_v_acf_cross_point = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "WHAM/lib/timeseries.pyx":11
+  /* "WHAM/lib/timeseries.pyx":18
  *     acf_cross_point = np.argmax(acf < 0) - 1
  * 
  *     t = np.array(range(len(x[:acf_cross_point])))             # <<<<<<<<<<<<<<
  *     T = len(x)
  *     tau = np.sum(np.multiply(np.array(1 - t / T), acf[:acf_cross_point]))
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_array); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_array); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_GetSlice(__pyx_v_x, 0, 0, NULL, &__pyx_v_acf_cross_point, NULL, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetSlice(__pyx_v_x, 0, 0, NULL, &__pyx_v_acf_cross_point, NULL, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_4 = PyObject_Length(__pyx_t_5); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_4 = PyObject_Length(__pyx_t_5); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = PyInt_FromSsize_t(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_5 = PyInt_FromSsize_t(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_range, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_range, __pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_t_5 = NULL;
@@ -1409,50 +1409,50 @@ static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_statisticalInefficiency(CYTHON
   __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_5, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
   __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 18, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_t = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "WHAM/lib/timeseries.pyx":12
+  /* "WHAM/lib/timeseries.pyx":19
  * 
  *     t = np.array(range(len(x[:acf_cross_point])))
  *     T = len(x)             # <<<<<<<<<<<<<<
  *     tau = np.sum(np.multiply(np.array(1 - t / T), acf[:acf_cross_point]))
  *     g = 1 + 2 * tau
  */
-  __pyx_t_4 = PyObject_Length(__pyx_v_x); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 12, __pyx_L1_error)
-  __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
+  __pyx_t_4 = PyObject_Length(__pyx_v_x); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 19, __pyx_L1_error)
+  __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 19, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_T = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "WHAM/lib/timeseries.pyx":13
+  /* "WHAM/lib/timeseries.pyx":20
  *     t = np.array(range(len(x[:acf_cross_point])))
  *     T = len(x)
  *     tau = np.sum(np.multiply(np.array(1 - t / T), acf[:acf_cross_point]))             # <<<<<<<<<<<<<<
  *     g = 1 + 2 * tau
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_sum); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_sum); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_multiply); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_multiply); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_np); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_np); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_array); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_array); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_PyNumber_Divide(__pyx_v_t, __pyx_v_T); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyNumber_Divide(__pyx_v_t, __pyx_v_T); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_9 = __Pyx_PyInt_SubtractCObj(__pyx_int_1, __pyx_t_7, 1, 0, 0); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __pyx_t_9 = __Pyx_PyInt_SubtractCObj(__pyx_int_1, __pyx_t_7, 1, 0, 0); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __pyx_t_7 = NULL;
@@ -1468,10 +1468,10 @@ static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_statisticalInefficiency(CYTHON
   __pyx_t_5 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_8, __pyx_t_7, __pyx_t_9) : __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_t_9);
   __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
-  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 13, __pyx_L1_error)
+  if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  __pyx_t_8 = __Pyx_PyObject_GetSlice(__pyx_v_acf, 0, 0, NULL, &__pyx_v_acf_cross_point, NULL, 0, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 13, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyObject_GetSlice(__pyx_v_acf, 0, 0, NULL, &__pyx_v_acf_cross_point, NULL, 0, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __pyx_t_9 = NULL;
   __pyx_t_10 = 0;
@@ -1488,7 +1488,7 @@ static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_statisticalInefficiency(CYTHON
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_6)) {
     PyObject *__pyx_temp[3] = {__pyx_t_9, __pyx_t_5, __pyx_t_8};
-    __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 13, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 20, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -1498,7 +1498,7 @@ static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_statisticalInefficiency(CYTHON
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_6)) {
     PyObject *__pyx_temp[3] = {__pyx_t_9, __pyx_t_5, __pyx_t_8};
-    __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 13, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyCFunction_FastCall(__pyx_t_6, __pyx_temp+1-__pyx_t_10, 2+__pyx_t_10); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 20, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -1506,7 +1506,7 @@ static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_statisticalInefficiency(CYTHON
   } else
   #endif
   {
-    __pyx_t_7 = PyTuple_New(2+__pyx_t_10); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 13, __pyx_L1_error)
+    __pyx_t_7 = PyTuple_New(2+__pyx_t_10); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 20, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     if (__pyx_t_9) {
       __Pyx_GIVEREF(__pyx_t_9); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_9); __pyx_t_9 = NULL;
@@ -1517,7 +1517,7 @@ static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_statisticalInefficiency(CYTHON
     PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_10, __pyx_t_8);
     __pyx_t_5 = 0;
     __pyx_t_8 = 0;
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 13, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_6, __pyx_t_7, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 20, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   }
@@ -1535,28 +1535,28 @@ static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_statisticalInefficiency(CYTHON
   __pyx_t_1 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_6, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3);
   __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 13, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 20, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_tau = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "WHAM/lib/timeseries.pyx":14
+  /* "WHAM/lib/timeseries.pyx":21
  *     T = len(x)
  *     tau = np.sum(np.multiply(np.array(1 - t / T), acf[:acf_cross_point]))
  *     g = 1 + 2 * tau             # <<<<<<<<<<<<<<
  * 
  *     return g
  */
-  __pyx_t_1 = PyNumber_Multiply(__pyx_int_2, __pyx_v_tau); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Multiply(__pyx_int_2, __pyx_v_tau); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 21, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyInt_AddCObj(__pyx_int_1, __pyx_t_1, 1, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_AddCObj(__pyx_int_1, __pyx_t_1, 1, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 21, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_g = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "WHAM/lib/timeseries.pyx":16
+  /* "WHAM/lib/timeseries.pyx":23
  *     g = 1 + 2 * tau
  * 
  *     return g             # <<<<<<<<<<<<<<
@@ -1572,8 +1572,8 @@ static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_statisticalInefficiency(CYTHON
  * 
  * 
  * def statisticalInefficiency(x, fft=True):             # <<<<<<<<<<<<<<
- *     """Computes the statistical inefficiency of x."""
- *     acf = stattools.acf(x, nlags=len(x), fft=fft)
+ *     """Computes the statistical inefficiency of x.
+ * 
  */
 
   /* function exit code */
@@ -1600,7 +1600,7 @@ static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_statisticalInefficiency(CYTHON
   return __pyx_r;
 }
 
-/* "WHAM/lib/timeseries.pyx":19
+/* "WHAM/lib/timeseries.pyx":26
  * 
  * 
  * def bootstrap_independent_sample(x, g=None):             # <<<<<<<<<<<<<<
@@ -1610,7 +1610,7 @@ static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_statisticalInefficiency(CYTHON
 
 /* Python wrapper */
 static PyObject *__pyx_pw_4WHAM_3lib_10timeseries_3bootstrap_independent_sample(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_4WHAM_3lib_10timeseries_2bootstrap_independent_sample[] = "Draws an independent sample of size N_ind = N/g from\n    x. If the statistical inefficiency g is not passed as a parameter,\n    it will be calculated first.";
+static char __pyx_doc_4WHAM_3lib_10timeseries_2bootstrap_independent_sample[] = "Draws an independent sample of size N_ind = N/g from\n    x. If the statistical inefficiency g is not passed as a parameter,\n    it will be calculated first.\n\n    Args:\n        x (ndarray): 1-dimensional array of length N containing correlated data to draw (uncorrelated) sample from.\n        g (float): Statistical inefficiency (default=None).\n\n    Returns:\n        y (ndarray): 1-dimensional array of length N/g containing random samples drawn from x (with replacement).";
 static PyMethodDef __pyx_mdef_4WHAM_3lib_10timeseries_3bootstrap_independent_sample = {"bootstrap_independent_sample", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_4WHAM_3lib_10timeseries_3bootstrap_independent_sample, METH_VARARGS|METH_KEYWORDS, __pyx_doc_4WHAM_3lib_10timeseries_2bootstrap_independent_sample};
 static PyObject *__pyx_pw_4WHAM_3lib_10timeseries_3bootstrap_independent_sample(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_x = 0;
@@ -1649,7 +1649,7 @@ static PyObject *__pyx_pw_4WHAM_3lib_10timeseries_3bootstrap_independent_sample(
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "bootstrap_independent_sample") < 0)) __PYX_ERR(0, 19, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "bootstrap_independent_sample") < 0)) __PYX_ERR(0, 26, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -1665,7 +1665,7 @@ static PyObject *__pyx_pw_4WHAM_3lib_10timeseries_3bootstrap_independent_sample(
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("bootstrap_independent_sample", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 19, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("bootstrap_independent_sample", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 26, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("WHAM.lib.timeseries.bootstrap_independent_sample", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -1695,9 +1695,9 @@ static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_2bootstrap_independent_sample(
   __Pyx_RefNannySetupContext("bootstrap_independent_sample", 0);
   __Pyx_INCREF(__pyx_v_g);
 
-  /* "WHAM/lib/timeseries.pyx":23
- *     x. If the statistical inefficiency g is not passed as a parameter,
- *     it will be calculated first."""
+  /* "WHAM/lib/timeseries.pyx":37
+ *     Returns:
+ *         y (ndarray): 1-dimensional array of length N/g containing random samples drawn from x (with replacement)."""
  *     if g is None:             # <<<<<<<<<<<<<<
  *         g = statisticalInefficiency(x)
  * 
@@ -1706,14 +1706,14 @@ static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_2bootstrap_independent_sample(
   __pyx_t_2 = (__pyx_t_1 != 0);
   if (__pyx_t_2) {
 
-    /* "WHAM/lib/timeseries.pyx":24
- *     it will be calculated first."""
+    /* "WHAM/lib/timeseries.pyx":38
+ *         y (ndarray): 1-dimensional array of length N/g containing random samples drawn from x (with replacement)."""
  *     if g is None:
  *         g = statisticalInefficiency(x)             # <<<<<<<<<<<<<<
  * 
  *     return np.random.choice(x, size=int(len(x) / g))
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_statisticalInefficiency); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 24, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_statisticalInefficiency); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 38, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_5 = NULL;
     if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
@@ -1727,54 +1727,54 @@ static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_2bootstrap_independent_sample(
     }
     __pyx_t_3 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_4, __pyx_t_5, __pyx_v_x) : __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_x);
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 24, __pyx_L1_error)
+    if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 38, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF_SET(__pyx_v_g, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "WHAM/lib/timeseries.pyx":23
- *     x. If the statistical inefficiency g is not passed as a parameter,
- *     it will be calculated first."""
+    /* "WHAM/lib/timeseries.pyx":37
+ *     Returns:
+ *         y (ndarray): 1-dimensional array of length N/g containing random samples drawn from x (with replacement)."""
  *     if g is None:             # <<<<<<<<<<<<<<
  *         g = statisticalInefficiency(x)
  * 
  */
   }
 
-  /* "WHAM/lib/timeseries.pyx":26
+  /* "WHAM/lib/timeseries.pyx":40
  *         g = statisticalInefficiency(x)
  * 
  *     return np.random.choice(x, size=int(len(x) / g))             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_random); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_random); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_choice); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_choice); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_INCREF(__pyx_v_x);
   __Pyx_GIVEREF(__pyx_v_x);
   PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_v_x);
-  __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = PyObject_Length(__pyx_v_x); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 26, __pyx_L1_error)
-  __pyx_t_7 = PyInt_FromSsize_t(__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_t_6 = PyObject_Length(__pyx_v_x); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_t_7 = PyInt_FromSsize_t(__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_8 = __Pyx_PyNumber_Divide(__pyx_t_7, __pyx_v_g); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyNumber_Divide(__pyx_t_7, __pyx_v_g); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_PyNumber_Int(__pyx_t_8); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyNumber_Int(__pyx_t_8); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_size, __pyx_t_7) < 0) __PYX_ERR(0, 26, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_size, __pyx_t_7) < 0) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -1783,7 +1783,7 @@ static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_2bootstrap_independent_sample(
   __pyx_t_7 = 0;
   goto __pyx_L0;
 
-  /* "WHAM/lib/timeseries.pyx":19
+  /* "WHAM/lib/timeseries.pyx":26
  * 
  * 
  * def bootstrap_independent_sample(x, g=None):             # <<<<<<<<<<<<<<
@@ -1825,7 +1825,7 @@ static PyModuleDef_Slot __pyx_moduledef_slots[] = {
 static struct PyModuleDef __pyx_moduledef = {
     PyModuleDef_HEAD_INIT,
     "timeseries",
-    __pyx_k_Functions_for_dealing_with_corre, /* m_doc */
+    __pyx_k_Defines_functions_for_dealing_wi, /* m_doc */
   #if CYTHON_PEP489_MULTI_PHASE_INIT
     0, /* m_size */
   #else
@@ -1886,7 +1886,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 18, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -1900,25 +1900,25 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  * 
  * def statisticalInefficiency(x, fft=True):             # <<<<<<<<<<<<<<
- *     """Computes the statistical inefficiency of x."""
- *     acf = stattools.acf(x, nlags=len(x), fft=fft)
+ *     """Computes the statistical inefficiency of x.
+ * 
  */
   __pyx_tuple_ = PyTuple_Pack(8, __pyx_n_s_x, __pyx_n_s_fft, __pyx_n_s_acf, __pyx_n_s_acf_cross_point, __pyx_n_s_t, __pyx_n_s_T, __pyx_n_s_tau, __pyx_n_s_g); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
   __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(2, 0, 8, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple_, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_WHAM_lib_timeseries_pyx, __pyx_n_s_statisticalInefficiency, 6, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 6, __pyx_L1_error)
 
-  /* "WHAM/lib/timeseries.pyx":19
+  /* "WHAM/lib/timeseries.pyx":26
  * 
  * 
  * def bootstrap_independent_sample(x, g=None):             # <<<<<<<<<<<<<<
  *     """Draws an independent sample of size N_ind = N/g from
  *     x. If the statistical inefficiency g is not passed as a parameter,
  */
-  __pyx_tuple__3 = PyTuple_Pack(2, __pyx_n_s_x, __pyx_n_s_g); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __pyx_tuple__3 = PyTuple_Pack(2, __pyx_n_s_x, __pyx_n_s_g); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 26, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
-  __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_WHAM_lib_timeseries_pyx, __pyx_n_s_bootstrap_independent_sample, 19, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_WHAM_lib_timeseries_pyx, __pyx_n_s_bootstrap_independent_sample, 26, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 26, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -2157,7 +2157,7 @@ if (!__Pyx_RefNanny) {
   Py_INCREF(__pyx_m);
   #else
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("timeseries", __pyx_methods, __pyx_k_Functions_for_dealing_with_corre, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("timeseries", __pyx_methods, __pyx_k_Defines_functions_for_dealing_wi, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -2204,7 +2204,7 @@ if (!__Pyx_RefNanny) {
   #endif
 
   /* "WHAM/lib/timeseries.pyx":2
- * """Functions for dealing with correlated timeseries data"""
+ * """Defines functions for dealing with correlated timeseries data."""
  * import numpy as np             # <<<<<<<<<<<<<<
  * from statsmodels.tsa import stattools
  * 
@@ -2215,7 +2215,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "WHAM/lib/timeseries.pyx":3
- * """Functions for dealing with correlated timeseries data"""
+ * """Defines functions for dealing with correlated timeseries data."""
  * import numpy as np
  * from statsmodels.tsa import stattools             # <<<<<<<<<<<<<<
  * 
@@ -2239,28 +2239,28 @@ if (!__Pyx_RefNanny) {
  * 
  * 
  * def statisticalInefficiency(x, fft=True):             # <<<<<<<<<<<<<<
- *     """Computes the statistical inefficiency of x."""
- *     acf = stattools.acf(x, nlags=len(x), fft=fft)
+ *     """Computes the statistical inefficiency of x.
+ * 
  */
   __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_4WHAM_3lib_10timeseries_1statisticalInefficiency, NULL, __pyx_n_s_WHAM_lib_timeseries); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_statisticalInefficiency, __pyx_t_2) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "WHAM/lib/timeseries.pyx":19
+  /* "WHAM/lib/timeseries.pyx":26
  * 
  * 
  * def bootstrap_independent_sample(x, g=None):             # <<<<<<<<<<<<<<
  *     """Draws an independent sample of size N_ind = N/g from
  *     x. If the statistical inefficiency g is not passed as a parameter,
  */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_4WHAM_3lib_10timeseries_3bootstrap_independent_sample, NULL, __pyx_n_s_WHAM_lib_timeseries); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 19, __pyx_L1_error)
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_4WHAM_3lib_10timeseries_3bootstrap_independent_sample, NULL, __pyx_n_s_WHAM_lib_timeseries); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_bootstrap_independent_sample, __pyx_t_2) < 0) __PYX_ERR(0, 19, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_bootstrap_independent_sample, __pyx_t_2) < 0) __PYX_ERR(0, 26, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "WHAM/lib/timeseries.pyx":1
- * """Functions for dealing with correlated timeseries data"""             # <<<<<<<<<<<<<<
+ * """Defines functions for dealing with correlated timeseries data."""             # <<<<<<<<<<<<<<
  * import numpy as np
  * from statsmodels.tsa import stattools
  */

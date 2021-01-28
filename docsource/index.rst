@@ -55,10 +55,17 @@ Running tests
 Usage
 **************************
 
-Binless WHAM is generally a better choice for accuracy. Log-likelihood
-maximization is a better approach than self-consistent iteration, which can suffer
-from slow convergence. However, binned WHAM is faster and uses less memory than
-binless WHAM. Choose between the two different WHAM formulations and solution
+Binless WHAM is generally a better choice for accuracy, and implements
+more features than binned WHAM (such as reweighting, binning 2D profiles
+given a related order parameter, and integrating these profiles to obtain
+free energy profiles in terms of a related unbiased order parameter).
+However, binned WHAM is faster and uses less memory than
+binless WHAM.
+
+Log-likelihood maximization is a better approach than self-consistent iteration, which can suffer
+from slow convergence.
+
+Choose between the two different WHAM formulations and solution
 approaches based on your needs.
 
 To compute a 1-D free energy profile betaF_l using binned WHAM:
@@ -77,12 +84,17 @@ To compute a 1-D free energy profile betaF_bin using binless WHAM:
   calc = WHAM.binless.Calc1D()
   betaF_bin, g_i, status = calc.compute_betaF_profile(...)
 
+Look at the documentation of the statistics module to understand how to
+use statistical checks to verify the consistency of binless WHAM
+calculations. (Only binless WHAM stats are supported at the moment.)
 
 For complete examples demonstrating free energy profile calculation
-(on `INDUS`_ data), see `tests/test_binned.py` and `tests/test_binless.py`
+(on `INDUS`_ data), see `tests/test_binned.py`_ and `tests/test_binless.py`_
 in the WHAM source directory.
 
 .. _`INDUS`: https://github.com/seanmarks/INDUS
+.. _`tests/test_binned.py`: https://github.com/apallath/WHAM/blob/master/tests/test_binned.py
+.. _`tests/test_binless.py`: https://github.com/apallath/WHAM/blob/master/tests/test_binless.py
 
 
 References
@@ -103,7 +115,7 @@ References
    :caption: Contents:
 
    WHAM/WHAM
-
+   WHAM/WHAM.lib
 
 
 Indices and tables

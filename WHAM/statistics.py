@@ -1,9 +1,14 @@
+"""Functions for checking consistency of WHAM calculations.
+
+Note:
+    Supports only binless WHAM, for now.
+"""
 import numpy as np
 from WHAM.lib.timeseries import statisticalInefficiency
 
 def D_KL(betaF_P, betaF_Q, delta_x_bin):
     """Computes the KL divergence between two probability distributions P
-       and Q corresponding to free energy profiles betaF_P and betaF_Q.
+    and Q corresponding to free energy profiles betaF_P and betaF_Q.
 
     Args:
         betaF_P (ndarray): Free energy profile of length M.
@@ -22,7 +27,7 @@ def D_KL(betaF_P, betaF_Q, delta_x_bin):
 ###############################
 
 def win_betaF(x_it, x_bin, u_i, beta, bin_style='left', scale_stat_ineff=False):
-    """Compute free energy profiles for each window.
+    """Computes free energy profiles for each window.
 
     Args:
         x_it (list): Nested list of length S, x_it[i] is an array containing timeseries
@@ -93,7 +98,7 @@ def win_betaF(x_it, x_bin, u_i, beta, bin_style='left', scale_stat_ineff=False):
 
 
 def binless_reweighted_win_betaF(calc, x_bin, u_i, beta, bin_style='left'):
-    """Compute free energy profiles for each window i by reweighting the entire
+    """Computes free energy profiles for each window i by reweighting the entire
     free energy profile to the biased ensemble with bias potential specified
     by u_i[i].
 
