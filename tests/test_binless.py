@@ -94,8 +94,8 @@ def test_binless_self_consistent():
     plt.savefig("test_out/binless_self_consistent_incomplete.png")
 
     """Reweighting check"""
-    betaF_il = WHAM.statistics.win_betaF(Ntw_win, bin_points, umbrella_win, beta,
-                                         bin_style='left')
+    betaF_il, _ = WHAM.statistics.win_betaF(Ntw_win, bin_points, umbrella_win, beta,
+                                            bin_style='left')
     betaF_il_reweight = WHAM.statistics.binless_reweighted_win_betaF(calc, bin_points, umbrella_win,
                                                                      beta, bin_style='left')
     # Plot window free energies
@@ -117,8 +117,8 @@ def test_binless_self_consistent():
     print(D_KL_i)
     fig, ax = plt.subplots(figsize=(8, 4), dpi=300)
     ax.plot(n_star_win, D_KL_i, 's')
-    ax.axhline(y=2)
-    ax.axhline(y=-2)
+    ax.axhline(y=0.1)
+    ax.axhline(y=-0.1)
     ax.set_xlabel(r"$N^*$")
     ax.set_ylabel(r"$D_{KL}$")
     plt.savefig("test_out/binless_reweight_KLD_self_consistent_incomplete.png")
@@ -163,8 +163,8 @@ def test_binless_self_consistent():
     plt.savefig("test_out/binless_self_consistent.png")
 
     """Reweighting check"""
-    betaF_il = WHAM.statistics.win_betaF(Ntw_win, bin_points, umbrella_win, beta,
-                                         bin_style='left')
+    betaF_il, _ = WHAM.statistics.win_betaF(Ntw_win, bin_points, umbrella_win, beta,
+                                            bin_style='left')
     betaF_il_reweight = WHAM.statistics.binless_reweighted_win_betaF(calc, bin_points, umbrella_win,
                                                                      beta, bin_style='left')
     # Plot window free energies
@@ -186,14 +186,14 @@ def test_binless_self_consistent():
     print(D_KL_i)
     fig, ax = plt.subplots(figsize=(8, 4), dpi=300)
     ax.plot(n_star_win, D_KL_i, 's')
-    ax.axhline(y=2)
-    ax.axhline(y=-2)
+    ax.axhline(y=0.1)
+    ax.axhline(y=-0.1)
     ax.set_xlabel(r"$N^*$")
     ax.set_ylabel(r"$D_{KL}$")
     plt.savefig("test_out/binless_reweight_KLD_self_consistent.png")
 
     # KL_D should be low
-    assert(np.all(np.abs(D_KL_i) < 2))
+    assert(np.all(np.abs(D_KL_i) < 0.1))
 
     # Benchmark against seanmarks/wham
     assert(np.max(np.abs(betaF_bin - betaF_bin_ref)) < 1)
@@ -233,8 +233,8 @@ def test_binless_log_likelihood():
     plt.savefig("test_out/binless_log_likelihood.png")
 
     """Reweighting check"""
-    betaF_il = WHAM.statistics.win_betaF(Ntw_win, bin_points, umbrella_win, beta,
-                                         bin_style='left')
+    betaF_il, _ = WHAM.statistics.win_betaF(Ntw_win, bin_points, umbrella_win, beta,
+                                            bin_style='left')
     betaF_il_reweight = WHAM.statistics.binless_reweighted_win_betaF(calc, bin_points, umbrella_win,
                                                                      beta, bin_style='left')
     # Plot window free energies
@@ -256,14 +256,14 @@ def test_binless_log_likelihood():
     print(D_KL_i)
     fig, ax = plt.subplots(figsize=(8, 4), dpi=300)
     ax.plot(n_star_win, D_KL_i, 's')
-    ax.axhline(y=2)
-    ax.axhline(y=-2)
+    ax.axhline(y=0.1)
+    ax.axhline(y=-0.1)
     ax.set_xlabel(r"$N^*$")
     ax.set_ylabel(r"$D_{KL}$")
     plt.savefig("test_out/binless_reweight_KLD_log_likelihood.png")
 
     # KL_D should be low
-    assert(np.all(np.abs(D_KL_i) < 2))
+    assert(np.all(np.abs(D_KL_i) < 0.1))
 
     # Benchmark against seanmarks/wham
     assert(np.max(np.abs(betaF_bin - betaF_bin_ref)) < 1)

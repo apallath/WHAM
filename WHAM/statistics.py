@@ -1,20 +1,21 @@
 import numpy as np
 from WHAM.lib.timeseries import statisticalInefficiency
 
-def D_KL(P, Q):
+def D_KL(betaF_P, betaF_Q, delta_x_bin):
     """Computes the KL divergence between two probability distributions P
-       and Q in bits, on the same space
+       and Q corresponding to free energy profiles betaF_P and betaF_Q.
 
     Args:
-        P (ndarray): Discrete probability distribution of length M.
-        Q (ndarray): Discrete probability distribution of length M.
+        betaF_P (ndarray): Free energy profile of length M.
+        betaF_Q (ndarray): Free energy profile of length M.
+        delta_x_bin (ndarray): Bin interval, length M.
 
     Returns:
         KL divergence (float)"""
 
     np.errstate(divide='ignore')
 
-    return (P * np.log(P/Q)).sum()
+    return (delta_x_bin * np.exp(-betaF_P) * (betaF_Q - betaF_P)).sum()
 
 ###############################
 # Binless WHAM                #
@@ -33,7 +34,10 @@ def win_betaF(x_it, x_bin, u_i, beta, bin_style='left', scale_stat_ineff=False):
         bin_style (string): 'left' or 'center'.
 
     Returns:
-        betaF_il (np.array): 2-D array of biased free energies for each window, of shape (S, M)"""
+        tuple(betaF_il, delta_x_bin)
+            - betaF_il (np.array): 2-D array of biased free energies for each window, of shape (S, M)
+            - delta_x_bin (np.array): Bin interval
+    """
 
     np.errstate(divide='ignore')
 
@@ -85,7 +89,7 @@ def win_betaF(x_it, x_bin, u_i, beta, bin_style='left', scale_stat_ineff=False):
         p_il = n_il[i, :] / N_i[i]
         betaF_il[i, :] = -np.log(p_il / delta_x_bin)
 
-    return betaF_il
+    return betaF_il, delta_x_bin
 
 
 def binless_reweighted_win_betaF(calc, x_bin, u_i, beta, bin_style='left'):
@@ -118,8 +122,9 @@ def binless_reweighted_win_betaF(calc, x_bin, u_i, beta, bin_style='left'):
 
 
 def binless_KLD_reweighted_win_betaF(calc, x_it, x_bin, u_i, beta, bin_style='left'):
-    """Computes the KL divergence between biased free energy profile and reweighted
-    biased free energy profile (constructed from consensus WHAM) for each window
+    """Computes the KL divergence between probability distributions corresponding to
+    (sampled) bias free energy profile and reweighted biased free energy profile (constructed from consensus WHAM)
+    for each window.
 
     Args:
         calc (WHAM.binless.Calc1D): Binless Calc1D object, with weights pre-computed.
@@ -133,15 +138,15 @@ def binless_KLD_reweighted_win_betaF(calc, x_it, x_bin, u_i, beta, bin_style='le
 
     Returns:
         D_KL_i (ndarray): Array of length S containing KL divergence for each window"""
-        
+
     np.errstate(divide='ignore')
 
-    betaF_il = win_betaF(x_it, x_bin, u_i, beta, bin_style=bin_style)
+    betaF_il, delta_x_bin = win_betaF(x_it, x_bin, u_i, beta, bin_style=bin_style)
     betaF_il_reweight = binless_reweighted_win_betaF(calc, x_bin, u_i, beta, bin_style=bin_style)
     S = len(u_i)
     D_KL_i = np.zeros(S)
     for i in range(S):
-        indices = np.where(betaF_il[i, :] != np.inf)
-        D_KL_i[i] = D_KL(betaF_il[i, indices], betaF_il_reweight[i, indices])
+        indices = np.where(betaF_il[i, :] < np.inf)
+        D_KL_i[i] = D_KL(betaF_il[i, indices], betaF_il_reweight[i, indices], delta_x_bin[indices])
 
     return D_KL_i
