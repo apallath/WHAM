@@ -471,8 +471,11 @@ cdef class Calc1D:
         """
         betaF_xy, (delta_x_bin, delta_y_bin) = self.bin_2D_betaF_profile(y_l, x_bin, y_bin, G_l=G_l, x_bin_style=x_bin_style, y_bin_style=y_bin_style)
         betaF_xy = np.nan_to_num(betaF_xy)
-        print(betaF_xy)
-        betaF_y = -numeric.clogsumexp(-betaF_xy, b=delta_x_bin[np.newaxis, :] ** 2, axis=0)
+        print(betaF_xy.shape)
+        print(delta_x_bin.shape)
+        betaF_y = np.zeros(len(y_bin))
+        for yi in range(len(y_bin)):
+            betaF_y[yi] = -numeric.clogsumexp(-betaF_xy[:, yi], b=delta_x_bin ** 2, axis=0)
         return betaF_y
 
     ###############################

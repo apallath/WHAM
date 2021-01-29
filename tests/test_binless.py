@@ -402,7 +402,6 @@ def test_binless_2D_log_likelihood():
     plt.savefig("test_out/binless_2D_log_likelihood_diff.png")
 
     """Integrate out N~ to get free energy profile in N"""
-    # Preprocess inf and nan
     betaF_N = calc.bin_second_betaF_profile(y_l, x_bin_points, y_bin_points)
 
     betaF_N = betaF_N - betaF_N[30]  # reposition zero so that unbiased free energy is zero
@@ -439,7 +438,7 @@ def get_2D_test_data_halfbin():
         umbrella_win.append(potentials.harmonic(kappa, n_star))
 
     # List of bins to perform binning into
-    x_bin_points = np.linspace(0, 34, 17 + 1)
+    x_bin_points = np.linspace(0, 34, 36 + 1)
     y_bin_points = np.linspace(0, 34, 17 + 1)
 
     # Raw, correlated timeseries CV data from each window

@@ -1,7 +1,4 @@
 """Functions for checking consistency of WHAM calculations.
-
-Note:
-    Supports only binless WHAM, for now.
 """
 import numpy as np
 from WHAM.lib.timeseries import statisticalInefficiency
