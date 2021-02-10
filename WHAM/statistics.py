@@ -2,6 +2,7 @@
 """
 import numpy as np
 from WHAM.lib.timeseries import statisticalInefficiency
+from WHAM.lib import potentials
 
 def D_KL(betaF_P, betaF_Q, delta_x_bin):
     """Computes the KL divergence between two probability distributions P
@@ -20,7 +21,7 @@ def D_KL(betaF_P, betaF_Q, delta_x_bin):
     return (delta_x_bin * np.exp(-betaF_P) * (betaF_Q - betaF_P)).sum()
 
 ###############################
-# Binless WHAM                #
+# Binless WHAM checks         #
 ###############################
 
 def win_betaF(x_it, x_bin, u_i, beta, bin_style='left', scale_stat_ineff=False):
@@ -152,3 +153,38 @@ def binless_KLD_reweighted_win_betaF(calc, x_it, x_bin, u_i, beta, bin_style='le
         D_KL_i[i] = D_KL(betaF_il[i, indices], betaF_il_reweight[i, indices], delta_x_bin[indices])
 
     return D_KL_i
+
+###############################
+# Binless WHAM phi-ensemble   #
+###############################
+def binless_reweight_phi_ensemble(calc, phi_vals, beta):
+    """Computes <x_l> and <dx_l^2> v/s phi by reweighting the underlying free energy profile
+    in calc to the phi-ensemble specified by phi_vals and beta.
+
+    Args:
+        calc (WHAM.binless.Calc1D): Binless Calc1D object, with weights pre-computed.
+        phi_vals (ndarray): Array of phi values to compute <x_l> at, units of phi in kJ/mol.
+        beta: beta, in inverse units to the units of u_i(x).
+        bin_style (string): 'left' or 'center'.
+
+    Returns:
+        N_avg_vals (ndarray): Array containing <x_l> corresponding to each value of phi.
+        N_var_vals (ndarray): Array containing <dx_l^2> corresponding to each value of phi."""
+
+    np.errstate(divide='ignore')
+
+    N_avg_vals = np.zeros(len(phi_vals))
+    N_var_vals = np.zeros(len(phi_vals))
+
+    for i, phi in enumerate(phi_vals):
+        u_phi = potentials.linear(phi)
+        G_l_reweight = calc.reweight(beta, u_phi)
+        # g_i cancels out during ensemble averaging => doesn't matter
+        p_l_reweight = np.exp(-beta * G_l_reweight)
+        N_l = calc.x_l
+        N_avg = np.average(N_l, weights=p_l_reweight)
+        N_var = np.average((N_l - N_avg) ** 2, weights=p_l_reweight)
+        N_avg_vals[i] = N_avg
+        N_var_vals[i] = N_var
+
+    return N_avg_vals, N_var_vals

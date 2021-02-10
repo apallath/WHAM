@@ -1102,7 +1102,7 @@ struct __pyx_opt_args_4WHAM_7binless_6Calc1D_self_consistent_solver;
  *         return G_l, g_i, res.success
  * 
  *     cpdef self_consistent_solver(self, np.ndarray x_l, np.ndarray N_i, np.ndarray W_il,             # <<<<<<<<<<<<<<
- *                                  np.ndarray g_i=np.zeros(1), float tol=1e-7, int maxiter=100000, int logevery=0):
+ *                                  np.ndarray g_i=np.zeros(1), float tol=1e-7, int maxiter=100000, int logevery=100000000):
  *         """Computes optimal parameters g_i by solving the coupled MBAR equations self-consistently
  */
 struct __pyx_opt_args_4WHAM_7binless_6Calc1D_self_consistent_solver {
@@ -2144,6 +2144,7 @@ static PyObject *__pyx_tp_new_4WHAM_7binless_Calc1D(PyTypeObject *t, PyObject *a
 static PyObject *__pyx_int_0;
 static PyObject *__pyx_int_1;
 static PyObject *__pyx_int_2;
+static PyObject *__pyx_int_100000000;
 static PyObject *__pyx_int_neg_1;
 static PyArrayObject *__pyx_k__3;
 static PyObject *__pyx_slice_;
@@ -2615,7 +2616,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_2NLL(CYTHON_UNUSED struct __pyx
  * 
  *             return A             # <<<<<<<<<<<<<<
  * 
- *     def _min_callback(self, g_i, args, logevery=0):
+ *     def _min_callback(self, g_i, args, logevery=100000000):
  */
           __Pyx_XDECREF(__pyx_r);
           __Pyx_INCREF(__pyx_v_A);
@@ -2757,7 +2758,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_2NLL(CYTHON_UNUSED struct __pyx
 /* "WHAM/binless.pyx":96
  *             return A
  * 
- *     def _min_callback(self, g_i, args, logevery=0):             # <<<<<<<<<<<<<<
+ *     def _min_callback(self, g_i, args, logevery=100000000):             # <<<<<<<<<<<<<<
  *         if self._min_ctr % logevery == 0:
  *             print("{:10d} {:.5f}".format(self._min_ctr, self.NLL(g_i, *args)))
  */
@@ -2777,7 +2778,7 @@ static PyObject *__pyx_pw_4WHAM_7binless_6Calc1D_5_min_callback(PyObject *__pyx_
   {
     static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_g_i,&__pyx_n_s_args,&__pyx_n_s_logevery,0};
     PyObject* values[3] = {0,0,0};
-    values[2] = ((PyObject *)__pyx_int_0);
+    values[2] = ((PyObject *)__pyx_int_100000000);
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
@@ -2860,7 +2861,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_4_min_callback(struct __pyx_obj
 
   /* "WHAM/binless.pyx":97
  * 
- *     def _min_callback(self, g_i, args, logevery=0):
+ *     def _min_callback(self, g_i, args, logevery=100000000):
  *         if self._min_ctr % logevery == 0:             # <<<<<<<<<<<<<<
  *             print("{:10d} {:.5f}".format(self._min_ctr, self.NLL(g_i, *args)))
  *         self._min_ctr += 1
@@ -2878,7 +2879,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_4_min_callback(struct __pyx_obj
   if (__pyx_t_3) {
 
     /* "WHAM/binless.pyx":98
- *     def _min_callback(self, g_i, args, logevery=0):
+ *     def _min_callback(self, g_i, args, logevery=100000000):
  *         if self._min_ctr % logevery == 0:
  *             print("{:10d} {:.5f}".format(self._min_ctr, self.NLL(g_i, *args)))             # <<<<<<<<<<<<<<
  *         self._min_ctr += 1
@@ -2959,7 +2960,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_4_min_callback(struct __pyx_obj
 
     /* "WHAM/binless.pyx":97
  * 
- *     def _min_callback(self, g_i, args, logevery=0):
+ *     def _min_callback(self, g_i, args, logevery=100000000):
  *         if self._min_ctr % logevery == 0:             # <<<<<<<<<<<<<<
  *             print("{:10d} {:.5f}".format(self._min_ctr, self.NLL(g_i, *args)))
  *         self._min_ctr += 1
@@ -2971,14 +2972,14 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_4_min_callback(struct __pyx_obj
  *             print("{:10d} {:.5f}".format(self._min_ctr, self.NLL(g_i, *args)))
  *         self._min_ctr += 1             # <<<<<<<<<<<<<<
  * 
- *     def minimize_NLL_solver(self, x_l, N_i, W_il, g_i=None, opt_method='L-BFGS-B', logevery=0):
+ *     def minimize_NLL_solver(self, x_l, N_i, W_il, g_i=None, opt_method='L-BFGS-B', logevery=100000000):
  */
   __pyx_v_self->_min_ctr = (__pyx_v_self->_min_ctr + 1);
 
   /* "WHAM/binless.pyx":96
  *             return A
  * 
- *     def _min_callback(self, g_i, args, logevery=0):             # <<<<<<<<<<<<<<
+ *     def _min_callback(self, g_i, args, logevery=100000000):             # <<<<<<<<<<<<<<
  *         if self._min_ctr % logevery == 0:
  *             print("{:10d} {:.5f}".format(self._min_ctr, self.NLL(g_i, *args)))
  */
@@ -3005,14 +3006,14 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_4_min_callback(struct __pyx_obj
 /* "WHAM/binless.pyx":101
  *         self._min_ctr += 1
  * 
- *     def minimize_NLL_solver(self, x_l, N_i, W_il, g_i=None, opt_method='L-BFGS-B', logevery=0):             # <<<<<<<<<<<<<<
+ *     def minimize_NLL_solver(self, x_l, N_i, W_il, g_i=None, opt_method='L-BFGS-B', logevery=100000000):             # <<<<<<<<<<<<<<
  *         """Computes optimal g_i by minimizing the negative log-likelihood
  *         for jointly observing the bin counts in the independent windows in the dataset.
  */
 
 /* Python wrapper */
 static PyObject *__pyx_pw_4WHAM_7binless_6Calc1D_7minimize_NLL_solver(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_4WHAM_7binless_6Calc1D_6minimize_NLL_solver[] = "Computes optimal g_i by minimizing the negative log-likelihood\n        for jointly observing the bin counts in the independent windows in the dataset.\n\n        Note:\n            Any optimization method supported by scipy.optimize can be used. L-BFGS-B is used\n            by default. Gradient information required for L-BFGS-B is computed using autograd.\n\n        Args:\n            x_l (ndarray of shape (Ntot,)): Array containing each sample.\n            N_i (ndarray of shape (S,)): Array of total sample counts for the windows\n                0, 1, 2, ..., S-1.\n            W_il (ndarray of shape (S, Ntot)): Array of weights, W_il = -beta * U_i(x_l) for the windows\n                0, 1, 2, ..., S-1.\n            g_i (ndarray of shape (S,)): Total free energy initial guess.\n            opt_method (string): Optimization algorithm to use (default: L-BFGS-B).\n            logevery (int): Interval to log negative log-likelihood (default=0, i.e. no logging).\n\n        Returns:\n            tuple(bG_l, g_i, status)\n                - bG_l (ndarray of shape (Ntot,)): Free energy for each sample point,\n                - g_i (ndarray of shape (S,)): Total free energy for each window,\n                - status (bool): Solution status.\n        ";
+static char __pyx_doc_4WHAM_7binless_6Calc1D_6minimize_NLL_solver[] = "Computes optimal g_i by minimizing the negative log-likelihood\n        for jointly observing the bin counts in the independent windows in the dataset.\n\n        Note:\n            Any optimization method which scipy.optimize supports can be used. L-BFGS-B is used\n            by default. Gradient information required for L-BFGS-B is computed using autograd.\n\n        Args:\n            x_l (ndarray of shape (Ntot,)): Array containing each sample.\n            N_i (ndarray of shape (S,)): Array of total sample counts for the windows\n                0, 1, 2, ..., S-1.\n            W_il (ndarray of shape (S, Ntot)): Array of weights, W_il = -beta * U_i(x_l) for the windows\n                0, 1, 2, ..., S-1.\n            g_i (ndarray of shape (S,)): Total free energy initial guess.\n            opt_method (string): Optimization algorithm to use (default: L-BFGS-B).\n            logevery (int): Interval to log negative log-likelihood (default=100000000, i.e. no logging).\n\n        Returns:\n            tuple(bG_l, g_i, status)\n                - bG_l (ndarray of shape (Ntot,)): Free energy for each sample point,\n                - g_i (ndarray of shape (S,)): Total free energy for each window,\n                - status (bool): Solution status.\n        ";
 static PyObject *__pyx_pw_4WHAM_7binless_6Calc1D_7minimize_NLL_solver(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_x_l = 0;
   PyObject *__pyx_v_N_i = 0;
@@ -3031,7 +3032,7 @@ static PyObject *__pyx_pw_4WHAM_7binless_6Calc1D_7minimize_NLL_solver(PyObject *
     PyObject* values[6] = {0,0,0,0,0,0};
     values[3] = ((PyObject *)Py_None);
     values[4] = ((PyObject *)__pyx_kp_s_L_BFGS_B);
-    values[5] = ((PyObject *)__pyx_int_0);
+    values[5] = ((PyObject *)__pyx_int_100000000);
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
@@ -3514,7 +3515,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_6minimize_NLL_solver(struct __p
   /* "WHAM/binless.pyx":101
  *         self._min_ctr += 1
  * 
- *     def minimize_NLL_solver(self, x_l, N_i, W_il, g_i=None, opt_method='L-BFGS-B', logevery=0):             # <<<<<<<<<<<<<<
+ *     def minimize_NLL_solver(self, x_l, N_i, W_il, g_i=None, opt_method='L-BFGS-B', logevery=100000000):             # <<<<<<<<<<<<<<
  *         """Computes optimal g_i by minimizing the negative log-likelihood
  *         for jointly observing the bin counts in the independent windows in the dataset.
  */
@@ -3543,7 +3544,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_6minimize_NLL_solver(struct __p
  *         return G_l, g_i, res.success
  * 
  *     cpdef self_consistent_solver(self, np.ndarray x_l, np.ndarray N_i, np.ndarray W_il,             # <<<<<<<<<<<<<<
- *                                  np.ndarray g_i=np.zeros(1), float tol=1e-7, int maxiter=100000, int logevery=0):
+ *                                  np.ndarray g_i=np.zeros(1), float tol=1e-7, int maxiter=100000, int logevery=100000000):
  *         """Computes optimal parameters g_i by solving the coupled MBAR equations self-consistently
  */
 
@@ -3552,7 +3553,7 @@ static PyObject *__pyx_f_4WHAM_7binless_6Calc1D_self_consistent_solver(CYTHON_UN
   PyArrayObject *__pyx_v_g_i = __pyx_k__3;
   float __pyx_v_tol = ((float)1e-7);
   int __pyx_v_maxiter = ((int)0x186A0);
-  int __pyx_v_logevery = ((int)0);
+  int __pyx_v_logevery = ((int)0x5F5E100);
   float __pyx_v_EPS;
   int __pyx_v_S;
   CYTHON_UNUSED int __pyx_v_Ntot;
@@ -4365,7 +4366,7 @@ static PyObject *__pyx_f_4WHAM_7binless_6Calc1D_self_consistent_solver(CYTHON_UN
  *         return G_l, g_i, res.success
  * 
  *     cpdef self_consistent_solver(self, np.ndarray x_l, np.ndarray N_i, np.ndarray W_il,             # <<<<<<<<<<<<<<
- *                                  np.ndarray g_i=np.zeros(1), float tol=1e-7, int maxiter=100000, int logevery=0):
+ *                                  np.ndarray g_i=np.zeros(1), float tol=1e-7, int maxiter=100000, int logevery=100000000):
  *         """Computes optimal parameters g_i by solving the coupled MBAR equations self-consistently
  */
 
@@ -4393,7 +4394,7 @@ static PyObject *__pyx_f_4WHAM_7binless_6Calc1D_self_consistent_solver(CYTHON_UN
 
 /* Python wrapper */
 static PyObject *__pyx_pw_4WHAM_7binless_6Calc1D_9self_consistent_solver(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_4WHAM_7binless_6Calc1D_8self_consistent_solver[] = "Computes optimal parameters g_i by solving the coupled MBAR equations self-consistently\n        until convergence. Optimized using Cython.\n\n        Args:\n            x_l (ndarray of shape (Ntot,)): Array containing each sample.\n            N_i (ndarray of shape (S,)): Array of total sample counts for the windows\n                0, 1, 2, ..., S-1.\n            W_il (ndarray of shape (S, Ntot)): Array of weights, W_il = -beta * U_i(x_l) for the windows\n                0, 1, 2, ..., S-1.\n            g_i (ndarray of shape (S,)): Total free energy initial guess.\n            tol (float): Relative tolerance to stop solver iterations at (defaul=1e-7).\n            maxiter (int): Maximum number of iterations to run solver for (default=100000).\n            logevery (int): Interval to log self-consistent solver error (default=0, i.e. no logging).\n\n        Returns:\n            tuple(bG_l, g_i, status)\n                - bG_l (ndarray of shape (Ntot,)): Free energy for each sample point,\n                - g_i (ndarray of shape (S,)): Total free energy for each window,\n                - status (bool): Solution status.\n        ";
+static char __pyx_doc_4WHAM_7binless_6Calc1D_8self_consistent_solver[] = "Computes optimal parameters g_i by solving the coupled MBAR equations self-consistently\n        until convergence. Optimized using Cython.\n\n        Args:\n            x_l (ndarray of shape (Ntot,)): Array containing each sample.\n            N_i (ndarray of shape (S,)): Array of total sample counts for the windows\n                0, 1, 2, ..., S-1.\n            W_il (ndarray of shape (S, Ntot)): Array of weights, W_il = -beta * U_i(x_l) for the windows\n                0, 1, 2, ..., S-1.\n            g_i (ndarray of shape (S,)): Total free energy initial guess.\n            tol (float): Relative tolerance to stop solver iterations at (defaul=1e-7).\n            maxiter (int): Maximum number of iterations to run solver for (default=100000).\n            logevery (int): Interval to log self-consistent solver error (default=100000000, i.e. no logging).\n\n        Returns:\n            tuple(bG_l, g_i, status)\n                - bG_l (ndarray of shape (Ntot,)): Free energy for each sample point,\n                - g_i (ndarray of shape (S,)): Total free energy for each window,\n                - status (bool): Solution status.\n        ";
 static PyObject *__pyx_pw_4WHAM_7binless_6Calc1D_9self_consistent_solver(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_x_l = 0;
   PyArrayObject *__pyx_v_N_i = 0;
@@ -4512,7 +4513,7 @@ static PyObject *__pyx_pw_4WHAM_7binless_6Calc1D_9self_consistent_solver(PyObjec
     if (values[6]) {
       __pyx_v_logevery = __Pyx_PyInt_As_int(values[6]); if (unlikely((__pyx_v_logevery == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 145, __pyx_L3_error)
     } else {
-      __pyx_v_logevery = ((int)0);
+      __pyx_v_logevery = ((int)0x5F5E100);
     }
   }
   goto __pyx_L4_argument_unpacking_done;
@@ -12014,7 +12015,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   /* "WHAM/binless.pyx":145
  * 
  *     cpdef self_consistent_solver(self, np.ndarray x_l, np.ndarray N_i, np.ndarray W_il,
- *                                  np.ndarray g_i=np.zeros(1), float tol=1e-7, int maxiter=100000, int logevery=0):             # <<<<<<<<<<<<<<
+ *                                  np.ndarray g_i=np.zeros(1), float tol=1e-7, int maxiter=100000, int logevery=100000000):             # <<<<<<<<<<<<<<
  *         """Computes optimal parameters g_i by solving the coupled MBAR equations self-consistently
  *         until convergence. Optimized using Cython.
  */
@@ -12033,6 +12034,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitGlobals(void) {
   __pyx_int_0 = PyInt_FromLong(0); if (unlikely(!__pyx_int_0)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_1 = PyInt_FromLong(1); if (unlikely(!__pyx_int_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_2 = PyInt_FromLong(2); if (unlikely(!__pyx_int_2)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_int_100000000 = PyInt_FromLong(100000000L); if (unlikely(!__pyx_int_100000000)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_neg_1 = PyInt_FromLong(-1); if (unlikely(!__pyx_int_neg_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
@@ -12510,7 +12512,7 @@ if (!__Pyx_RefNanny) {
   /* "WHAM/binless.pyx":145
  * 
  *     cpdef self_consistent_solver(self, np.ndarray x_l, np.ndarray N_i, np.ndarray W_il,
- *                                  np.ndarray g_i=np.zeros(1), float tol=1e-7, int maxiter=100000, int logevery=0):             # <<<<<<<<<<<<<<
+ *                                  np.ndarray g_i=np.zeros(1), float tol=1e-7, int maxiter=100000, int logevery=100000000):             # <<<<<<<<<<<<<<
  *         """Computes optimal parameters g_i by solving the coupled MBAR equations self-consistently
  *         until convergence. Optimized using Cython.
  */
@@ -12531,7 +12533,7 @@ if (!__Pyx_RefNanny) {
  *         return G_l, g_i, res.success
  * 
  *     cpdef self_consistent_solver(self, np.ndarray x_l, np.ndarray N_i, np.ndarray W_il,             # <<<<<<<<<<<<<<
- *                                  np.ndarray g_i=np.zeros(1), float tol=1e-7, int maxiter=100000, int logevery=0):
+ *                                  np.ndarray g_i=np.zeros(1), float tol=1e-7, int maxiter=100000, int logevery=100000000):
  *         """Computes optimal parameters g_i by solving the coupled MBAR equations self-consistently
  */
   __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 145, __pyx_L1_error)
@@ -12540,7 +12542,7 @@ if (!__Pyx_RefNanny) {
   /* "WHAM/binless.pyx":145
  * 
  *     cpdef self_consistent_solver(self, np.ndarray x_l, np.ndarray N_i, np.ndarray W_il,
- *                                  np.ndarray g_i=np.zeros(1), float tol=1e-7, int maxiter=100000, int logevery=0):             # <<<<<<<<<<<<<<
+ *                                  np.ndarray g_i=np.zeros(1), float tol=1e-7, int maxiter=100000, int logevery=100000000):             # <<<<<<<<<<<<<<
  *         """Computes optimal parameters g_i by solving the coupled MBAR equations self-consistently
  *         until convergence. Optimized using Cython.
  */

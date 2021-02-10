@@ -4,13 +4,14 @@ Calculates free energy profile of test INDUS data using binless WHAM
 import sys
 import inspect
 import re
+from multiprocessing import Pool
 
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import matplotlib.colors as mcolors
 
-from WHAM.lib import potentials
+from WHAM.lib import timeseries, potentials
 import WHAM.binless
 import WHAM.statistics
 
@@ -19,6 +20,7 @@ matplotlib.use('Agg')
 
 
 def get_test_data():
+    """Returns test data for 1-dimensional WHAM tests"""
     # N* associated with each window
     n_star_win = [30, 25, 20, 15, 10, 5, 0, -5]
     # kappa associated with each window
@@ -63,7 +65,8 @@ def get_test_data():
     return n_star_win, Ntw_win, bin_points, umbrella_win, beta
 
 
-def test_binless_self_consistent():
+def _test_binless_self_consistent():
+    """Tests self consistent solver and starting from a given state"""
     n_star_win, Ntw_win, bin_points, umbrella_win, beta = get_test_data()
 
     # Perform WHAM calculation
@@ -202,7 +205,8 @@ def test_binless_self_consistent():
     assert(np.sum(np.sqrt((betaF_bin - betaF_bin_ref) ** 2)) < 2)
 
 
-def test_binless_log_likelihood():
+def _test_binless_log_likelihood():
+    """Tests log liklihood solver"""
     n_star_win, Ntw_win, bin_points, umbrella_win, beta = get_test_data()
 
     # Perform WHAM calculation
@@ -272,6 +276,92 @@ def test_binless_log_likelihood():
     assert(np.sum(np.sqrt((betaF_bin - betaF_bin_ref) ** 2)) < 2)
 
 
+def test_binless_log_likelihood_phi_ensemble():
+    """Tests reweighting to linear potentials (phi-ensemble), by calculating
+    <Nv> v/s phi and <dNv^2> v/s phi profiles"""
+    n_star_win, Ntw_win, bin_points, umbrella_win, beta = get_test_data()
+
+    # Perform WHAM calculation
+    calc = WHAM.binless.Calc1D()
+
+    betaF_bin, status = calc.compute_betaF_profile(Ntw_win, bin_points, umbrella_win, beta,
+                                                   bin_style='left', solver='log-likelihood',
+                                                   logevery=1)
+    g_i = calc.g_i
+
+    # Optimized?
+    print(status)
+
+    # Useful for debugging:
+    print("Window free energies: ", g_i)
+
+    # phi-ensemble definition
+    phi_vals = np.linspace(0, 10, 101)
+    N_avg_vals, N_var_vals = WHAM.statistics.binless_reweight_phi_ensemble(calc, phi_vals, beta)
+
+    fig, ax = plt.subplots(2, 1, figsize=(8, 10), dpi=300)
+    ax[0].plot(phi_vals, N_avg_vals)
+    ax[0].set_xlabel(r"$\phi$ (kJ/mol)")
+    ax[0].set_ylabel(r"$\langle \tilde{N} \rangle_\phi$")
+
+    ax[1].plot(phi_vals, N_var_vals)
+    ax[1].set_xlabel(r"$\phi$ (kJ/mol)")
+    ax[1].set_ylabel(r"$\langle \delta \tilde{N}^2 \rangle_\phi$")
+
+    plt.savefig("test_out/binless_log_likelihood_phi_ensemble.png")
+
+def boot_worker(boot_worker_idx):
+    n_star_win, Ntw_win, bin_points, umbrella_win, beta = get_test_data()
+
+    phi_vals = np.linspace(0, 10, 101) # phi-ensemble definition
+
+    Ntw_win_boot = timeseries.bootstrap_window_samples(Ntw_win)
+
+    # Perform WHAM calculation
+    calc = WHAM.binless.Calc1D()
+
+    betaF_bin, status = calc.compute_betaF_profile(Ntw_win_boot, bin_points, umbrella_win, beta,
+                                                   bin_style='left', solver='log-likelihood')
+
+    N_avg_vals, N_var_vals = WHAM.statistics.binless_reweight_phi_ensemble(calc, phi_vals, beta)
+
+    return N_avg_vals, N_var_vals
+
+
+def test_bootstrap_binless_log_likelihood_phi_ensemble():
+    """Tests reweighting to linear potentials (phi-ensemble) while calculating
+    error bars using bootstrapping"""
+
+    phi_vals = np.linspace(0, 10, 101) # phi-ensemble definition
+
+    Nboot = 100 # number of bootstrap samples
+
+    with Pool(processes=8) as pool:
+        ret = pool.map(boot_worker, range(Nboot))
+
+    ret = np.array(ret)
+    print(ret.shape)
+
+    N_avg = ret[:, 0, :].mean(axis=0)
+    N_avg_err = ret[:, 0, :].std(axis=0)
+
+    N_var = ret[:, 1, :].mean(axis=0)
+    N_var_err = ret[:, 1, :].std(axis=0)
+
+    fig, ax = plt.subplots(2, 1, figsize=(8, 10), dpi=300)
+    ax[0].plot(phi_vals, N_avg)
+    ax[0].fill_between(phi_vals, N_avg - N_avg_err, N_avg + N_avg_err, alpha=0.5)
+    ax[0].set_xlabel(r"$\phi$ (kJ/mol)")
+    ax[0].set_ylabel(r"$\langle \tilde{N} \rangle_\phi$")
+
+    ax[1].plot(phi_vals, N_var)
+    ax[1].fill_between(phi_vals, N_var - N_var_err, N_var + N_var_err, alpha=0.5)
+    ax[1].set_xlabel(r"$\phi$ (kJ/mol)")
+    ax[1].set_ylabel(r"$\langle \delta \tilde{N}^2 \rangle_\phi$")
+
+    plt.savefig("test_out/binless_bootstrap_log_likelihood_phi_ensemble.png")
+
+
 def get_2D_test_data():
     # N* associated with each window
     n_star_win = [30, 25, 20, 15, 10, 5, 0, -5]
@@ -330,7 +420,7 @@ def get_2D_test_data():
     return n_star_win, Ntw_win, N_win, x_bin_points, y_bin_points, umbrella_win, beta
 
 
-def test_binless_2D_log_likelihood():
+def _test_binless_2D_log_likelihood():
     n_star_win, Ntw_win, N_win, x_bin_points, y_bin_points, umbrella_win, beta = get_2D_test_data()
 
     # Unroll Ntw_win into a single array
@@ -481,7 +571,7 @@ def get_2D_test_data_halfbin():
     return n_star_win, Ntw_win, N_win, x_bin_points, y_bin_points, umbrella_win, beta
 
 
-def test_binless_2D_log_likelihood_halfbin():
+def _test_binless_2D_log_likelihood_halfbin():
     n_star_win, Ntw_win, N_win, x_bin_points, y_bin_points, umbrella_win, beta = get_2D_test_data_halfbin()
 
     # Unroll Ntw_win into a single array

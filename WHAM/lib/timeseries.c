@@ -1029,6 +1029,23 @@ static PyObject* __Pyx_PyInt_AddCObj(PyObject *op1, PyObject *op2, long intval, 
     (inplace ? PyNumber_InPlaceAdd(op1, op2) : PyNumber_Add(op1, op2))
 #endif
 
+/* ListAppend.proto */
+#if CYTHON_USE_PYLIST_INTERNALS && CYTHON_ASSUME_SAFE_MACROS
+static CYTHON_INLINE int __Pyx_PyList_Append(PyObject* list, PyObject* x) {
+    PyListObject* L = (PyListObject*) list;
+    Py_ssize_t len = Py_SIZE(list);
+    if (likely(L->allocated > len) & likely(len > (L->allocated >> 1))) {
+        Py_INCREF(x);
+        PyList_SET_ITEM(list, len, x);
+        __Pyx_SET_SIZE(list, len + 1);
+        return 0;
+    }
+    return PyList_Append(list, x);
+}
+#else
+#define __Pyx_PyList_Append(L,x) PyList_Append(L,x)
+#endif
+
 /* Import.proto */
 static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level);
 
@@ -1146,6 +1163,7 @@ static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_size[] = "size";
 static const char __pyx_k_test[] = "__test__";
+static const char __pyx_k_x_it[] = "x_it";
 static const char __pyx_k_array[] = "array";
 static const char __pyx_k_nlags[] = "nlags";
 static const char __pyx_k_numpy[] = "numpy";
@@ -1154,6 +1172,8 @@ static const char __pyx_k_argmax[] = "argmax";
 static const char __pyx_k_choice[] = "choice";
 static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_random[] = "random";
+static const char __pyx_k_x_it_b[] = "x_it_b";
+static const char __pyx_k_replace[] = "replace";
 static const char __pyx_k_multiply[] = "multiply";
 static const char __pyx_k_stattools[] = "stattools";
 static const char __pyx_k_acf_cross_point[] = "acf_cross_point";
@@ -1162,6 +1182,7 @@ static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_WHAM_lib_timeseries[] = "WHAM.lib.timeseries";
 static const char __pyx_k_WHAM_lib_timeseries_pyx[] = "WHAM/lib/timeseries.pyx";
 static const char __pyx_k_statisticalInefficiency[] = "statisticalInefficiency";
+static const char __pyx_k_bootstrap_window_samples[] = "bootstrap_window_samples";
 static const char __pyx_k_bootstrap_independent_sample[] = "bootstrap_independent_sample";
 static const char __pyx_k_Defines_functions_for_dealing_wi[] = "Defines functions for dealing with correlated timeseries data.";
 static PyObject *__pyx_n_s_T;
@@ -1172,6 +1193,7 @@ static PyObject *__pyx_n_s_acf_cross_point;
 static PyObject *__pyx_n_s_argmax;
 static PyObject *__pyx_n_s_array;
 static PyObject *__pyx_n_s_bootstrap_independent_sample;
+static PyObject *__pyx_n_s_bootstrap_window_samples;
 static PyObject *__pyx_n_s_choice;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_fft;
@@ -1185,6 +1207,7 @@ static PyObject *__pyx_n_s_np;
 static PyObject *__pyx_n_s_numpy;
 static PyObject *__pyx_n_s_random;
 static PyObject *__pyx_n_s_range;
+static PyObject *__pyx_n_s_replace;
 static PyObject *__pyx_n_s_size;
 static PyObject *__pyx_n_s_statisticalInefficiency;
 static PyObject *__pyx_n_s_statsmodels_tsa;
@@ -1194,15 +1217,20 @@ static PyObject *__pyx_n_s_t;
 static PyObject *__pyx_n_s_tau;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_x;
+static PyObject *__pyx_n_s_x_it;
+static PyObject *__pyx_n_s_x_it_b;
 static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_statisticalInefficiency(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x, PyObject *__pyx_v_fft); /* proto */
 static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_2bootstrap_independent_sample(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x, PyObject *__pyx_v_g); /* proto */
+static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_4bootstrap_window_samples(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x_it, PyObject *__pyx_v_g); /* proto */
 static PyObject *__pyx_int_0;
 static PyObject *__pyx_int_1;
 static PyObject *__pyx_int_2;
 static PyObject *__pyx_tuple_;
 static PyObject *__pyx_tuple__3;
+static PyObject *__pyx_tuple__5;
 static PyObject *__pyx_codeobj__2;
 static PyObject *__pyx_codeobj__4;
+static PyObject *__pyx_codeobj__6;
 /* Late includes */
 
 /* "WHAM/lib/timeseries.pyx":6
@@ -1711,7 +1739,7 @@ static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_2bootstrap_independent_sample(
  *     if g is None:
  *         g = statisticalInefficiency(x)             # <<<<<<<<<<<<<<
  * 
- *     return np.random.choice(x, size=int(len(x) / g))
+ *     return np.random.choice(x, size=int(len(x) / g), replace=True)
  */
     __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_statisticalInefficiency); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 38, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
@@ -1745,7 +1773,9 @@ static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_2bootstrap_independent_sample(
   /* "WHAM/lib/timeseries.pyx":40
  *         g = statisticalInefficiency(x)
  * 
- *     return np.random.choice(x, size=int(len(x) / g))             # <<<<<<<<<<<<<<
+ *     return np.random.choice(x, size=int(len(x) / g), replace=True)             # <<<<<<<<<<<<<<
+ * 
+ * 
  */
   __Pyx_XDECREF(__pyx_r);
   __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 40, __pyx_L1_error)
@@ -1761,7 +1791,7 @@ static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_2bootstrap_independent_sample(
   __Pyx_INCREF(__pyx_v_x);
   __Pyx_GIVEREF(__pyx_v_x);
   PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_v_x);
-  __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_6 = PyObject_Length(__pyx_v_x); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 40, __pyx_L1_error)
   __pyx_t_7 = PyInt_FromSsize_t(__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 40, __pyx_L1_error)
@@ -1774,6 +1804,7 @@ static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_2bootstrap_independent_sample(
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
   if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_size, __pyx_t_7) < 0) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_replace, Py_True) < 0) __PYX_ERR(0, 40, __pyx_L1_error)
   __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, __pyx_t_5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 40, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -1802,6 +1833,265 @@ static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_2bootstrap_independent_sample(
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_g);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "WHAM/lib/timeseries.pyx":43
+ * 
+ * 
+ * def bootstrap_window_samples(x_it, g=None):             # <<<<<<<<<<<<<<
+ *     """Draws a bootstrap sample from each window.
+ * 
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_4WHAM_3lib_10timeseries_5bootstrap_window_samples(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_4WHAM_3lib_10timeseries_4bootstrap_window_samples[] = "Draws a bootstrap sample from each window.\n\n    Args:\n        x_it (list): Nested list of length S, x_it[i] is an array containing timeseries\n            data from the i'th window.\n        g (float): Statistical inefficiency (default=None).\n\n    Returns:\n        x_it_b (list): Nested list of length S, x_it_b[i] is a 1-dimensional array of\n            length N/g containing random samples drawn from x_it[i] (with replacement).";
+static PyMethodDef __pyx_mdef_4WHAM_3lib_10timeseries_5bootstrap_window_samples = {"bootstrap_window_samples", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_4WHAM_3lib_10timeseries_5bootstrap_window_samples, METH_VARARGS|METH_KEYWORDS, __pyx_doc_4WHAM_3lib_10timeseries_4bootstrap_window_samples};
+static PyObject *__pyx_pw_4WHAM_3lib_10timeseries_5bootstrap_window_samples(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+  PyObject *__pyx_v_x_it = 0;
+  PyObject *__pyx_v_g = 0;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("bootstrap_window_samples (wrapper)", 0);
+  {
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_x_it,&__pyx_n_s_g,0};
+    PyObject* values[2] = {0,0};
+    values[1] = ((PyObject *)Py_None);
+    if (unlikely(__pyx_kwds)) {
+      Py_ssize_t kw_args;
+      const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
+      switch (pos_args) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        CYTHON_FALLTHROUGH;
+        case  0: break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+      kw_args = PyDict_Size(__pyx_kwds);
+      switch (pos_args) {
+        case  0:
+        if (likely((values[0] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_x_it)) != 0)) kw_args--;
+        else goto __pyx_L5_argtuple_error;
+        CYTHON_FALLTHROUGH;
+        case  1:
+        if (kw_args > 0) {
+          PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_g);
+          if (value) { values[1] = value; kw_args--; }
+        }
+      }
+      if (unlikely(kw_args > 0)) {
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "bootstrap_window_samples") < 0)) __PYX_ERR(0, 43, __pyx_L3_error)
+      }
+    } else {
+      switch (PyTuple_GET_SIZE(__pyx_args)) {
+        case  2: values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
+        CYTHON_FALLTHROUGH;
+        case  1: values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
+        break;
+        default: goto __pyx_L5_argtuple_error;
+      }
+    }
+    __pyx_v_x_it = values[0];
+    __pyx_v_g = values[1];
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L5_argtuple_error:;
+  __Pyx_RaiseArgtupleInvalid("bootstrap_window_samples", 0, 1, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 43, __pyx_L3_error)
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("WHAM.lib.timeseries.bootstrap_window_samples", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_4WHAM_3lib_10timeseries_4bootstrap_window_samples(__pyx_self, __pyx_v_x_it, __pyx_v_g);
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_4WHAM_3lib_10timeseries_4bootstrap_window_samples(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x_it, PyObject *__pyx_v_g) {
+  PyObject *__pyx_v_x_it_b = NULL;
+  PyObject *__pyx_v_x = NULL;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  Py_ssize_t __pyx_t_2;
+  PyObject *(*__pyx_t_3)(PyObject *);
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  int __pyx_t_7;
+  PyObject *__pyx_t_8 = NULL;
+  int __pyx_t_9;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("bootstrap_window_samples", 0);
+
+  /* "WHAM/lib/timeseries.pyx":54
+ *         x_it_b (list): Nested list of length S, x_it_b[i] is a 1-dimensional array of
+ *             length N/g containing random samples drawn from x_it[i] (with replacement)."""
+ *     x_it_b = []             # <<<<<<<<<<<<<<
+ *     for x in x_it:
+ *         x_it_b.append(bootstrap_independent_sample(x, g))
+ */
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 54, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_v_x_it_b = ((PyObject*)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "WHAM/lib/timeseries.pyx":55
+ *             length N/g containing random samples drawn from x_it[i] (with replacement)."""
+ *     x_it_b = []
+ *     for x in x_it:             # <<<<<<<<<<<<<<
+ *         x_it_b.append(bootstrap_independent_sample(x, g))
+ *     return x_it_b
+ */
+  if (likely(PyList_CheckExact(__pyx_v_x_it)) || PyTuple_CheckExact(__pyx_v_x_it)) {
+    __pyx_t_1 = __pyx_v_x_it; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
+    __pyx_t_3 = NULL;
+  } else {
+    __pyx_t_2 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_x_it); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 55, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_3 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 55, __pyx_L1_error)
+  }
+  for (;;) {
+    if (likely(!__pyx_t_3)) {
+      if (likely(PyList_CheckExact(__pyx_t_1))) {
+        if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_1)) break;
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 55, __pyx_L1_error)
+        #else
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 55, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_4);
+        #endif
+      } else {
+        if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
+        #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 55, __pyx_L1_error)
+        #else
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 55, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_4);
+        #endif
+      }
+    } else {
+      __pyx_t_4 = __pyx_t_3(__pyx_t_1);
+      if (unlikely(!__pyx_t_4)) {
+        PyObject* exc_type = PyErr_Occurred();
+        if (exc_type) {
+          if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
+          else __PYX_ERR(0, 55, __pyx_L1_error)
+        }
+        break;
+      }
+      __Pyx_GOTREF(__pyx_t_4);
+    }
+    __Pyx_XDECREF_SET(__pyx_v_x, __pyx_t_4);
+    __pyx_t_4 = 0;
+
+    /* "WHAM/lib/timeseries.pyx":56
+ *     x_it_b = []
+ *     for x in x_it:
+ *         x_it_b.append(bootstrap_independent_sample(x, g))             # <<<<<<<<<<<<<<
+ *     return x_it_b
+ */
+    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_bootstrap_independent_sample); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 56, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __pyx_t_6 = NULL;
+    __pyx_t_7 = 0;
+    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_5))) {
+      __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_5);
+      if (likely(__pyx_t_6)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_5);
+        __Pyx_INCREF(__pyx_t_6);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_5, function);
+        __pyx_t_7 = 1;
+      }
+    }
+    #if CYTHON_FAST_PYCALL
+    if (PyFunction_Check(__pyx_t_5)) {
+      PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_v_x, __pyx_v_g};
+      __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 56, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_GOTREF(__pyx_t_4);
+    } else
+    #endif
+    #if CYTHON_FAST_PYCCALL
+    if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
+      PyObject *__pyx_temp[3] = {__pyx_t_6, __pyx_v_x, __pyx_v_g};
+      __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 2+__pyx_t_7); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 56, __pyx_L1_error)
+      __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+      __Pyx_GOTREF(__pyx_t_4);
+    } else
+    #endif
+    {
+      __pyx_t_8 = PyTuple_New(2+__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 56, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_8);
+      if (__pyx_t_6) {
+        __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6); __pyx_t_6 = NULL;
+      }
+      __Pyx_INCREF(__pyx_v_x);
+      __Pyx_GIVEREF(__pyx_v_x);
+      PyTuple_SET_ITEM(__pyx_t_8, 0+__pyx_t_7, __pyx_v_x);
+      __Pyx_INCREF(__pyx_v_g);
+      __Pyx_GIVEREF(__pyx_v_g);
+      PyTuple_SET_ITEM(__pyx_t_8, 1+__pyx_t_7, __pyx_v_g);
+      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 56, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_4);
+      __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
+    }
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_t_9 = __Pyx_PyList_Append(__pyx_v_x_it_b, __pyx_t_4); if (unlikely(__pyx_t_9 == ((int)-1))) __PYX_ERR(0, 56, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+
+    /* "WHAM/lib/timeseries.pyx":55
+ *             length N/g containing random samples drawn from x_it[i] (with replacement)."""
+ *     x_it_b = []
+ *     for x in x_it:             # <<<<<<<<<<<<<<
+ *         x_it_b.append(bootstrap_independent_sample(x, g))
+ *     return x_it_b
+ */
+  }
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "WHAM/lib/timeseries.pyx":57
+ *     for x in x_it:
+ *         x_it_b.append(bootstrap_independent_sample(x, g))
+ *     return x_it_b             # <<<<<<<<<<<<<<
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __Pyx_INCREF(__pyx_v_x_it_b);
+  __pyx_r = __pyx_v_x_it_b;
+  goto __pyx_L0;
+
+  /* "WHAM/lib/timeseries.pyx":43
+ * 
+ * 
+ * def bootstrap_window_samples(x_it, g=None):             # <<<<<<<<<<<<<<
+ *     """Draws a bootstrap sample from each window.
+ * 
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_8);
+  __Pyx_AddTraceback("WHAM.lib.timeseries.bootstrap_window_samples", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_x_it_b);
+  __Pyx_XDECREF(__pyx_v_x);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
@@ -1861,6 +2151,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_argmax, __pyx_k_argmax, sizeof(__pyx_k_argmax), 0, 0, 1, 1},
   {&__pyx_n_s_array, __pyx_k_array, sizeof(__pyx_k_array), 0, 0, 1, 1},
   {&__pyx_n_s_bootstrap_independent_sample, __pyx_k_bootstrap_independent_sample, sizeof(__pyx_k_bootstrap_independent_sample), 0, 0, 1, 1},
+  {&__pyx_n_s_bootstrap_window_samples, __pyx_k_bootstrap_window_samples, sizeof(__pyx_k_bootstrap_window_samples), 0, 0, 1, 1},
   {&__pyx_n_s_choice, __pyx_k_choice, sizeof(__pyx_k_choice), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_fft, __pyx_k_fft, sizeof(__pyx_k_fft), 0, 0, 1, 1},
@@ -1874,6 +2165,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_numpy, __pyx_k_numpy, sizeof(__pyx_k_numpy), 0, 0, 1, 1},
   {&__pyx_n_s_random, __pyx_k_random, sizeof(__pyx_k_random), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
+  {&__pyx_n_s_replace, __pyx_k_replace, sizeof(__pyx_k_replace), 0, 0, 1, 1},
   {&__pyx_n_s_size, __pyx_k_size, sizeof(__pyx_k_size), 0, 0, 1, 1},
   {&__pyx_n_s_statisticalInefficiency, __pyx_k_statisticalInefficiency, sizeof(__pyx_k_statisticalInefficiency), 0, 0, 1, 1},
   {&__pyx_n_s_statsmodels_tsa, __pyx_k_statsmodels_tsa, sizeof(__pyx_k_statsmodels_tsa), 0, 0, 1, 1},
@@ -1883,6 +2175,8 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_tau, __pyx_k_tau, sizeof(__pyx_k_tau), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
   {&__pyx_n_s_x, __pyx_k_x, sizeof(__pyx_k_x), 0, 0, 1, 1},
+  {&__pyx_n_s_x_it, __pyx_k_x_it, sizeof(__pyx_k_x_it), 0, 0, 1, 1},
+  {&__pyx_n_s_x_it_b, __pyx_k_x_it_b, sizeof(__pyx_k_x_it_b), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
@@ -1919,6 +2213,18 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
   __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_WHAM_lib_timeseries_pyx, __pyx_n_s_bootstrap_independent_sample, 26, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 26, __pyx_L1_error)
+
+  /* "WHAM/lib/timeseries.pyx":43
+ * 
+ * 
+ * def bootstrap_window_samples(x_it, g=None):             # <<<<<<<<<<<<<<
+ *     """Draws a bootstrap sample from each window.
+ * 
+ */
+  __pyx_tuple__5 = PyTuple_Pack(4, __pyx_n_s_x_it, __pyx_n_s_g, __pyx_n_s_x_it_b, __pyx_n_s_x); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__5);
+  __Pyx_GIVEREF(__pyx_tuple__5);
+  __pyx_codeobj__6 = (PyObject*)__Pyx_PyCode_New(2, 0, 4, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__5, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_WHAM_lib_timeseries_pyx, __pyx_n_s_bootstrap_window_samples, 43, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__6)) __PYX_ERR(0, 43, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -2257,6 +2563,18 @@ if (!__Pyx_RefNanny) {
   __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_4WHAM_3lib_10timeseries_3bootstrap_independent_sample, NULL, __pyx_n_s_WHAM_lib_timeseries); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_bootstrap_independent_sample, __pyx_t_2) < 0) __PYX_ERR(0, 26, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+
+  /* "WHAM/lib/timeseries.pyx":43
+ * 
+ * 
+ * def bootstrap_window_samples(x_it, g=None):             # <<<<<<<<<<<<<<
+ *     """Draws a bootstrap sample from each window.
+ * 
+ */
+  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_4WHAM_3lib_10timeseries_5bootstrap_window_samples, NULL, __pyx_n_s_WHAM_lib_timeseries); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_bootstrap_window_samples, __pyx_t_2) < 0) __PYX_ERR(0, 43, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "WHAM/lib/timeseries.pyx":1

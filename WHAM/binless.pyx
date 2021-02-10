@@ -93,17 +93,17 @@ cdef class Calc1D:
 
             return A
 
-    def _min_callback(self, g_i, args, logevery=0):
+    def _min_callback(self, g_i, args, logevery=100000000):
         if self._min_ctr % logevery == 0:
             print("{:10d} {:.5f}".format(self._min_ctr, self.NLL(g_i, *args)))
         self._min_ctr += 1
 
-    def minimize_NLL_solver(self, x_l, N_i, W_il, g_i=None, opt_method='L-BFGS-B', logevery=0):
+    def minimize_NLL_solver(self, x_l, N_i, W_il, g_i=None, opt_method='L-BFGS-B', logevery=100000000):
         """Computes optimal g_i by minimizing the negative log-likelihood
         for jointly observing the bin counts in the independent windows in the dataset.
 
         Note:
-            Any optimization method supported by scipy.optimize can be used. L-BFGS-B is used
+            Any optimization method which scipy.optimize supports can be used. L-BFGS-B is used
             by default. Gradient information required for L-BFGS-B is computed using autograd.
 
         Args:
@@ -114,7 +114,7 @@ cdef class Calc1D:
                 0, 1, 2, ..., S-1.
             g_i (ndarray of shape (S,)): Total free energy initial guess.
             opt_method (string): Optimization algorithm to use (default: L-BFGS-B).
-            logevery (int): Interval to log negative log-likelihood (default=0, i.e. no logging).
+            logevery (int): Interval to log negative log-likelihood (default=100000000, i.e. no logging).
 
         Returns:
             tuple(bG_l, g_i, status)
@@ -142,7 +142,7 @@ cdef class Calc1D:
         return G_l, g_i, res.success
 
     cpdef self_consistent_solver(self, np.ndarray x_l, np.ndarray N_i, np.ndarray W_il,
-                                 np.ndarray g_i=np.zeros(1), float tol=1e-7, int maxiter=100000, int logevery=0):
+                                 np.ndarray g_i=np.zeros(1), float tol=1e-7, int maxiter=100000, int logevery=100000000):
         """Computes optimal parameters g_i by solving the coupled MBAR equations self-consistently
         until convergence. Optimized using Cython.
 
@@ -155,7 +155,7 @@ cdef class Calc1D:
             g_i (ndarray of shape (S,)): Total free energy initial guess.
             tol (float): Relative tolerance to stop solver iterations at (defaul=1e-7).
             maxiter (int): Maximum number of iterations to run solver for (default=100000).
-            logevery (int): Interval to log self-consistent solver error (default=0, i.e. no logging).
+            logevery (int): Interval to log self-consistent solver error (default=100000000, i.e. no logging).
 
         Returns:
             tuple(bG_l, g_i, status)
