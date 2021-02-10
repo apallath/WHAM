@@ -65,7 +65,7 @@ def get_test_data():
     return n_star_win, Ntw_win, bin_points, umbrella_win, beta
 
 
-def _test_binless_self_consistent():
+def test_binless_self_consistent():
     """Tests self consistent solver and starting from a given state"""
     n_star_win, Ntw_win, bin_points, umbrella_win, beta = get_test_data()
 
@@ -205,7 +205,7 @@ def _test_binless_self_consistent():
     assert(np.sum(np.sqrt((betaF_bin - betaF_bin_ref) ** 2)) < 2)
 
 
-def _test_binless_log_likelihood():
+def test_binless_log_likelihood():
     """Tests log liklihood solver"""
     n_star_win, Ntw_win, bin_points, umbrella_win, beta = get_test_data()
 
@@ -420,7 +420,7 @@ def get_2D_test_data():
     return n_star_win, Ntw_win, N_win, x_bin_points, y_bin_points, umbrella_win, beta
 
 
-def _test_binless_2D_log_likelihood():
+def test_binless_2D_log_likelihood():
     n_star_win, Ntw_win, N_win, x_bin_points, y_bin_points, umbrella_win, beta = get_2D_test_data()
 
     # Unroll Ntw_win into a single array
@@ -571,7 +571,7 @@ def get_2D_test_data_halfbin():
     return n_star_win, Ntw_win, N_win, x_bin_points, y_bin_points, umbrella_win, beta
 
 
-def _test_binless_2D_log_likelihood_halfbin():
+def test_binless_2D_log_likelihood_halfbin():
     n_star_win, Ntw_win, N_win, x_bin_points, y_bin_points, umbrella_win, beta = get_2D_test_data_halfbin()
 
     # Unroll Ntw_win into a single array
