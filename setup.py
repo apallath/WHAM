@@ -26,7 +26,7 @@ ext_modules = [Extension("WHAM.binned", ["WHAM/binned.pyx"],
 
 setup(
     name='WHAM',
-    version='0.0',
+    version='0.1',
     packages=['WHAM'],
     cmdclass={'build_ext': build_ext},
     ext_modules=ext_modules

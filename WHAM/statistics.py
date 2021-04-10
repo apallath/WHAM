@@ -1,8 +1,8 @@
-"""Functions for checking consistency of WHAM calculations.
-"""
+"""Functions for checking consistency of WHAM calculations."""
 import numpy as np
 from WHAM.lib.timeseries import statisticalInefficiency
 from WHAM.lib import potentials
+
 
 def D_KL(betaF_P, betaF_Q, delta_x_bin):
     """Computes the KL divergence between two probability distributions P
@@ -24,6 +24,7 @@ def D_KL(betaF_P, betaF_Q, delta_x_bin):
 # Binless WHAM checks         #
 ###############################
 
+
 def win_betaF(x_it, x_bin, u_i, beta, bin_style='left', scale_stat_ineff=False):
     """Computes free energy profiles for each window.
 
@@ -41,7 +42,6 @@ def win_betaF(x_it, x_bin, u_i, beta, bin_style='left', scale_stat_ineff=False):
             - betaF_il (np.array): 2-D array of biased free energies for each window, of shape (S, M)
             - delta_x_bin (np.array): Bin interval
     """
-
     np.errstate(divide='ignore')
 
     S = len(u_i)
@@ -81,10 +81,6 @@ def win_betaF(x_it, x_bin, u_i, beta, bin_style='left', scale_stat_ineff=False):
 
     N_i = n_il.sum(axis=1)
     M_l = n_il.sum(axis=0)
-
-    # Raise exception if any of the bins have no data points
-    if np.any(M_l == 0):
-         raise Exception("Some bins are empty. Check for no-overlap regions or adjust binning so that no bins remain empty.")
 
     # Compute biased free energy profiles for each window
     betaF_il = np.zeros((S, M))
@@ -153,6 +149,7 @@ def binless_KLD_reweighted_win_betaF(calc, x_it, x_bin, u_i, beta, bin_style='le
         D_KL_i[i] = D_KL(betaF_il[i, indices], betaF_il_reweight[i, indices], delta_x_bin[indices])
 
     return D_KL_i
+
 
 ###############################
 # Binless WHAM phi-ensemble   #

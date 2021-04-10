@@ -1,6 +1,7 @@
 """Defines functions for dealing with correlated timeseries data."""
 import numpy as np
 from statsmodels.tsa import stattools
+import pymbar.timeseries
 
 
 def statisticalInefficiency(x, fft=True):
@@ -35,7 +36,8 @@ def bootstrap_independent_sample(x, g=None):
     Returns:
         y (ndarray): 1-dimensional array of length N/g containing random samples drawn from x (with replacement)."""
     if g is None:
-        g = statisticalInefficiency(x)
+        # Note: change to custom statisticalInefficiency function later.
+        g = pymbar.timeseries.statisticalInefficiency(x)
 
     return np.random.choice(x, size=int(len(x) / g), replace=True)
 

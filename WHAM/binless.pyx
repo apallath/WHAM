@@ -69,6 +69,20 @@ cdef class Calc1D:
         self.G_l = None
         self.g_i = None
 
+    ########################################
+    # IMP: Required for serialization.     #
+    # Removing this will break pickling    #
+    ########################################
+
+    def __getstate__(self):
+        return (self.x_l, self.G_l, self.g_i)
+
+    def __setstate__(self, state):
+        x_l, G_l, g_i = state
+        self.x_l = x_l
+        self.G_l = G_l
+        self.g_i = g_i
+
     def NLL(self, g_i, x_l, N_i, W_il):
         """Computes the negative log-likelihood objective function to minimize.
 
