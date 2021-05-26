@@ -447,7 +447,7 @@ acting on the i’th window.</p></li>
 for jointly observing the bin counts in the independent windows in the dataset.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Any optimization method supported by scipy.optimize can be used. L-BFGS-B is used
+<p>Any optimization method which scipy.optimize supports can be used. L-BFGS-B is used
 by default. Gradient information required for L-BFGS-B is computed using autograd.</p>
 </div>
 <dl class="field-list simple">
@@ -460,7 +460,7 @@ by default. Gradient information required for L-BFGS-B is computed using autogra
 0, 1, 2, …, S-1.</p></li>
 <li><p><strong>g_i</strong> (<em>ndarray of shape</em><em> (</em><em>S</em><em>,</em><em>)</em>) – Total free energy initial guess.</p></li>
 <li><p><strong>opt_method</strong> (<em>string</em>) – Optimization algorithm to use (default: L-BFGS-B).</p></li>
-<li><p><strong>logevery</strong> (<em>int</em>) – Interval to log negative log-likelihood (default=0, i.e. no logging).</p></li>
+<li><p><strong>logevery</strong> (<em>int</em>) – Interval to log negative log-likelihood (default=100000000, i.e. no logging).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -492,9 +492,6 @@ computing weights through <cite>compute_point_weights</cite>.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>beta</strong> – beta: beta, in inverse units to the units of u_i(x).</p></li>
 <li><p><strong>u_bias</strong> – Biasing function applied to order parameter x_l.</p></li>
-<li><p><strong>g_i_bias</strong> – Total window free energy for window corresponding to biasing
-function. This determines how much to shift free energy profile down to match
-window. Default = 0, which means no shifting.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -522,7 +519,7 @@ until convergence. Optimized using Cython.</p>
 <li><p><strong>g_i</strong> (<em>ndarray of shape</em><em> (</em><em>S</em><em>,</em><em>)</em>) – Total free energy initial guess.</p></li>
 <li><p><strong>tol</strong> (<em>float</em>) – Relative tolerance to stop solver iterations at (defaul=1e-7).</p></li>
 <li><p><strong>maxiter</strong> (<em>int</em>) – Maximum number of iterations to run solver for (default=100000).</p></li>
-<li><p><strong>logevery</strong> (<em>int</em>) – Interval to log self-consistent solver error (default=0, i.e. no logging).</p></li>
+<li><p><strong>logevery</strong> (<em>int</em>) – Interval to log self-consistent solver error (default=100000000, i.e. no logging).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -730,10 +727,6 @@ until convergence. Optimized using Cython.</p>
 <div class="section" id="module-WHAM.statistics">
 <span id="wham-statistics-module"></span><h2>WHAM.statistics module<a class="headerlink" href="#module-WHAM.statistics" title="Permalink to this headline">¶</a></h2>
 <p>Functions for checking consistency of WHAM calculations.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Supports only binless WHAM, for now.</p>
-</div>
 <dl class="py function">
 <dt id="WHAM.statistics.D_KL">
 <code class="sig-prename descclassname">WHAM.statistics.</code><code class="sig-name descname">D_KL</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">betaF_P</span></em>, <em class="sig-param"><span class="n">betaF_Q</span></em>, <em class="sig-param"><span class="n">delta_x_bin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.statistics.D_KL" title="Permalink to this definition">¶</a></dt>
@@ -777,6 +770,30 @@ acting on the i’th window.</p></li>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>D_KL_i (ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="WHAM.statistics.binless_reweight_phi_ensemble">
+<code class="sig-prename descclassname">WHAM.statistics.</code><code class="sig-name descname">binless_reweight_phi_ensemble</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">calc</span></em>, <em class="sig-param"><span class="n">phi_vals</span></em>, <em class="sig-param"><span class="n">beta</span></em><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.statistics.binless_reweight_phi_ensemble" title="Permalink to this definition">¶</a></dt>
+<dd><p>Computes &lt;x_l&gt; and &lt;dx_l^2&gt; v/s phi by reweighting the underlying free energy profile
+in calc to the phi-ensemble specified by phi_vals and beta.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>calc</strong> (<a class="reference internal" href="#WHAM.binless.Calc1D" title="WHAM.binless.Calc1D"><em>WHAM.binless.Calc1D</em></a>) – Binless Calc1D object, with weights pre-computed.</p></li>
+<li><p><strong>phi_vals</strong> (<em>ndarray</em>) – Array of phi values to compute &lt;x_l&gt; at, units of phi in kJ/mol.</p></li>
+<li><p><strong>beta</strong> – beta, in inverse units to the units of u_i(x).</p></li>
+<li><p><strong>bin_style</strong> (<em>string</em>) – ‘left’ or ‘center’.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Array containing &lt;x_l&gt; corresponding to each value of phi.
+N_var_vals (ndarray): Array containing &lt;dx_l^2&gt; corresponding to each value of phi.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>N_avg_vals (ndarray)</p>
 </dd>
 </dl>
 </dd></dl>
