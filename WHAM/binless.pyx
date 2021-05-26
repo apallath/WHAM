@@ -285,7 +285,7 @@ cdef class Calc1D:
     ###############################
     # Post processing             #
     ###############################
-    def reweight(self, beta, u_bias, g_i_bias=0):
+    def reweight(self, beta, u_bias):
         """Reweights sample weights to a biased ensemble. Does not change computed
         WHAM weights.
 
@@ -296,9 +296,6 @@ cdef class Calc1D:
         Args:
             beta: beta: beta, in inverse units to the units of u_i(x).
             u_bias: Biasing function applied to order parameter x_l.
-            g_i_bias: Total window free energy for window corresponding to biasing
-                function. This determines how much to shift free energy profile down to match
-                window. Default = 0, which means no shifting.
 
         Returns:
             G_l_bias (ndarray): Biased weights for each data point x_l.
@@ -306,7 +303,13 @@ cdef class Calc1D:
         self.check_data()
         self.check_weights()
 
-        G_l_bias = self.G_l + beta * u_bias(self.x_l) - g_i_bias
+        # Compute g_bias: total window free energy for applied bias potential
+        w_bias_l = -beta * u_bias(self.x_l)
+
+        g_bias = -numeric.clogsumexp(w_bias_l - self.G_l)
+
+        G_l_bias = self.G_l + beta * u_bias(self.x_l) - g_bias
+
         return G_l_bias
 
     def bin_betaF_profile(self, x_bin, G_l=None, bin_style='left'):

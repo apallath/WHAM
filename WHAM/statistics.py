@@ -114,7 +114,7 @@ def binless_reweighted_win_betaF(calc, x_bin, u_i, beta, bin_style='left'):
 
     betaF_il_reweight = np.zeros((S, M))
     for i in range(S):
-        G_l_reweight = calc.reweight(beta, u_i[i], calc.g_i[i])
+        G_l_reweight = calc.reweight(beta, u_i[i])
         betaF_il_reweight[i, :] = calc.bin_betaF_profile(x_bin, G_l=G_l_reweight, bin_style=bin_style)
 
     return betaF_il_reweight
@@ -177,7 +177,7 @@ def binless_reweight_phi_ensemble(calc, phi_vals, beta):
         u_phi = potentials.linear(phi)
         G_l_reweight = calc.reweight(beta, u_phi)
         # g_i cancels out during ensemble averaging => doesn't matter
-        p_l_reweight = np.exp(-beta * G_l_reweight)
+        p_l_reweight = np.exp(-G_l_reweight)
         N_l = calc.x_l
         N_avg = np.average(N_l, weights=p_l_reweight)
         N_var = np.average((N_l - N_avg) ** 2, weights=p_l_reweight)
