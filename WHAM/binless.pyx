@@ -43,8 +43,8 @@ cdef class Calc1D:
         True
         >>> G_l = calc.G_l
         >>> g_i = calc.g_i
-        >>> betaF_x = calc.bin_betaF_profile(x_l, G_l, x_bin, ...)
-        >>> betaF_xy = calc.bin_2D_betaF_profile(x_l, y_l, G_l, x_bin, y_bin, ...)
+        >>> betaF_x, betaF_x_counts = calc.bin_betaF_profile(x_l, G_l, x_bin, ...)
+        >>> betaF_xy, _ = calc.bin_2D_betaF_profile(x_l, y_l, G_l, x_bin, y_bin, ...)
 
     Attributes:
         x_l (ndarray): 1-dimensional array containing unrolled order parameter
@@ -329,6 +329,7 @@ cdef class Calc1D:
 
         Returns:
             betaF_bin (ndarray): Free energy profile, binned as per x_bin.
+            betaF_bin_counts (ndarray): Bin counts
         """
         self.check_data()
         x_l = self.x_l
@@ -360,8 +361,11 @@ cdef class Calc1D:
         # Construct consensus free energy profiles by constructing weighted histogram
         # using individual point weights G_l obtained from solver
         betaF_bin = np.zeros(M)
+        betaF_bin_counts = np.zeros(M)
+
         for b in range(1, M + 1):
             sel_mask = np.logical_and(x_l >= bin_edges[b - 1], x_l < bin_edges[b])
+            betaF_bin_counts[b - 1] = np.sum(sel_mask)
 
             if np.any(sel_mask != False):
                 G_l_bin = G_l[sel_mask]
@@ -369,7 +373,7 @@ cdef class Calc1D:
             else:
                 betaF_bin[b - 1] = np.inf
 
-        return betaF_bin
+        return betaF_bin, betaF_bin_counts
 
     def bin_2D_betaF_profile(self, y_l, x_bin, y_bin, G_l=None, x_bin_style='left', y_bin_style='left'):
         """Bins weights corresponding to each sample into a 2D free energy
@@ -391,8 +395,9 @@ cdef class Calc1D:
             y_bin_style (string): 'left' or 'center'.
 
         Returns:
-            tuple(betaF_bin, tuple(delta_x_bin, delta_y_bin))
+            tuple(betaF_bin, tuple(betaF_bin_counts, delta_x_bin, delta_y_bin))
                 - betaF_bin (ndarray): 2-D free energy profile of shape (M_x, M_y), binned as per x_bin (1st dim) and y-bin (2nd dim).
+                - betaF_bin_counts (ndarray): 2-D bin counts of shape (M_x, M_y)
                 - delta_x_bin: Array of length M_x containing bin intervals along x.
                 - delta_y_bin: Array of length M_y containing bin intervals along y.
         """
@@ -446,6 +451,7 @@ cdef class Calc1D:
         # Construct consensus free energy profiles by constructing weighted histogram
         # using individual point weights G_l obtained from solver
         betaF_bin = np.zeros((M_x, M_y))
+        betaF_bin_counts = np.zeros((M_x, M_y))
 
         for b_x in range(1, M_x + 1):
             for b_y in range(1, M_y + 1):
@@ -453,6 +459,7 @@ cdef class Calc1D:
                                                   x_l < x_bin_edges[b_x],
                                                   y_l >= y_bin_edges[b_y - 1],
                                                   y_l < y_bin_edges[b_y]))
+                betaF_bin_counts[b_x - 1, b_y - 1] = np.sum(sel_mask)
 
                 if np.any(sel_mask != False):
                     G_l_bin = G_l[sel_mask]
@@ -460,7 +467,7 @@ cdef class Calc1D:
                 else:
                     betaF_bin[b_x - 1, b_y - 1] = np.inf
 
-        return betaF_bin, (delta_x_bin, delta_y_bin)
+        return betaF_bin, (betaF_bin_counts, delta_x_bin, delta_y_bin)
 
     def bin_second_betaF_profile(self, y_l, x_bin, y_bin, G_l=None, x_bin_style='left', y_bin_style='left'):
         """Bins weights corresponding to each sample into a 2D free energy
@@ -486,7 +493,7 @@ cdef class Calc1D:
             betaF_y (ndarray): Free energy profile of length M_y,
                 binned as per y-bin (2nd dim).
         """
-        betaF_xy, (delta_x_bin, delta_y_bin) = self.bin_2D_betaF_profile(y_l, x_bin, y_bin, G_l=G_l, x_bin_style=x_bin_style, y_bin_style=y_bin_style)
+        betaF_xy, (betaF_bin_counts, delta_x_bin, delta_y_bin) = self.bin_2D_betaF_profile(y_l, x_bin, y_bin, G_l=G_l, x_bin_style=x_bin_style, y_bin_style=y_bin_style)
         betaF_xy = np.nan_to_num(betaF_xy)
         print(betaF_xy.shape)
         print(delta_x_bin.shape)
@@ -525,6 +532,6 @@ cdef class Calc1D:
         N_i = np.array([len(arr) for arr in x_it])
 
         status = self.compute_point_weights(x_l, N_i, u_i, beta, solver=solver, **solverkwargs)
-        betaF_bin = self.bin_betaF_profile(x_bin, bin_style='left')
+        betaF_bin, betaF_bin_counts = self.bin_betaF_profile(x_bin, bin_style='left')
 
-        return betaF_bin, status
+        return betaF_bin, betaF_bin_counts, status

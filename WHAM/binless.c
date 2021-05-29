@@ -5743,7 +5743,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_20reweight(struct __pyx_obj_4WH
  *         # Compute g_bias: total window free energy for applied bias potential
  *         w_bias_l = -beta * u_bias(self.x_l)             # <<<<<<<<<<<<<<
  * 
- *         print(self.g_i[0])
+ *         g_bias = -numeric.clogsumexp(w_bias_l - self.G_l)
  */
   __pyx_t_1 = PyNumber_Negative(__pyx_v_beta); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 307, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -5773,28 +5773,16 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_20reweight(struct __pyx_obj_4WH
   /* "WHAM/binless.pyx":309
  *         w_bias_l = -beta * u_bias(self.x_l)
  * 
- *         print(self.g_i[0])             # <<<<<<<<<<<<<<
- *         g_bias = -numeric.clogsumexp(w_bias_l - self.G_l) - self.g_i[0]
+ *         g_bias = -numeric.clogsumexp(w_bias_l - self.G_l)             # <<<<<<<<<<<<<<
  * 
+ *         G_l_bias = self.G_l + beta * u_bias(self.x_l) - g_bias
  */
-  __pyx_t_3 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->g_i), 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 309, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  if (__Pyx_PrintOne(0, __pyx_t_3) < 0) __PYX_ERR(0, 309, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-
-  /* "WHAM/binless.pyx":310
- * 
- *         print(self.g_i[0])
- *         g_bias = -numeric.clogsumexp(w_bias_l - self.G_l) - self.g_i[0]             # <<<<<<<<<<<<<<
- * 
- *         print(g_bias)
- */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_numeric); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 310, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_numeric); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 309, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_clogsumexp); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 310, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_clogsumexp); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 309, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyNumber_Subtract(__pyx_v_w_bias_l, ((PyObject *)__pyx_v_self->G_l)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 310, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Subtract(__pyx_v_w_bias_l, ((PyObject *)__pyx_v_self->G_l)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 309, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_4 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
@@ -5809,66 +5797,51 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_20reweight(struct __pyx_obj_4WH
   __pyx_t_3 = (__pyx_t_4) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_4, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_2);
   __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 310, __pyx_L1_error)
+  if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 309, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyNumber_Negative(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 310, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Negative(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 309, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_GetItemInt(((PyObject *)__pyx_v_self->g_i), 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 310, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = PyNumber_Subtract(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 310, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_v_g_bias = __pyx_t_2;
-  __pyx_t_2 = 0;
+  __pyx_v_g_bias = __pyx_t_1;
+  __pyx_t_1 = 0;
 
-  /* "WHAM/binless.pyx":312
- *         g_bias = -numeric.clogsumexp(w_bias_l - self.G_l) - self.g_i[0]
- * 
- *         print(g_bias)             # <<<<<<<<<<<<<<
- * 
- *         G_l_bias = self.G_l + beta * u_bias(self.x_l) - g_bias
- */
-  if (__Pyx_PrintOne(0, __pyx_v_g_bias) < 0) __PYX_ERR(0, 312, __pyx_L1_error)
-
-  /* "WHAM/binless.pyx":314
- *         print(g_bias)
+  /* "WHAM/binless.pyx":311
+ *         g_bias = -numeric.clogsumexp(w_bias_l - self.G_l)
  * 
  *         G_l_bias = self.G_l + beta * u_bias(self.x_l) - g_bias             # <<<<<<<<<<<<<<
  * 
  *         return G_l_bias
  */
   __Pyx_INCREF(__pyx_v_u_bias);
-  __pyx_t_3 = __pyx_v_u_bias; __pyx_t_1 = NULL;
+  __pyx_t_3 = __pyx_v_u_bias; __pyx_t_2 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
-    __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_3);
-    if (likely(__pyx_t_1)) {
+    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_2)) {
       PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
-      __Pyx_INCREF(__pyx_t_1);
+      __Pyx_INCREF(__pyx_t_2);
       __Pyx_INCREF(function);
       __Pyx_DECREF_SET(__pyx_t_3, function);
     }
   }
-  __pyx_t_2 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_1, ((PyObject *)__pyx_v_self->x_l)) : __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_self->x_l));
-  __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
-  if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 314, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_2, ((PyObject *)__pyx_v_self->x_l)) : __Pyx_PyObject_CallOneArg(__pyx_t_3, ((PyObject *)__pyx_v_self->x_l));
+  __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 311, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyNumber_Multiply(__pyx_v_beta, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 314, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Multiply(__pyx_v_beta, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 311, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyNumber_Add(((PyObject *)__pyx_v_self->G_l), __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 314, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = PyNumber_Add(((PyObject *)__pyx_v_self->G_l), __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 311, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyNumber_Subtract(__pyx_t_2, __pyx_v_g_bias); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 314, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_Subtract(__pyx_t_1, __pyx_v_g_bias); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 311, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_G_l_bias = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "WHAM/binless.pyx":316
+  /* "WHAM/binless.pyx":313
  *         G_l_bias = self.G_l + beta * u_bias(self.x_l) - g_bias
  * 
  *         return G_l_bias             # <<<<<<<<<<<<<<
@@ -5905,7 +5878,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_20reweight(struct __pyx_obj_4WH
   return __pyx_r;
 }
 
-/* "WHAM/binless.pyx":318
+/* "WHAM/binless.pyx":315
  *         return G_l_bias
  * 
  *     def bin_betaF_profile(self, x_bin, G_l=None, bin_style='left'):             # <<<<<<<<<<<<<<
@@ -5915,7 +5888,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_20reweight(struct __pyx_obj_4WH
 
 /* Python wrapper */
 static PyObject *__pyx_pw_4WHAM_7binless_6Calc1D_23bin_betaF_profile(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_4WHAM_7binless_6Calc1D_22bin_betaF_profile[] = "Bins weights corresponding to each sample into a 1D free energy\n        profile. If weights are not passed as an argument, then computed WHAM weights are\n        used for binning. Passing weights allows for computing reweighted\n        free energy profiles.\n\n        Caution:\n            This calculation requires that the order parameter samples [self.x_l] (which the\n            weights correspond to) are available.\n\n        Args:\n            x_bin (list): Array of bin left-edges/centers of length M. Used only for computing final PMF.\n            G_l (ndarray): Array of weights corresponding to each data point/order parameter x_l.\n            bin_style (string): 'left' or 'center'.\n\n        Returns:\n            betaF_bin (ndarray): Free energy profile, binned as per x_bin.\n        ";
+static char __pyx_doc_4WHAM_7binless_6Calc1D_22bin_betaF_profile[] = "Bins weights corresponding to each sample into a 1D free energy\n        profile. If weights are not passed as an argument, then computed WHAM weights are\n        used for binning. Passing weights allows for computing reweighted\n        free energy profiles.\n\n        Caution:\n            This calculation requires that the order parameter samples [self.x_l] (which the\n            weights correspond to) are available.\n\n        Args:\n            x_bin (list): Array of bin left-edges/centers of length M. Used only for computing final PMF.\n            G_l (ndarray): Array of weights corresponding to each data point/order parameter x_l.\n            bin_style (string): 'left' or 'center'.\n\n        Returns:\n            betaF_bin (ndarray): Free energy profile, binned as per x_bin.\n            betaF_bin_counts (ndarray): Bin counts\n        ";
 static PyObject *__pyx_pw_4WHAM_7binless_6Calc1D_23bin_betaF_profile(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_x_bin = 0;
   PyObject *__pyx_v_G_l = 0;
@@ -5963,7 +5936,7 @@ static PyObject *__pyx_pw_4WHAM_7binless_6Calc1D_23bin_betaF_profile(PyObject *_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "bin_betaF_profile") < 0)) __PYX_ERR(0, 318, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "bin_betaF_profile") < 0)) __PYX_ERR(0, 315, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -5982,7 +5955,7 @@ static PyObject *__pyx_pw_4WHAM_7binless_6Calc1D_23bin_betaF_profile(PyObject *_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("bin_betaF_profile", 0, 1, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 318, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("bin_betaF_profile", 0, 1, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 315, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("WHAM.binless.Calc1D.bin_betaF_profile", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -6001,6 +5974,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_22bin_betaF_profile(struct __py
   PyObject *__pyx_v_bin_edges = NULL;
   PyObject *__pyx_v_delta_x_bin = NULL;
   PyObject *__pyx_v_betaF_bin = NULL;
+  PyObject *__pyx_v_betaF_bin_counts = NULL;
   PyObject *__pyx_v_b = NULL;
   PyObject *__pyx_v_sel_mask = NULL;
   PyObject *__pyx_v_G_l_bin = NULL;
@@ -6024,14 +5998,14 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_22bin_betaF_profile(struct __py
   __Pyx_RefNannySetupContext("bin_betaF_profile", 0);
   __Pyx_INCREF(__pyx_v_G_l);
 
-  /* "WHAM/binless.pyx":336
- *             betaF_bin (ndarray): Free energy profile, binned as per x_bin.
+  /* "WHAM/binless.pyx":334
+ *             betaF_bin_counts (ndarray): Bin counts
  *         """
  *         self.check_data()             # <<<<<<<<<<<<<<
  *         x_l = self.x_l
  *         if G_l is None:
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_check_data); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 336, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_check_data); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 334, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -6045,12 +6019,12 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_22bin_betaF_profile(struct __py
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 336, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 334, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "WHAM/binless.pyx":337
+  /* "WHAM/binless.pyx":335
  *         """
  *         self.check_data()
  *         x_l = self.x_l             # <<<<<<<<<<<<<<
@@ -6062,7 +6036,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_22bin_betaF_profile(struct __py
   __pyx_v_x_l = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "WHAM/binless.pyx":338
+  /* "WHAM/binless.pyx":336
  *         self.check_data()
  *         x_l = self.x_l
  *         if G_l is None:             # <<<<<<<<<<<<<<
@@ -6073,14 +6047,14 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_22bin_betaF_profile(struct __py
   __pyx_t_5 = (__pyx_t_4 != 0);
   if (__pyx_t_5) {
 
-    /* "WHAM/binless.pyx":339
+    /* "WHAM/binless.pyx":337
  *         x_l = self.x_l
  *         if G_l is None:
  *             self.check_weights()             # <<<<<<<<<<<<<<
  *             G_l = self.G_l
  * 
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_check_weights); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 339, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_check_weights); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 337, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_3 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -6094,12 +6068,12 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_22bin_betaF_profile(struct __py
     }
     __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 339, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 337, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "WHAM/binless.pyx":340
+    /* "WHAM/binless.pyx":338
  *         if G_l is None:
  *             self.check_weights()
  *             G_l = self.G_l             # <<<<<<<<<<<<<<
@@ -6111,7 +6085,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_22bin_betaF_profile(struct __py
     __Pyx_DECREF_SET(__pyx_v_G_l, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "WHAM/binless.pyx":338
+    /* "WHAM/binless.pyx":336
  *         self.check_data()
  *         x_l = self.x_l
  *         if G_l is None:             # <<<<<<<<<<<<<<
@@ -6120,32 +6094,32 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_22bin_betaF_profile(struct __py
  */
   }
 
-  /* "WHAM/binless.pyx":342
+  /* "WHAM/binless.pyx":340
  *             G_l = self.G_l
  * 
  *         M = len(x_bin)             # <<<<<<<<<<<<<<
  * 
  *         # Compute bin edges
  */
-  __pyx_t_6 = PyObject_Length(__pyx_v_x_bin); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 342, __pyx_L1_error)
-  __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 342, __pyx_L1_error)
+  __pyx_t_6 = PyObject_Length(__pyx_v_x_bin); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 340, __pyx_L1_error)
+  __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 340, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_M = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "WHAM/binless.pyx":345
+  /* "WHAM/binless.pyx":343
  * 
  *         # Compute bin edges
  *         bin_edges = np.zeros(M + 1)             # <<<<<<<<<<<<<<
  * 
  *         if bin_style == 'left':
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 345, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 343, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 345, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 343, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_AddObjC(__pyx_v_M, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 345, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_AddObjC(__pyx_v_M, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 343, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_7 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -6160,56 +6134,56 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_22bin_betaF_profile(struct __py
   __pyx_t_1 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_7, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
   __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 345, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 343, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_bin_edges = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "WHAM/binless.pyx":347
+  /* "WHAM/binless.pyx":345
  *         bin_edges = np.zeros(M + 1)
  * 
  *         if bin_style == 'left':             # <<<<<<<<<<<<<<
  *             bin_edges[:-1] = x_bin
  *             # add an artificial edge after the last center
  */
-  __pyx_t_5 = (__Pyx_PyString_Equals(__pyx_v_bin_style, __pyx_n_s_left, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 347, __pyx_L1_error)
+  __pyx_t_5 = (__Pyx_PyString_Equals(__pyx_v_bin_style, __pyx_n_s_left, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 345, __pyx_L1_error)
   if (__pyx_t_5) {
 
-    /* "WHAM/binless.pyx":348
+    /* "WHAM/binless.pyx":346
  * 
  *         if bin_style == 'left':
  *             bin_edges[:-1] = x_bin             # <<<<<<<<<<<<<<
  *             # add an artificial edge after the last center
  *             bin_edges[-1] = x_bin[-1] + (x_bin[-1] - x_bin[-2])
  */
-    if (__Pyx_PyObject_SetSlice(__pyx_v_bin_edges, __pyx_v_x_bin, 0, -1L, NULL, NULL, &__pyx_slice__8, 0, 1, 1) < 0) __PYX_ERR(0, 348, __pyx_L1_error)
+    if (__Pyx_PyObject_SetSlice(__pyx_v_bin_edges, __pyx_v_x_bin, 0, -1L, NULL, NULL, &__pyx_slice__8, 0, 1, 1) < 0) __PYX_ERR(0, 346, __pyx_L1_error)
 
-    /* "WHAM/binless.pyx":350
+    /* "WHAM/binless.pyx":348
  *             bin_edges[:-1] = x_bin
  *             # add an artificial edge after the last center
  *             bin_edges[-1] = x_bin[-1] + (x_bin[-1] - x_bin[-2])             # <<<<<<<<<<<<<<
  *         elif bin_style == 'center':
  *             # add an artificial edge before the first center
  */
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_x_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 350, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_x_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 348, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_x_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 350, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_x_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 348, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_x_bin, -2L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 350, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_x_bin, -2L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 348, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = PyNumber_Subtract(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 350, __pyx_L1_error)
+    __pyx_t_7 = PyNumber_Subtract(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 348, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 350, __pyx_L1_error)
+    __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 348, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    if (unlikely(__Pyx_SetItemInt(__pyx_v_bin_edges, -1L, __pyx_t_2, long, 1, __Pyx_PyInt_From_long, 0, 1, 1) < 0)) __PYX_ERR(0, 350, __pyx_L1_error)
+    if (unlikely(__Pyx_SetItemInt(__pyx_v_bin_edges, -1L, __pyx_t_2, long, 1, __Pyx_PyInt_From_long, 0, 1, 1) < 0)) __PYX_ERR(0, 348, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "WHAM/binless.pyx":347
+    /* "WHAM/binless.pyx":345
  *         bin_edges = np.zeros(M + 1)
  * 
  *         if bin_style == 'left':             # <<<<<<<<<<<<<<
@@ -6219,92 +6193,92 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_22bin_betaF_profile(struct __py
     goto __pyx_L4;
   }
 
-  /* "WHAM/binless.pyx":351
+  /* "WHAM/binless.pyx":349
  *             # add an artificial edge after the last center
  *             bin_edges[-1] = x_bin[-1] + (x_bin[-1] - x_bin[-2])
  *         elif bin_style == 'center':             # <<<<<<<<<<<<<<
  *             # add an artificial edge before the first center
  *             bin_edges[0] = x_bin[0] - (x_bin[1] - x_bin[0]) / 2
  */
-  __pyx_t_5 = (__Pyx_PyString_Equals(__pyx_v_bin_style, __pyx_n_s_center, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 351, __pyx_L1_error)
+  __pyx_t_5 = (__Pyx_PyString_Equals(__pyx_v_bin_style, __pyx_n_s_center, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 349, __pyx_L1_error)
   if (likely(__pyx_t_5)) {
 
-    /* "WHAM/binless.pyx":353
+    /* "WHAM/binless.pyx":351
  *         elif bin_style == 'center':
  *             # add an artificial edge before the first center
  *             bin_edges[0] = x_bin[0] - (x_bin[1] - x_bin[0]) / 2             # <<<<<<<<<<<<<<
  *             # add an artificial edge after the last center
  *             bin_edges[-1] = x_bin[-1] + (x_bin[-1] - x_bin[-2]) / 2
  */
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_x_bin, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 353, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_x_bin, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 351, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_x_bin, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 353, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_x_bin, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 351, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_x_bin, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 353, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_x_bin, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 351, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = PyNumber_Subtract(__pyx_t_7, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 353, __pyx_L1_error)
+    __pyx_t_3 = PyNumber_Subtract(__pyx_t_7, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 351, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyNumber_Divide(__pyx_t_3, __pyx_int_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 353, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyNumber_Divide(__pyx_t_3, __pyx_int_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 351, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = PyNumber_Subtract(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 353, __pyx_L1_error)
+    __pyx_t_3 = PyNumber_Subtract(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 351, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (unlikely(__Pyx_SetItemInt(__pyx_v_bin_edges, 0, __pyx_t_3, long, 1, __Pyx_PyInt_From_long, 0, 0, 1) < 0)) __PYX_ERR(0, 353, __pyx_L1_error)
+    if (unlikely(__Pyx_SetItemInt(__pyx_v_bin_edges, 0, __pyx_t_3, long, 1, __Pyx_PyInt_From_long, 0, 0, 1) < 0)) __PYX_ERR(0, 351, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "WHAM/binless.pyx":355
+    /* "WHAM/binless.pyx":353
  *             bin_edges[0] = x_bin[0] - (x_bin[1] - x_bin[0]) / 2
  *             # add an artificial edge after the last center
  *             bin_edges[-1] = x_bin[-1] + (x_bin[-1] - x_bin[-2]) / 2             # <<<<<<<<<<<<<<
  *             # bin edges are at the midpoints of bin centers
  *             bin_edges[1:-1] = (x_bin[1:] + x_bin[:-1]) / 2
  */
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_x_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 355, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_x_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 353, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_x_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 355, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_x_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 353, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_x_bin, -2L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 355, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_x_bin, -2L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 353, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = PyNumber_Subtract(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 355, __pyx_L1_error)
+    __pyx_t_7 = PyNumber_Subtract(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 353, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_t_7, __pyx_int_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 355, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_t_7, __pyx_int_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 353, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = PyNumber_Add(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 355, __pyx_L1_error)
+    __pyx_t_7 = PyNumber_Add(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 353, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(__Pyx_SetItemInt(__pyx_v_bin_edges, -1L, __pyx_t_7, long, 1, __Pyx_PyInt_From_long, 0, 1, 1) < 0)) __PYX_ERR(0, 355, __pyx_L1_error)
+    if (unlikely(__Pyx_SetItemInt(__pyx_v_bin_edges, -1L, __pyx_t_7, long, 1, __Pyx_PyInt_From_long, 0, 1, 1) < 0)) __PYX_ERR(0, 353, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-    /* "WHAM/binless.pyx":357
+    /* "WHAM/binless.pyx":355
  *             bin_edges[-1] = x_bin[-1] + (x_bin[-1] - x_bin[-2]) / 2
  *             # bin edges are at the midpoints of bin centers
  *             bin_edges[1:-1] = (x_bin[1:] + x_bin[:-1]) / 2             # <<<<<<<<<<<<<<
  *         else:
  *             raise ValueError('Bin style not recognized.')
  */
-    __pyx_t_7 = __Pyx_PyObject_GetSlice(__pyx_v_x_bin, 1, 0, NULL, NULL, &__pyx_slice__9, 1, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 357, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetSlice(__pyx_v_x_bin, 1, 0, NULL, NULL, &__pyx_slice__9, 1, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 355, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_2 = __Pyx_PyObject_GetSlice(__pyx_v_x_bin, 0, -1L, NULL, NULL, &__pyx_slice__8, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 357, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetSlice(__pyx_v_x_bin, 0, -1L, NULL, NULL, &__pyx_slice__8, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 355, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PyNumber_Add(__pyx_t_7, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 357, __pyx_L1_error)
+    __pyx_t_3 = PyNumber_Add(__pyx_t_7, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 355, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_t_3, __pyx_int_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 357, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_t_3, __pyx_int_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 355, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (__Pyx_PyObject_SetSlice(__pyx_v_bin_edges, __pyx_t_2, 1, -1L, NULL, NULL, &__pyx_slice__10, 1, 1, 1) < 0) __PYX_ERR(0, 357, __pyx_L1_error)
+    if (__Pyx_PyObject_SetSlice(__pyx_v_bin_edges, __pyx_t_2, 1, -1L, NULL, NULL, &__pyx_slice__10, 1, 1, 1) < 0) __PYX_ERR(0, 355, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "WHAM/binless.pyx":351
+    /* "WHAM/binless.pyx":349
  *             # add an artificial edge after the last center
  *             bin_edges[-1] = x_bin[-1] + (x_bin[-1] - x_bin[-2])
  *         elif bin_style == 'center':             # <<<<<<<<<<<<<<
@@ -6314,7 +6288,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_22bin_betaF_profile(struct __py
     goto __pyx_L4;
   }
 
-  /* "WHAM/binless.pyx":359
+  /* "WHAM/binless.pyx":357
  *             bin_edges[1:-1] = (x_bin[1:] + x_bin[:-1]) / 2
  *         else:
  *             raise ValueError('Bin style not recognized.')             # <<<<<<<<<<<<<<
@@ -6322,42 +6296,42 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_22bin_betaF_profile(struct __py
  *         delta_x_bin = bin_edges[1:] - bin_edges[:-1]
  */
   /*else*/ {
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__11, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 359, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__11, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 357, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 359, __pyx_L1_error)
+    __PYX_ERR(0, 357, __pyx_L1_error)
   }
   __pyx_L4:;
 
-  /* "WHAM/binless.pyx":361
+  /* "WHAM/binless.pyx":359
  *             raise ValueError('Bin style not recognized.')
  * 
  *         delta_x_bin = bin_edges[1:] - bin_edges[:-1]             # <<<<<<<<<<<<<<
  * 
  *         # Construct consensus free energy profiles by constructing weighted histogram
  */
-  __pyx_t_2 = __Pyx_PyObject_GetSlice(__pyx_v_bin_edges, 1, 0, NULL, NULL, &__pyx_slice__9, 1, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 361, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetSlice(__pyx_v_bin_edges, 1, 0, NULL, NULL, &__pyx_slice__9, 1, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 359, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_v_bin_edges, 0, -1L, NULL, NULL, &__pyx_slice__8, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 361, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_v_bin_edges, 0, -1L, NULL, NULL, &__pyx_slice__8, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 359, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_7 = PyNumber_Subtract(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 361, __pyx_L1_error)
+  __pyx_t_7 = PyNumber_Subtract(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 359, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_delta_x_bin = __pyx_t_7;
   __pyx_t_7 = 0;
 
-  /* "WHAM/binless.pyx":365
+  /* "WHAM/binless.pyx":363
  *         # Construct consensus free energy profiles by constructing weighted histogram
  *         # using individual point weights G_l obtained from solver
  *         betaF_bin = np.zeros(M)             # <<<<<<<<<<<<<<
- *         for b in range(1, M + 1):
- *             sel_mask = np.logical_and(x_l >= bin_edges[b - 1], x_l < bin_edges[b])
+ *         betaF_bin_counts = np.zeros(M)
+ * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 365, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 363, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 365, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 363, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_t_3 = NULL;
@@ -6372,62 +6346,92 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_22bin_betaF_profile(struct __py
   }
   __pyx_t_7 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_v_M) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_M);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 365, __pyx_L1_error)
+  if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 363, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_betaF_bin = __pyx_t_7;
   __pyx_t_7 = 0;
 
-  /* "WHAM/binless.pyx":366
+  /* "WHAM/binless.pyx":364
  *         # using individual point weights G_l obtained from solver
  *         betaF_bin = np.zeros(M)
+ *         betaF_bin_counts = np.zeros(M)             # <<<<<<<<<<<<<<
+ * 
+ *         for b in range(1, M + 1):
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 364, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 364, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_t_2 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
+    __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_3);
+    if (likely(__pyx_t_2)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_2);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_3, function);
+    }
+  }
+  __pyx_t_7 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_2, __pyx_v_M) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_M);
+  __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 364, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_v_betaF_bin_counts = __pyx_t_7;
+  __pyx_t_7 = 0;
+
+  /* "WHAM/binless.pyx":366
+ *         betaF_bin_counts = np.zeros(M)
+ * 
  *         for b in range(1, M + 1):             # <<<<<<<<<<<<<<
  *             sel_mask = np.logical_and(x_l >= bin_edges[b - 1], x_l < bin_edges[b])
- * 
+ *             betaF_bin_counts[b - 1] = np.sum(sel_mask)
  */
   __pyx_t_7 = __Pyx_PyInt_AddObjC(__pyx_v_M, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 366, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 366, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 366, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_int_1);
   __Pyx_GIVEREF(__pyx_int_1);
-  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_int_1);
+  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_int_1);
   __Pyx_GIVEREF(__pyx_t_7);
-  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_7);
+  PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_t_7);
   __pyx_t_7 = 0;
-  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_2, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 366, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_3, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 366, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   if (likely(PyList_CheckExact(__pyx_t_7)) || PyTuple_CheckExact(__pyx_t_7)) {
-    __pyx_t_2 = __pyx_t_7; __Pyx_INCREF(__pyx_t_2); __pyx_t_6 = 0;
+    __pyx_t_3 = __pyx_t_7; __Pyx_INCREF(__pyx_t_3); __pyx_t_6 = 0;
     __pyx_t_8 = NULL;
   } else {
-    __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 366, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_8 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 366, __pyx_L1_error)
+    __pyx_t_6 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 366, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
+    __pyx_t_8 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 366, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   for (;;) {
     if (likely(!__pyx_t_8)) {
-      if (likely(PyList_CheckExact(__pyx_t_2))) {
-        if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_2)) break;
+      if (likely(PyList_CheckExact(__pyx_t_3))) {
+        if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_7 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_7); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 366, __pyx_L1_error)
+        __pyx_t_7 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_6); __Pyx_INCREF(__pyx_t_7); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 366, __pyx_L1_error)
         #else
-        __pyx_t_7 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 366, __pyx_L1_error)
+        __pyx_t_7 = PySequence_ITEM(__pyx_t_3, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 366, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
         #endif
       } else {
-        if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
+        if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_7 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_7); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 366, __pyx_L1_error)
+        __pyx_t_7 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_6); __Pyx_INCREF(__pyx_t_7); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 366, __pyx_L1_error)
         #else
-        __pyx_t_7 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 366, __pyx_L1_error)
+        __pyx_t_7 = PySequence_ITEM(__pyx_t_3, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 366, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
         #endif
       }
     } else {
-      __pyx_t_7 = __pyx_t_8(__pyx_t_2);
+      __pyx_t_7 = __pyx_t_8(__pyx_t_3);
       if (unlikely(!__pyx_t_7)) {
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
@@ -6442,23 +6446,23 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_22bin_betaF_profile(struct __py
     __pyx_t_7 = 0;
 
     /* "WHAM/binless.pyx":367
- *         betaF_bin = np.zeros(M)
+ * 
  *         for b in range(1, M + 1):
  *             sel_mask = np.logical_and(x_l >= bin_edges[b - 1], x_l < bin_edges[b])             # <<<<<<<<<<<<<<
+ *             betaF_bin_counts[b - 1] = np.sum(sel_mask)
  * 
- *             if np.any(sel_mask != False):
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 367, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_logical_and); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 367, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 367, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_logical_and); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 367, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyInt_SubtractObjC(__pyx_v_b, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 367, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_9 = __Pyx_PyObject_GetItem(__pyx_v_bin_edges, __pyx_t_3); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 367, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_2 = __Pyx_PyInt_SubtractObjC(__pyx_v_b, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 367, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_9 = __Pyx_PyObject_GetItem(__pyx_v_bin_edges, __pyx_t_2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 367, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = PyObject_RichCompare(((PyObject *)__pyx_v_x_l), __pyx_t_9, Py_GE); __Pyx_XGOTREF(__pyx_t_3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 367, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __pyx_t_2 = PyObject_RichCompare(((PyObject *)__pyx_v_x_l), __pyx_t_9, Py_GE); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 367, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
     __pyx_t_9 = __Pyx_PyObject_GetItem(__pyx_v_bin_edges, __pyx_v_b); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 367, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
@@ -6478,21 +6482,21 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_22bin_betaF_profile(struct __py
     }
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_1)) {
-      PyObject *__pyx_temp[3] = {__pyx_t_9, __pyx_t_3, __pyx_t_10};
+      PyObject *__pyx_temp[3] = {__pyx_t_9, __pyx_t_2, __pyx_t_10};
       __pyx_t_7 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_11, 2+__pyx_t_11); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 367, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
       __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     } else
     #endif
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
-      PyObject *__pyx_temp[3] = {__pyx_t_9, __pyx_t_3, __pyx_t_10};
+      PyObject *__pyx_temp[3] = {__pyx_t_9, __pyx_t_2, __pyx_t_10};
       __pyx_t_7 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_11, 2+__pyx_t_11); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 367, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_9); __pyx_t_9 = 0;
       __Pyx_GOTREF(__pyx_t_7);
-      __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
     } else
     #endif
@@ -6502,11 +6506,11 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_22bin_betaF_profile(struct __py
       if (__pyx_t_9) {
         __Pyx_GIVEREF(__pyx_t_9); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_9); __pyx_t_9 = NULL;
       }
-      __Pyx_GIVEREF(__pyx_t_3);
-      PyTuple_SET_ITEM(__pyx_t_12, 0+__pyx_t_11, __pyx_t_3);
+      __Pyx_GIVEREF(__pyx_t_2);
+      PyTuple_SET_ITEM(__pyx_t_12, 0+__pyx_t_11, __pyx_t_2);
       __Pyx_GIVEREF(__pyx_t_10);
       PyTuple_SET_ITEM(__pyx_t_12, 1+__pyx_t_11, __pyx_t_10);
-      __pyx_t_3 = 0;
+      __pyx_t_2 = 0;
       __pyx_t_10 = 0;
       __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_12, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 367, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
@@ -6516,119 +6520,152 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_22bin_betaF_profile(struct __py
     __Pyx_XDECREF_SET(__pyx_v_sel_mask, __pyx_t_7);
     __pyx_t_7 = 0;
 
-    /* "WHAM/binless.pyx":369
+    /* "WHAM/binless.pyx":368
+ *         for b in range(1, M + 1):
  *             sel_mask = np.logical_and(x_l >= bin_edges[b - 1], x_l < bin_edges[b])
+ *             betaF_bin_counts[b - 1] = np.sum(sel_mask)             # <<<<<<<<<<<<<<
+ * 
+ *             if np.any(sel_mask != False):
+ */
+    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 368, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_sum); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 368, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_12);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_1 = NULL;
+    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_12))) {
+      __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_12);
+      if (likely(__pyx_t_1)) {
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_12);
+        __Pyx_INCREF(__pyx_t_1);
+        __Pyx_INCREF(function);
+        __Pyx_DECREF_SET(__pyx_t_12, function);
+      }
+    }
+    __pyx_t_7 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_12, __pyx_t_1, __pyx_v_sel_mask) : __Pyx_PyObject_CallOneArg(__pyx_t_12, __pyx_v_sel_mask);
+    __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
+    if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 368, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+    __pyx_t_12 = __Pyx_PyInt_SubtractObjC(__pyx_v_b, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 368, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_12);
+    if (unlikely(PyObject_SetItem(__pyx_v_betaF_bin_counts, __pyx_t_12, __pyx_t_7) < 0)) __PYX_ERR(0, 368, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+
+    /* "WHAM/binless.pyx":370
+ *             betaF_bin_counts[b - 1] = np.sum(sel_mask)
  * 
  *             if np.any(sel_mask != False):             # <<<<<<<<<<<<<<
  *                 G_l_bin = G_l[sel_mask]
  *                 betaF_bin[b - 1] = np.log(delta_x_bin[b - 1]) - numeric.clogsumexp(-G_l_bin)
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 369, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_any); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 369, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_np); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 370, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_12);
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = PyObject_RichCompare(__pyx_v_sel_mask, Py_False, Py_NE); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 369, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_any); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 370, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+    __pyx_t_12 = PyObject_RichCompare(__pyx_v_sel_mask, Py_False, Py_NE); __Pyx_XGOTREF(__pyx_t_12); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 370, __pyx_L1_error)
     __pyx_t_10 = NULL;
-    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_12))) {
-      __pyx_t_10 = PyMethod_GET_SELF(__pyx_t_12);
+    if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
+      __pyx_t_10 = PyMethod_GET_SELF(__pyx_t_1);
       if (likely(__pyx_t_10)) {
-        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_12);
+        PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
         __Pyx_INCREF(__pyx_t_10);
         __Pyx_INCREF(function);
-        __Pyx_DECREF_SET(__pyx_t_12, function);
+        __Pyx_DECREF_SET(__pyx_t_1, function);
       }
     }
-    __pyx_t_7 = (__pyx_t_10) ? __Pyx_PyObject_Call2Args(__pyx_t_12, __pyx_t_10, __pyx_t_1) : __Pyx_PyObject_CallOneArg(__pyx_t_12, __pyx_t_1);
+    __pyx_t_7 = (__pyx_t_10) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_10, __pyx_t_12) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_12);
     __Pyx_XDECREF(__pyx_t_10); __pyx_t_10 = 0;
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 369, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-    __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 369, __pyx_L1_error)
+    if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 370, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 370, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     if (__pyx_t_5) {
 
-      /* "WHAM/binless.pyx":370
+      /* "WHAM/binless.pyx":371
  * 
  *             if np.any(sel_mask != False):
  *                 G_l_bin = G_l[sel_mask]             # <<<<<<<<<<<<<<
  *                 betaF_bin[b - 1] = np.log(delta_x_bin[b - 1]) - numeric.clogsumexp(-G_l_bin)
  *             else:
  */
-      __pyx_t_7 = __Pyx_PyObject_GetItem(__pyx_v_G_l, __pyx_v_sel_mask); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 370, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyObject_GetItem(__pyx_v_G_l, __pyx_v_sel_mask); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 371, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_XDECREF_SET(__pyx_v_G_l_bin, __pyx_t_7);
       __pyx_t_7 = 0;
 
-      /* "WHAM/binless.pyx":371
+      /* "WHAM/binless.pyx":372
  *             if np.any(sel_mask != False):
  *                 G_l_bin = G_l[sel_mask]
  *                 betaF_bin[b - 1] = np.log(delta_x_bin[b - 1]) - numeric.clogsumexp(-G_l_bin)             # <<<<<<<<<<<<<<
  *             else:
  *                 betaF_bin[b - 1] = np.inf
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_np); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 371, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_log); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 371, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 372, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_12 = __Pyx_PyInt_SubtractObjC(__pyx_v_b, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 371, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_log); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 372, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_10 = __Pyx_PyObject_GetItem(__pyx_v_delta_x_bin, __pyx_t_12); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 371, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_10);
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_12 = NULL;
-      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
-        __pyx_t_12 = PyMethod_GET_SELF(__pyx_t_1);
-        if (likely(__pyx_t_12)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
-          __Pyx_INCREF(__pyx_t_12);
-          __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_1, function);
-        }
-      }
-      __pyx_t_7 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_12, __pyx_t_10) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_10);
-      __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-      if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 371, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_numeric); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 371, __pyx_L1_error)
+      __pyx_t_1 = __Pyx_PyInt_SubtractObjC(__pyx_v_b, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 372, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __pyx_t_10 = __Pyx_PyObject_GetItem(__pyx_v_delta_x_bin, __pyx_t_1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 372, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_10);
-      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_clogsumexp); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 371, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_12);
-      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-      __pyx_t_10 = PyNumber_Negative(__pyx_v_G_l_bin); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 371, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_10);
-      __pyx_t_3 = NULL;
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_t_1 = NULL;
       if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_12))) {
-        __pyx_t_3 = PyMethod_GET_SELF(__pyx_t_12);
-        if (likely(__pyx_t_3)) {
+        __pyx_t_1 = PyMethod_GET_SELF(__pyx_t_12);
+        if (likely(__pyx_t_1)) {
           PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_12);
-          __Pyx_INCREF(__pyx_t_3);
+          __Pyx_INCREF(__pyx_t_1);
           __Pyx_INCREF(function);
           __Pyx_DECREF_SET(__pyx_t_12, function);
         }
       }
-      __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_12, __pyx_t_3, __pyx_t_10) : __Pyx_PyObject_CallOneArg(__pyx_t_12, __pyx_t_10);
-      __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
+      __pyx_t_7 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_12, __pyx_t_1, __pyx_t_10) : __Pyx_PyObject_CallOneArg(__pyx_t_12, __pyx_t_10);
+      __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
       __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 371, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_1);
+      if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 372, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_12 = PyNumber_Subtract(__pyx_t_7, __pyx_t_1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 371, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_10, __pyx_n_s_numeric); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 372, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_10);
+      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_10, __pyx_n_s_clogsumexp); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 372, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+      __pyx_t_10 = PyNumber_Negative(__pyx_v_G_l_bin); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 372, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_10);
+      __pyx_t_2 = NULL;
+      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_1))) {
+        __pyx_t_2 = PyMethod_GET_SELF(__pyx_t_1);
+        if (likely(__pyx_t_2)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_1);
+          __Pyx_INCREF(__pyx_t_2);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_1, function);
+        }
+      }
+      __pyx_t_12 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_2, __pyx_t_10) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_10);
+      __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
+      __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
+      if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 372, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-      __pyx_t_1 = __Pyx_PyInt_SubtractObjC(__pyx_v_b, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 371, __pyx_L1_error)
+      __pyx_t_1 = PyNumber_Subtract(__pyx_t_7, __pyx_t_12); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 372, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      if (unlikely(PyObject_SetItem(__pyx_v_betaF_bin, __pyx_t_1, __pyx_t_12) < 0)) __PYX_ERR(0, 371, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+      __pyx_t_12 = __Pyx_PyInt_SubtractObjC(__pyx_v_b, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 372, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_12);
+      if (unlikely(PyObject_SetItem(__pyx_v_betaF_bin, __pyx_t_12, __pyx_t_1) < 0)) __PYX_ERR(0, 372, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-      /* "WHAM/binless.pyx":369
- *             sel_mask = np.logical_and(x_l >= bin_edges[b - 1], x_l < bin_edges[b])
+      /* "WHAM/binless.pyx":370
+ *             betaF_bin_counts[b - 1] = np.sum(sel_mask)
  * 
  *             if np.any(sel_mask != False):             # <<<<<<<<<<<<<<
  *                 G_l_bin = G_l[sel_mask]
@@ -6637,50 +6674,58 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_22bin_betaF_profile(struct __py
       goto __pyx_L7;
     }
 
-    /* "WHAM/binless.pyx":373
+    /* "WHAM/binless.pyx":374
  *                 betaF_bin[b - 1] = np.log(delta_x_bin[b - 1]) - numeric.clogsumexp(-G_l_bin)
  *             else:
  *                 betaF_bin[b - 1] = np.inf             # <<<<<<<<<<<<<<
  * 
- *         return betaF_bin
+ *         return betaF_bin, betaF_bin_counts
  */
     /*else*/ {
-      __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_np); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 373, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_inf); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 373, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 374, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_12 = __Pyx_PyInt_SubtractObjC(__pyx_v_b, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 373, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_inf); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 374, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
-      if (unlikely(PyObject_SetItem(__pyx_v_betaF_bin, __pyx_t_12, __pyx_t_1) < 0)) __PYX_ERR(0, 373, __pyx_L1_error)
-      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __pyx_t_1 = __Pyx_PyInt_SubtractObjC(__pyx_v_b, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 374, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      if (unlikely(PyObject_SetItem(__pyx_v_betaF_bin, __pyx_t_1, __pyx_t_12) < 0)) __PYX_ERR(0, 374, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     }
     __pyx_L7:;
 
     /* "WHAM/binless.pyx":366
- *         # using individual point weights G_l obtained from solver
- *         betaF_bin = np.zeros(M)
+ *         betaF_bin_counts = np.zeros(M)
+ * 
  *         for b in range(1, M + 1):             # <<<<<<<<<<<<<<
  *             sel_mask = np.logical_and(x_l >= bin_edges[b - 1], x_l < bin_edges[b])
- * 
+ *             betaF_bin_counts[b - 1] = np.sum(sel_mask)
  */
   }
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-  /* "WHAM/binless.pyx":375
+  /* "WHAM/binless.pyx":376
  *                 betaF_bin[b - 1] = np.inf
  * 
- *         return betaF_bin             # <<<<<<<<<<<<<<
+ *         return betaF_bin, betaF_bin_counts             # <<<<<<<<<<<<<<
  * 
  *     def bin_2D_betaF_profile(self, y_l, x_bin, y_bin, G_l=None, x_bin_style='left', y_bin_style='left'):
  */
   __Pyx_XDECREF(__pyx_r);
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 376, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_v_betaF_bin);
-  __pyx_r = __pyx_v_betaF_bin;
+  __Pyx_GIVEREF(__pyx_v_betaF_bin);
+  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_v_betaF_bin);
+  __Pyx_INCREF(__pyx_v_betaF_bin_counts);
+  __Pyx_GIVEREF(__pyx_v_betaF_bin_counts);
+  PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_v_betaF_bin_counts);
+  __pyx_r = __pyx_t_3;
+  __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "WHAM/binless.pyx":318
+  /* "WHAM/binless.pyx":315
  *         return G_l_bias
  * 
  *     def bin_betaF_profile(self, x_bin, G_l=None, bin_style='left'):             # <<<<<<<<<<<<<<
@@ -6705,6 +6750,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_22bin_betaF_profile(struct __py
   __Pyx_XDECREF(__pyx_v_bin_edges);
   __Pyx_XDECREF(__pyx_v_delta_x_bin);
   __Pyx_XDECREF(__pyx_v_betaF_bin);
+  __Pyx_XDECREF(__pyx_v_betaF_bin_counts);
   __Pyx_XDECREF(__pyx_v_b);
   __Pyx_XDECREF(__pyx_v_sel_mask);
   __Pyx_XDECREF(__pyx_v_G_l_bin);
@@ -6714,8 +6760,8 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_22bin_betaF_profile(struct __py
   return __pyx_r;
 }
 
-/* "WHAM/binless.pyx":377
- *         return betaF_bin
+/* "WHAM/binless.pyx":378
+ *         return betaF_bin, betaF_bin_counts
  * 
  *     def bin_2D_betaF_profile(self, y_l, x_bin, y_bin, G_l=None, x_bin_style='left', y_bin_style='left'):             # <<<<<<<<<<<<<<
  *         """Bins weights corresponding to each sample into a 2D free energy
@@ -6724,7 +6770,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_22bin_betaF_profile(struct __py
 
 /* Python wrapper */
 static PyObject *__pyx_pw_4WHAM_7binless_6Calc1D_25bin_2D_betaF_profile(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile[] = "Bins weights corresponding to each sample into a 2D free energy\n        profile, given a related order parameter y_l.\n        If weights are not passed as an argument, then computed WHAM weights are\n        used for binning. Passing weights allows for computing reweighted\n        free energy profiles.\n\n        Caution:\n            This calculation requires that the order parameter samples [self.x_l] (which the\n            weights correspond to) are available.\n\n        Args:\n            y_l (ndarray): Second dimension order parameter values.\n            x_bin (list): Array of x-bin left-edges/centers of length M_x.\n            y_bin (list): Array of y-bin left-edges/centers of length M_y.\n            G_l (ndarray): Array of weights corresponding to each data point/order parameter x_l.\n            x_bin_style (string): 'left' or 'center'.\n            y_bin_style (string): 'left' or 'center'.\n\n        Returns:\n            tuple(betaF_bin, tuple(delta_x_bin, delta_y_bin))\n                - betaF_bin (ndarray): 2-D free energy profile of shape (M_x, M_y), binned as per x_bin (1st dim) and y-bin (2nd dim).\n                - delta_x_bin: Array of length M_x containing bin intervals along x.\n                - delta_y_bin: Array of length M_y containing bin intervals along y.\n        ";
+static char __pyx_doc_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile[] = "Bins weights corresponding to each sample into a 2D free energy\n        profile, given a related order parameter y_l.\n        If weights are not passed as an argument, then computed WHAM weights are\n        used for binning. Passing weights allows for computing reweighted\n        free energy profiles.\n\n        Caution:\n            This calculation requires that the order parameter samples [self.x_l] (which the\n            weights correspond to) are available.\n\n        Args:\n            y_l (ndarray): Second dimension order parameter values.\n            x_bin (list): Array of x-bin left-edges/centers of length M_x.\n            y_bin (list): Array of y-bin left-edges/centers of length M_y.\n            G_l (ndarray): Array of weights corresponding to each data point/order parameter x_l.\n            x_bin_style (string): 'left' or 'center'.\n            y_bin_style (string): 'left' or 'center'.\n\n        Returns:\n            tuple(betaF_bin, tuple(betaF_bin_counts, delta_x_bin, delta_y_bin))\n                - betaF_bin (ndarray): 2-D free energy profile of shape (M_x, M_y), binned as per x_bin (1st dim) and y-bin (2nd dim).\n                - betaF_bin_counts (ndarray): 2-D bin counts of shape (M_x, M_y)\n                - delta_x_bin: Array of length M_x containing bin intervals along x.\n                - delta_y_bin: Array of length M_y containing bin intervals along y.\n        ";
 static PyObject *__pyx_pw_4WHAM_7binless_6Calc1D_25bin_2D_betaF_profile(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_y_l = 0;
   PyObject *__pyx_v_x_bin = 0;
@@ -6772,13 +6818,13 @@ static PyObject *__pyx_pw_4WHAM_7binless_6Calc1D_25bin_2D_betaF_profile(PyObject
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_x_bin)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("bin_2D_betaF_profile", 0, 3, 6, 1); __PYX_ERR(0, 377, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("bin_2D_betaF_profile", 0, 3, 6, 1); __PYX_ERR(0, 378, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_y_bin)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("bin_2D_betaF_profile", 0, 3, 6, 2); __PYX_ERR(0, 377, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("bin_2D_betaF_profile", 0, 3, 6, 2); __PYX_ERR(0, 378, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
@@ -6800,7 +6846,7 @@ static PyObject *__pyx_pw_4WHAM_7binless_6Calc1D_25bin_2D_betaF_profile(PyObject
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "bin_2D_betaF_profile") < 0)) __PYX_ERR(0, 377, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "bin_2D_betaF_profile") < 0)) __PYX_ERR(0, 378, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -6826,7 +6872,7 @@ static PyObject *__pyx_pw_4WHAM_7binless_6Calc1D_25bin_2D_betaF_profile(PyObject
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("bin_2D_betaF_profile", 0, 3, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 377, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("bin_2D_betaF_profile", 0, 3, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 378, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("WHAM.binless.Calc1D.bin_2D_betaF_profile", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -6848,6 +6894,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
   PyObject *__pyx_v_y_bin_edges = NULL;
   PyObject *__pyx_v_delta_y_bin = NULL;
   PyObject *__pyx_v_betaF_bin = NULL;
+  PyObject *__pyx_v_betaF_bin_counts = NULL;
   PyObject *__pyx_v_b_x = NULL;
   PyObject *__pyx_v_b_y = NULL;
   PyObject *__pyx_v_sel_mask = NULL;
@@ -6875,14 +6922,14 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
   __Pyx_RefNannySetupContext("bin_2D_betaF_profile", 0);
   __Pyx_INCREF(__pyx_v_G_l);
 
-  /* "WHAM/binless.pyx":402
+  /* "WHAM/binless.pyx":404
  *                 - delta_y_bin: Array of length M_y containing bin intervals along y.
  *         """
  *         self.check_data()             # <<<<<<<<<<<<<<
  *         x_l = self.x_l
  *         if G_l is None:
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_check_data); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 402, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_check_data); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 404, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -6896,12 +6943,12 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 402, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 404, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "WHAM/binless.pyx":403
+  /* "WHAM/binless.pyx":405
  *         """
  *         self.check_data()
  *         x_l = self.x_l             # <<<<<<<<<<<<<<
@@ -6913,7 +6960,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
   __pyx_v_x_l = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "WHAM/binless.pyx":404
+  /* "WHAM/binless.pyx":406
  *         self.check_data()
  *         x_l = self.x_l
  *         if G_l is None:             # <<<<<<<<<<<<<<
@@ -6924,14 +6971,14 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
   __pyx_t_5 = (__pyx_t_4 != 0);
   if (__pyx_t_5) {
 
-    /* "WHAM/binless.pyx":405
+    /* "WHAM/binless.pyx":407
  *         x_l = self.x_l
  *         if G_l is None:
  *             self.check_weights()             # <<<<<<<<<<<<<<
  *             G_l = self.G_l
  * 
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_check_weights); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 405, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_check_weights); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 407, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_3 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -6945,12 +6992,12 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
     }
     __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3) : __Pyx_PyObject_CallNoArg(__pyx_t_2);
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 405, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 407, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "WHAM/binless.pyx":406
+    /* "WHAM/binless.pyx":408
  *         if G_l is None:
  *             self.check_weights()
  *             G_l = self.G_l             # <<<<<<<<<<<<<<
@@ -6962,7 +7009,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
     __Pyx_DECREF_SET(__pyx_v_G_l, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "WHAM/binless.pyx":404
+    /* "WHAM/binless.pyx":406
  *         self.check_data()
  *         x_l = self.x_l
  *         if G_l is None:             # <<<<<<<<<<<<<<
@@ -6971,45 +7018,45 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
  */
   }
 
-  /* "WHAM/binless.pyx":408
+  /* "WHAM/binless.pyx":410
  *             G_l = self.G_l
  * 
  *         M_x = len(x_bin)             # <<<<<<<<<<<<<<
  *         M_y = len(y_bin)
  * 
  */
-  __pyx_t_6 = PyObject_Length(__pyx_v_x_bin); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 408, __pyx_L1_error)
-  __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 408, __pyx_L1_error)
+  __pyx_t_6 = PyObject_Length(__pyx_v_x_bin); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 410, __pyx_L1_error)
+  __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 410, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_M_x = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "WHAM/binless.pyx":409
+  /* "WHAM/binless.pyx":411
  * 
  *         M_x = len(x_bin)
  *         M_y = len(y_bin)             # <<<<<<<<<<<<<<
  * 
  *         # Compute x-bin edges
  */
-  __pyx_t_6 = PyObject_Length(__pyx_v_y_bin); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 409, __pyx_L1_error)
-  __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 409, __pyx_L1_error)
+  __pyx_t_6 = PyObject_Length(__pyx_v_y_bin); if (unlikely(__pyx_t_6 == ((Py_ssize_t)-1))) __PYX_ERR(0, 411, __pyx_L1_error)
+  __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 411, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_M_y = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "WHAM/binless.pyx":412
+  /* "WHAM/binless.pyx":414
  * 
  *         # Compute x-bin edges
  *         x_bin_edges = np.zeros(M_x + 1)             # <<<<<<<<<<<<<<
  * 
  *         if x_bin_style == 'left':
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 412, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 414, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 412, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 414, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = __Pyx_PyInt_AddObjC(__pyx_v_M_x, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 412, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyInt_AddObjC(__pyx_v_M_x, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 414, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_7 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -7024,56 +7071,56 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
   __pyx_t_1 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_7, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
   __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 412, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 414, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_x_bin_edges = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "WHAM/binless.pyx":414
+  /* "WHAM/binless.pyx":416
  *         x_bin_edges = np.zeros(M_x + 1)
  * 
  *         if x_bin_style == 'left':             # <<<<<<<<<<<<<<
  *             x_bin_edges[:-1] = x_bin
  *             # add an artificial edge after the last center
  */
-  __pyx_t_5 = (__Pyx_PyString_Equals(__pyx_v_x_bin_style, __pyx_n_s_left, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 414, __pyx_L1_error)
+  __pyx_t_5 = (__Pyx_PyString_Equals(__pyx_v_x_bin_style, __pyx_n_s_left, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 416, __pyx_L1_error)
   if (__pyx_t_5) {
 
-    /* "WHAM/binless.pyx":415
+    /* "WHAM/binless.pyx":417
  * 
  *         if x_bin_style == 'left':
  *             x_bin_edges[:-1] = x_bin             # <<<<<<<<<<<<<<
  *             # add an artificial edge after the last center
  *             x_bin_edges[-1] = x_bin[-1] + (x_bin[-1] - x_bin[-2])
  */
-    if (__Pyx_PyObject_SetSlice(__pyx_v_x_bin_edges, __pyx_v_x_bin, 0, -1L, NULL, NULL, &__pyx_slice__8, 0, 1, 1) < 0) __PYX_ERR(0, 415, __pyx_L1_error)
+    if (__Pyx_PyObject_SetSlice(__pyx_v_x_bin_edges, __pyx_v_x_bin, 0, -1L, NULL, NULL, &__pyx_slice__8, 0, 1, 1) < 0) __PYX_ERR(0, 417, __pyx_L1_error)
 
-    /* "WHAM/binless.pyx":417
+    /* "WHAM/binless.pyx":419
  *             x_bin_edges[:-1] = x_bin
  *             # add an artificial edge after the last center
  *             x_bin_edges[-1] = x_bin[-1] + (x_bin[-1] - x_bin[-2])             # <<<<<<<<<<<<<<
  *         elif x_bin_style == 'center':
  *             # add an artificial edge before the first center
  */
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_x_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 417, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_x_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 419, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_x_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 417, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_x_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 419, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_x_bin, -2L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 417, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_x_bin, -2L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 419, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = PyNumber_Subtract(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 417, __pyx_L1_error)
+    __pyx_t_7 = PyNumber_Subtract(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 419, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 417, __pyx_L1_error)
+    __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 419, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    if (unlikely(__Pyx_SetItemInt(__pyx_v_x_bin_edges, -1L, __pyx_t_2, long, 1, __Pyx_PyInt_From_long, 0, 1, 1) < 0)) __PYX_ERR(0, 417, __pyx_L1_error)
+    if (unlikely(__Pyx_SetItemInt(__pyx_v_x_bin_edges, -1L, __pyx_t_2, long, 1, __Pyx_PyInt_From_long, 0, 1, 1) < 0)) __PYX_ERR(0, 419, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "WHAM/binless.pyx":414
+    /* "WHAM/binless.pyx":416
  *         x_bin_edges = np.zeros(M_x + 1)
  * 
  *         if x_bin_style == 'left':             # <<<<<<<<<<<<<<
@@ -7083,92 +7130,92 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
     goto __pyx_L4;
   }
 
-  /* "WHAM/binless.pyx":418
+  /* "WHAM/binless.pyx":420
  *             # add an artificial edge after the last center
  *             x_bin_edges[-1] = x_bin[-1] + (x_bin[-1] - x_bin[-2])
  *         elif x_bin_style == 'center':             # <<<<<<<<<<<<<<
  *             # add an artificial edge before the first center
  *             x_bin_edges[0] = x_bin[0] - (x_bin[1] - x_bin[0]) / 2
  */
-  __pyx_t_5 = (__Pyx_PyString_Equals(__pyx_v_x_bin_style, __pyx_n_s_center, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 418, __pyx_L1_error)
+  __pyx_t_5 = (__Pyx_PyString_Equals(__pyx_v_x_bin_style, __pyx_n_s_center, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 420, __pyx_L1_error)
   if (likely(__pyx_t_5)) {
 
-    /* "WHAM/binless.pyx":420
+    /* "WHAM/binless.pyx":422
  *         elif x_bin_style == 'center':
  *             # add an artificial edge before the first center
  *             x_bin_edges[0] = x_bin[0] - (x_bin[1] - x_bin[0]) / 2             # <<<<<<<<<<<<<<
  *             # add an artificial edge after the last center
  *             x_bin_edges[-1] = x_bin[-1] + (x_bin[-1] - x_bin[-2]) / 2
  */
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_x_bin, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 420, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_x_bin, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 422, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_x_bin, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 420, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_x_bin, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 422, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_x_bin, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 420, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_x_bin, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 422, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = PyNumber_Subtract(__pyx_t_7, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 420, __pyx_L1_error)
+    __pyx_t_3 = PyNumber_Subtract(__pyx_t_7, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 422, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyNumber_Divide(__pyx_t_3, __pyx_int_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 420, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyNumber_Divide(__pyx_t_3, __pyx_int_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 422, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = PyNumber_Subtract(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 420, __pyx_L1_error)
+    __pyx_t_3 = PyNumber_Subtract(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 422, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (unlikely(__Pyx_SetItemInt(__pyx_v_x_bin_edges, 0, __pyx_t_3, long, 1, __Pyx_PyInt_From_long, 0, 0, 1) < 0)) __PYX_ERR(0, 420, __pyx_L1_error)
+    if (unlikely(__Pyx_SetItemInt(__pyx_v_x_bin_edges, 0, __pyx_t_3, long, 1, __Pyx_PyInt_From_long, 0, 0, 1) < 0)) __PYX_ERR(0, 422, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "WHAM/binless.pyx":422
+    /* "WHAM/binless.pyx":424
  *             x_bin_edges[0] = x_bin[0] - (x_bin[1] - x_bin[0]) / 2
  *             # add an artificial edge after the last center
  *             x_bin_edges[-1] = x_bin[-1] + (x_bin[-1] - x_bin[-2]) / 2             # <<<<<<<<<<<<<<
  *             # bin edges are at the midpoints of bin centers
  *             x_bin_edges[1:-1] = (x_bin[1:] + x_bin[:-1]) / 2
  */
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_x_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 422, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_x_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 424, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_x_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 422, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_x_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 424, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_x_bin, -2L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 422, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_x_bin, -2L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 424, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = PyNumber_Subtract(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 422, __pyx_L1_error)
+    __pyx_t_7 = PyNumber_Subtract(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 424, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_t_7, __pyx_int_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 422, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_t_7, __pyx_int_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 424, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = PyNumber_Add(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 422, __pyx_L1_error)
+    __pyx_t_7 = PyNumber_Add(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 424, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(__Pyx_SetItemInt(__pyx_v_x_bin_edges, -1L, __pyx_t_7, long, 1, __Pyx_PyInt_From_long, 0, 1, 1) < 0)) __PYX_ERR(0, 422, __pyx_L1_error)
+    if (unlikely(__Pyx_SetItemInt(__pyx_v_x_bin_edges, -1L, __pyx_t_7, long, 1, __Pyx_PyInt_From_long, 0, 1, 1) < 0)) __PYX_ERR(0, 424, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-    /* "WHAM/binless.pyx":424
+    /* "WHAM/binless.pyx":426
  *             x_bin_edges[-1] = x_bin[-1] + (x_bin[-1] - x_bin[-2]) / 2
  *             # bin edges are at the midpoints of bin centers
  *             x_bin_edges[1:-1] = (x_bin[1:] + x_bin[:-1]) / 2             # <<<<<<<<<<<<<<
  *         else:
  *             raise ValueError('x-bin style not recognized.')
  */
-    __pyx_t_7 = __Pyx_PyObject_GetSlice(__pyx_v_x_bin, 1, 0, NULL, NULL, &__pyx_slice__9, 1, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 424, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_GetSlice(__pyx_v_x_bin, 1, 0, NULL, NULL, &__pyx_slice__9, 1, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 426, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_2 = __Pyx_PyObject_GetSlice(__pyx_v_x_bin, 0, -1L, NULL, NULL, &__pyx_slice__8, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 424, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetSlice(__pyx_v_x_bin, 0, -1L, NULL, NULL, &__pyx_slice__8, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 426, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PyNumber_Add(__pyx_t_7, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 424, __pyx_L1_error)
+    __pyx_t_3 = PyNumber_Add(__pyx_t_7, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 426, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_t_3, __pyx_int_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 424, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_t_3, __pyx_int_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 426, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (__Pyx_PyObject_SetSlice(__pyx_v_x_bin_edges, __pyx_t_2, 1, -1L, NULL, NULL, &__pyx_slice__10, 1, 1, 1) < 0) __PYX_ERR(0, 424, __pyx_L1_error)
+    if (__Pyx_PyObject_SetSlice(__pyx_v_x_bin_edges, __pyx_t_2, 1, -1L, NULL, NULL, &__pyx_slice__10, 1, 1, 1) < 0) __PYX_ERR(0, 426, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "WHAM/binless.pyx":418
+    /* "WHAM/binless.pyx":420
  *             # add an artificial edge after the last center
  *             x_bin_edges[-1] = x_bin[-1] + (x_bin[-1] - x_bin[-2])
  *         elif x_bin_style == 'center':             # <<<<<<<<<<<<<<
@@ -7178,7 +7225,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
     goto __pyx_L4;
   }
 
-  /* "WHAM/binless.pyx":426
+  /* "WHAM/binless.pyx":428
  *             x_bin_edges[1:-1] = (x_bin[1:] + x_bin[:-1]) / 2
  *         else:
  *             raise ValueError('x-bin style not recognized.')             # <<<<<<<<<<<<<<
@@ -7186,45 +7233,45 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
  *         delta_x_bin = x_bin_edges[1:] - x_bin_edges[:-1]
  */
   /*else*/ {
-    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__12, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 426, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__12, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 428, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_Raise(__pyx_t_2, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __PYX_ERR(0, 426, __pyx_L1_error)
+    __PYX_ERR(0, 428, __pyx_L1_error)
   }
   __pyx_L4:;
 
-  /* "WHAM/binless.pyx":428
+  /* "WHAM/binless.pyx":430
  *             raise ValueError('x-bin style not recognized.')
  * 
  *         delta_x_bin = x_bin_edges[1:] - x_bin_edges[:-1]             # <<<<<<<<<<<<<<
  * 
  *         # Compute y-bin edges
  */
-  __pyx_t_2 = __Pyx_PyObject_GetSlice(__pyx_v_x_bin_edges, 1, 0, NULL, NULL, &__pyx_slice__9, 1, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 428, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetSlice(__pyx_v_x_bin_edges, 1, 0, NULL, NULL, &__pyx_slice__9, 1, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 430, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_v_x_bin_edges, 0, -1L, NULL, NULL, &__pyx_slice__8, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 428, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_v_x_bin_edges, 0, -1L, NULL, NULL, &__pyx_slice__8, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 430, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_7 = PyNumber_Subtract(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 428, __pyx_L1_error)
+  __pyx_t_7 = PyNumber_Subtract(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 430, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_delta_x_bin = __pyx_t_7;
   __pyx_t_7 = 0;
 
-  /* "WHAM/binless.pyx":431
+  /* "WHAM/binless.pyx":433
  * 
  *         # Compute y-bin edges
  *         y_bin_edges = np.zeros(M_y + 1)             # <<<<<<<<<<<<<<
  * 
  *         if y_bin_style == 'left':
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 431, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 433, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 431, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 433, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyInt_AddObjC(__pyx_v_M_y, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 431, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_AddObjC(__pyx_v_M_y, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 433, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_1 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
@@ -7239,56 +7286,56 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
   __pyx_t_7 = (__pyx_t_1) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_1, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3);
   __Pyx_XDECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 431, __pyx_L1_error)
+  if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 433, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_y_bin_edges = __pyx_t_7;
   __pyx_t_7 = 0;
 
-  /* "WHAM/binless.pyx":433
+  /* "WHAM/binless.pyx":435
  *         y_bin_edges = np.zeros(M_y + 1)
  * 
  *         if y_bin_style == 'left':             # <<<<<<<<<<<<<<
  *             y_bin_edges[:-1] = y_bin
  *             # add an artificial edge after the last center
  */
-  __pyx_t_5 = (__Pyx_PyString_Equals(__pyx_v_y_bin_style, __pyx_n_s_left, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 433, __pyx_L1_error)
+  __pyx_t_5 = (__Pyx_PyString_Equals(__pyx_v_y_bin_style, __pyx_n_s_left, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 435, __pyx_L1_error)
   if (__pyx_t_5) {
 
-    /* "WHAM/binless.pyx":434
+    /* "WHAM/binless.pyx":436
  * 
  *         if y_bin_style == 'left':
  *             y_bin_edges[:-1] = y_bin             # <<<<<<<<<<<<<<
  *             # add an artificial edge after the last center
  *             y_bin_edges[-1] = y_bin[-1] + (y_bin[-1] - y_bin[-2])
  */
-    if (__Pyx_PyObject_SetSlice(__pyx_v_y_bin_edges, __pyx_v_y_bin, 0, -1L, NULL, NULL, &__pyx_slice__8, 0, 1, 1) < 0) __PYX_ERR(0, 434, __pyx_L1_error)
+    if (__Pyx_PyObject_SetSlice(__pyx_v_y_bin_edges, __pyx_v_y_bin, 0, -1L, NULL, NULL, &__pyx_slice__8, 0, 1, 1) < 0) __PYX_ERR(0, 436, __pyx_L1_error)
 
-    /* "WHAM/binless.pyx":436
+    /* "WHAM/binless.pyx":438
  *             y_bin_edges[:-1] = y_bin
  *             # add an artificial edge after the last center
  *             y_bin_edges[-1] = y_bin[-1] + (y_bin[-1] - y_bin[-2])             # <<<<<<<<<<<<<<
  *         elif y_bin_style == 'center':
  *             # add an artificial edge before the first center
  */
-    __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_y_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 436, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_y_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 438, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_y_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 436, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_y_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 438, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_y_bin, -2L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 436, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_y_bin, -2L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 438, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = PyNumber_Subtract(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 436, __pyx_L1_error)
+    __pyx_t_1 = PyNumber_Subtract(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 438, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = PyNumber_Add(__pyx_t_7, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 436, __pyx_L1_error)
+    __pyx_t_3 = PyNumber_Add(__pyx_t_7, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 438, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (unlikely(__Pyx_SetItemInt(__pyx_v_y_bin_edges, -1L, __pyx_t_3, long, 1, __Pyx_PyInt_From_long, 0, 1, 1) < 0)) __PYX_ERR(0, 436, __pyx_L1_error)
+    if (unlikely(__Pyx_SetItemInt(__pyx_v_y_bin_edges, -1L, __pyx_t_3, long, 1, __Pyx_PyInt_From_long, 0, 1, 1) < 0)) __PYX_ERR(0, 438, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "WHAM/binless.pyx":433
+    /* "WHAM/binless.pyx":435
  *         y_bin_edges = np.zeros(M_y + 1)
  * 
  *         if y_bin_style == 'left':             # <<<<<<<<<<<<<<
@@ -7298,92 +7345,92 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
     goto __pyx_L5;
   }
 
-  /* "WHAM/binless.pyx":437
+  /* "WHAM/binless.pyx":439
  *             # add an artificial edge after the last center
  *             y_bin_edges[-1] = y_bin[-1] + (y_bin[-1] - y_bin[-2])
  *         elif y_bin_style == 'center':             # <<<<<<<<<<<<<<
  *             # add an artificial edge before the first center
  *             y_bin_edges[0] = y_bin[0] - (y_bin[1] - y_bin[0]) / 2
  */
-  __pyx_t_5 = (__Pyx_PyString_Equals(__pyx_v_y_bin_style, __pyx_n_s_center, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 437, __pyx_L1_error)
+  __pyx_t_5 = (__Pyx_PyString_Equals(__pyx_v_y_bin_style, __pyx_n_s_center, Py_EQ)); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 439, __pyx_L1_error)
   if (likely(__pyx_t_5)) {
 
-    /* "WHAM/binless.pyx":439
+    /* "WHAM/binless.pyx":441
  *         elif y_bin_style == 'center':
  *             # add an artificial edge before the first center
  *             y_bin_edges[0] = y_bin[0] - (y_bin[1] - y_bin[0]) / 2             # <<<<<<<<<<<<<<
  *             # add an artificial edge after the last center
  *             y_bin_edges[-1] = y_bin[-1] + (y_bin[-1] - y_bin[-2]) / 2
  */
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_y_bin, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 439, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_y_bin, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 441, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_y_bin, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 439, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_y_bin, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 441, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_y_bin, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 439, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_y_bin, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 441, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_2 = PyNumber_Subtract(__pyx_t_1, __pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 439, __pyx_L1_error)
+    __pyx_t_2 = PyNumber_Subtract(__pyx_t_1, __pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 441, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    __pyx_t_7 = __Pyx_PyNumber_Divide(__pyx_t_2, __pyx_int_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 439, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyNumber_Divide(__pyx_t_2, __pyx_int_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 441, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = PyNumber_Subtract(__pyx_t_3, __pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 439, __pyx_L1_error)
+    __pyx_t_2 = PyNumber_Subtract(__pyx_t_3, __pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 441, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    if (unlikely(__Pyx_SetItemInt(__pyx_v_y_bin_edges, 0, __pyx_t_2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1) < 0)) __PYX_ERR(0, 439, __pyx_L1_error)
+    if (unlikely(__Pyx_SetItemInt(__pyx_v_y_bin_edges, 0, __pyx_t_2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1) < 0)) __PYX_ERR(0, 441, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "WHAM/binless.pyx":441
+    /* "WHAM/binless.pyx":443
  *             y_bin_edges[0] = y_bin[0] - (y_bin[1] - y_bin[0]) / 2
  *             # add an artificial edge after the last center
  *             y_bin_edges[-1] = y_bin[-1] + (y_bin[-1] - y_bin[-2]) / 2             # <<<<<<<<<<<<<<
  *             # bin edges are at the midpoints of bin centers
  *             y_bin_edges[1:-1] = (y_bin[1:] + y_bin[:-1]) / 2
  */
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_y_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 441, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_y_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 443, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_y_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 441, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_y_bin, -1L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 443, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_y_bin, -2L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 441, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_y_bin, -2L, long, 1, __Pyx_PyInt_From_long, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 443, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = PyNumber_Subtract(__pyx_t_7, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 441, __pyx_L1_error)
+    __pyx_t_1 = PyNumber_Subtract(__pyx_t_7, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 443, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyNumber_Divide(__pyx_t_1, __pyx_int_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 441, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyNumber_Divide(__pyx_t_1, __pyx_int_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 443, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = PyNumber_Add(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 441, __pyx_L1_error)
+    __pyx_t_1 = PyNumber_Add(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 443, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    if (unlikely(__Pyx_SetItemInt(__pyx_v_y_bin_edges, -1L, __pyx_t_1, long, 1, __Pyx_PyInt_From_long, 0, 1, 1) < 0)) __PYX_ERR(0, 441, __pyx_L1_error)
+    if (unlikely(__Pyx_SetItemInt(__pyx_v_y_bin_edges, -1L, __pyx_t_1, long, 1, __Pyx_PyInt_From_long, 0, 1, 1) < 0)) __PYX_ERR(0, 443, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "WHAM/binless.pyx":443
+    /* "WHAM/binless.pyx":445
  *             y_bin_edges[-1] = y_bin[-1] + (y_bin[-1] - y_bin[-2]) / 2
  *             # bin edges are at the midpoints of bin centers
  *             y_bin_edges[1:-1] = (y_bin[1:] + y_bin[:-1]) / 2             # <<<<<<<<<<<<<<
  *         else:
  *             raise ValueError('y-bin style not recognized.')
  */
-    __pyx_t_1 = __Pyx_PyObject_GetSlice(__pyx_v_y_bin, 1, 0, NULL, NULL, &__pyx_slice__9, 1, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 443, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetSlice(__pyx_v_y_bin, 1, 0, NULL, NULL, &__pyx_slice__9, 1, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 445, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_v_y_bin, 0, -1L, NULL, NULL, &__pyx_slice__8, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 443, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_v_y_bin, 0, -1L, NULL, NULL, &__pyx_slice__8, 0, 1, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 445, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 443, __pyx_L1_error)
+    __pyx_t_2 = PyNumber_Add(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 445, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyNumber_Divide(__pyx_t_2, __pyx_int_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 443, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyNumber_Divide(__pyx_t_2, __pyx_int_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 445, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (__Pyx_PyObject_SetSlice(__pyx_v_y_bin_edges, __pyx_t_3, 1, -1L, NULL, NULL, &__pyx_slice__10, 1, 1, 1) < 0) __PYX_ERR(0, 443, __pyx_L1_error)
+    if (__Pyx_PyObject_SetSlice(__pyx_v_y_bin_edges, __pyx_t_3, 1, -1L, NULL, NULL, &__pyx_slice__10, 1, 1, 1) < 0) __PYX_ERR(0, 445, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "WHAM/binless.pyx":437
+    /* "WHAM/binless.pyx":439
  *             # add an artificial edge after the last center
  *             y_bin_edges[-1] = y_bin[-1] + (y_bin[-1] - y_bin[-2])
  *         elif y_bin_style == 'center':             # <<<<<<<<<<<<<<
@@ -7393,7 +7440,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
     goto __pyx_L5;
   }
 
-  /* "WHAM/binless.pyx":445
+  /* "WHAM/binless.pyx":447
  *             y_bin_edges[1:-1] = (y_bin[1:] + y_bin[:-1]) / 2
  *         else:
  *             raise ValueError('y-bin style not recognized.')             # <<<<<<<<<<<<<<
@@ -7401,45 +7448,45 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
  *         delta_y_bin = y_bin_edges[1:] - y_bin_edges[:-1]
  */
   /*else*/ {
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__13, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 445, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__13, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 447, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(0, 445, __pyx_L1_error)
+    __PYX_ERR(0, 447, __pyx_L1_error)
   }
   __pyx_L5:;
 
-  /* "WHAM/binless.pyx":447
+  /* "WHAM/binless.pyx":449
  *             raise ValueError('y-bin style not recognized.')
  * 
  *         delta_y_bin = y_bin_edges[1:] - y_bin_edges[:-1]             # <<<<<<<<<<<<<<
  * 
  *         # Construct consensus free energy profiles by constructing weighted histogram
  */
-  __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_v_y_bin_edges, 1, 0, NULL, NULL, &__pyx_slice__9, 1, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 447, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetSlice(__pyx_v_y_bin_edges, 1, 0, NULL, NULL, &__pyx_slice__9, 1, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 449, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_GetSlice(__pyx_v_y_bin_edges, 0, -1L, NULL, NULL, &__pyx_slice__8, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 447, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetSlice(__pyx_v_y_bin_edges, 0, -1L, NULL, NULL, &__pyx_slice__8, 0, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 449, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = PyNumber_Subtract(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 447, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Subtract(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 449, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_delta_y_bin = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "WHAM/binless.pyx":451
+  /* "WHAM/binless.pyx":453
  *         # Construct consensus free energy profiles by constructing weighted histogram
  *         # using individual point weights G_l obtained from solver
  *         betaF_bin = np.zeros((M_x, M_y))             # <<<<<<<<<<<<<<
+ *         betaF_bin_counts = np.zeros((M_x, M_y))
  * 
- *         for b_x in range(1, M_x + 1):
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 451, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 453, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 451, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 453, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 451, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 453, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_v_M_x);
   __Pyx_GIVEREF(__pyx_v_M_x);
@@ -7460,67 +7507,106 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
   __pyx_t_1 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_7, __pyx_t_2) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2);
   __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 451, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 453, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __pyx_v_betaF_bin = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "WHAM/binless.pyx":453
+  /* "WHAM/binless.pyx":454
+ *         # using individual point weights G_l obtained from solver
  *         betaF_bin = np.zeros((M_x, M_y))
+ *         betaF_bin_counts = np.zeros((M_x, M_y))             # <<<<<<<<<<<<<<
+ * 
+ *         for b_x in range(1, M_x + 1):
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 454, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 454, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 454, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_INCREF(__pyx_v_M_x);
+  __Pyx_GIVEREF(__pyx_v_M_x);
+  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_v_M_x);
+  __Pyx_INCREF(__pyx_v_M_y);
+  __Pyx_GIVEREF(__pyx_v_M_y);
+  PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_v_M_y);
+  __pyx_t_7 = NULL;
+  if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
+    __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_7)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
+      __Pyx_INCREF(__pyx_t_7);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_2, function);
+    }
+  }
+  __pyx_t_1 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_7, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 454, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  __pyx_v_betaF_bin_counts = __pyx_t_1;
+  __pyx_t_1 = 0;
+
+  /* "WHAM/binless.pyx":456
+ *         betaF_bin_counts = np.zeros((M_x, M_y))
  * 
  *         for b_x in range(1, M_x + 1):             # <<<<<<<<<<<<<<
  *             for b_y in range(1, M_y + 1):
  *                 sel_mask = np.logical_and.reduce((x_l >= x_bin_edges[b_x - 1],
  */
-  __pyx_t_1 = __Pyx_PyInt_AddObjC(__pyx_v_M_x, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 453, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_AddObjC(__pyx_v_M_x, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 456, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 453, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 456, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_int_1);
   __Pyx_GIVEREF(__pyx_int_1);
-  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_int_1);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_int_1);
   __Pyx_GIVEREF(__pyx_t_1);
-  PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 453, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 456, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
-    __pyx_t_3 = __pyx_t_1; __Pyx_INCREF(__pyx_t_3); __pyx_t_6 = 0;
+    __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_6 = 0;
     __pyx_t_8 = NULL;
   } else {
-    __pyx_t_6 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 453, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_8 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 453, __pyx_L1_error)
+    __pyx_t_6 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 456, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_8 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 456, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   for (;;) {
     if (likely(!__pyx_t_8)) {
-      if (likely(PyList_CheckExact(__pyx_t_3))) {
-        if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_3)) break;
+      if (likely(PyList_CheckExact(__pyx_t_2))) {
+        if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 453, __pyx_L1_error)
+        __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 456, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 453, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 456, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       } else {
-        if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
+        if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 453, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_6); __Pyx_INCREF(__pyx_t_1); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 456, __pyx_L1_error)
         #else
-        __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 453, __pyx_L1_error)
+        __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 456, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         #endif
       }
     } else {
-      __pyx_t_1 = __pyx_t_8(__pyx_t_3);
+      __pyx_t_1 = __pyx_t_8(__pyx_t_2);
       if (unlikely(!__pyx_t_1)) {
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 453, __pyx_L1_error)
+          else __PYX_ERR(0, 456, __pyx_L1_error)
         }
         break;
       }
@@ -7529,61 +7615,61 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
     __Pyx_XDECREF_SET(__pyx_v_b_x, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "WHAM/binless.pyx":454
+    /* "WHAM/binless.pyx":457
  * 
  *         for b_x in range(1, M_x + 1):
  *             for b_y in range(1, M_y + 1):             # <<<<<<<<<<<<<<
  *                 sel_mask = np.logical_and.reduce((x_l >= x_bin_edges[b_x - 1],
  *                                                   x_l < x_bin_edges[b_x],
  */
-    __pyx_t_1 = __Pyx_PyInt_AddObjC(__pyx_v_M_y, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 454, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_AddObjC(__pyx_v_M_y, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 457, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 454, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_2);
+    __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 457, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_3);
     __Pyx_INCREF(__pyx_int_1);
     __Pyx_GIVEREF(__pyx_int_1);
-    PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_int_1);
+    PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_int_1);
     __Pyx_GIVEREF(__pyx_t_1);
-    PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_1);
+    PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 454, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 457, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     if (likely(PyList_CheckExact(__pyx_t_1)) || PyTuple_CheckExact(__pyx_t_1)) {
-      __pyx_t_2 = __pyx_t_1; __Pyx_INCREF(__pyx_t_2); __pyx_t_9 = 0;
+      __pyx_t_3 = __pyx_t_1; __Pyx_INCREF(__pyx_t_3); __pyx_t_9 = 0;
       __pyx_t_10 = NULL;
     } else {
-      __pyx_t_9 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 454, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_10 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 454, __pyx_L1_error)
+      __pyx_t_9 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 457, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __pyx_t_10 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 457, __pyx_L1_error)
     }
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     for (;;) {
       if (likely(!__pyx_t_10)) {
-        if (likely(PyList_CheckExact(__pyx_t_2))) {
-          if (__pyx_t_9 >= PyList_GET_SIZE(__pyx_t_2)) break;
+        if (likely(PyList_CheckExact(__pyx_t_3))) {
+          if (__pyx_t_9 >= PyList_GET_SIZE(__pyx_t_3)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_1 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_9); __Pyx_INCREF(__pyx_t_1); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(0, 454, __pyx_L1_error)
+          __pyx_t_1 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_9); __Pyx_INCREF(__pyx_t_1); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(0, 457, __pyx_L1_error)
           #else
-          __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 454, __pyx_L1_error)
+          __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 457, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
           #endif
         } else {
-          if (__pyx_t_9 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
+          if (__pyx_t_9 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_9); __Pyx_INCREF(__pyx_t_1); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(0, 454, __pyx_L1_error)
+          __pyx_t_1 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_9); __Pyx_INCREF(__pyx_t_1); __pyx_t_9++; if (unlikely(0 < 0)) __PYX_ERR(0, 457, __pyx_L1_error)
           #else
-          __pyx_t_1 = PySequence_ITEM(__pyx_t_2, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 454, __pyx_L1_error)
+          __pyx_t_1 = PySequence_ITEM(__pyx_t_3, __pyx_t_9); __pyx_t_9++; if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 457, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_1);
           #endif
         }
       } else {
-        __pyx_t_1 = __pyx_t_10(__pyx_t_2);
+        __pyx_t_1 = __pyx_t_10(__pyx_t_3);
         if (unlikely(!__pyx_t_1)) {
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 454, __pyx_L1_error)
+            else __PYX_ERR(0, 457, __pyx_L1_error)
           }
           break;
         }
@@ -7592,76 +7678,76 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
       __Pyx_XDECREF_SET(__pyx_v_b_y, __pyx_t_1);
       __pyx_t_1 = 0;
 
-      /* "WHAM/binless.pyx":455
+      /* "WHAM/binless.pyx":458
  *         for b_x in range(1, M_x + 1):
  *             for b_y in range(1, M_y + 1):
  *                 sel_mask = np.logical_and.reduce((x_l >= x_bin_edges[b_x - 1],             # <<<<<<<<<<<<<<
  *                                                   x_l < x_bin_edges[b_x],
  *                                                   y_l >= y_bin_edges[b_y - 1],
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_np); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 455, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_np); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 458, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_logical_and); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 455, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_logical_and); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 458, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_reduce); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 455, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_11, __pyx_n_s_reduce); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 458, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_11 = __Pyx_PyInt_SubtractObjC(__pyx_v_b_x, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 455, __pyx_L1_error)
+      __pyx_t_11 = __Pyx_PyInt_SubtractObjC(__pyx_v_b_x, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 458, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
-      __pyx_t_12 = __Pyx_PyObject_GetItem(__pyx_v_x_bin_edges, __pyx_t_11); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 455, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_GetItem(__pyx_v_x_bin_edges, __pyx_t_11); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 458, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
-      __pyx_t_11 = PyObject_RichCompare(((PyObject *)__pyx_v_x_l), __pyx_t_12, Py_GE); __Pyx_XGOTREF(__pyx_t_11); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 455, __pyx_L1_error)
+      __pyx_t_11 = PyObject_RichCompare(((PyObject *)__pyx_v_x_l), __pyx_t_12, Py_GE); __Pyx_XGOTREF(__pyx_t_11); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 458, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
 
-      /* "WHAM/binless.pyx":456
+      /* "WHAM/binless.pyx":459
  *             for b_y in range(1, M_y + 1):
  *                 sel_mask = np.logical_and.reduce((x_l >= x_bin_edges[b_x - 1],
  *                                                   x_l < x_bin_edges[b_x],             # <<<<<<<<<<<<<<
  *                                                   y_l >= y_bin_edges[b_y - 1],
  *                                                   y_l < y_bin_edges[b_y]))
  */
-      __pyx_t_12 = __Pyx_PyObject_GetItem(__pyx_v_x_bin_edges, __pyx_v_b_x); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 456, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyObject_GetItem(__pyx_v_x_bin_edges, __pyx_v_b_x); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 459, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_13 = PyObject_RichCompare(((PyObject *)__pyx_v_x_l), __pyx_t_12, Py_LT); __Pyx_XGOTREF(__pyx_t_13); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 456, __pyx_L1_error)
+      __pyx_t_13 = PyObject_RichCompare(((PyObject *)__pyx_v_x_l), __pyx_t_12, Py_LT); __Pyx_XGOTREF(__pyx_t_13); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 459, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
 
-      /* "WHAM/binless.pyx":457
+      /* "WHAM/binless.pyx":460
  *                 sel_mask = np.logical_and.reduce((x_l >= x_bin_edges[b_x - 1],
  *                                                   x_l < x_bin_edges[b_x],
  *                                                   y_l >= y_bin_edges[b_y - 1],             # <<<<<<<<<<<<<<
  *                                                   y_l < y_bin_edges[b_y]))
- * 
+ *                 betaF_bin_counts[b_x - 1, b_y - 1] = np.sum(sel_mask)
  */
-      __pyx_t_12 = __Pyx_PyInt_SubtractObjC(__pyx_v_b_y, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 457, __pyx_L1_error)
+      __pyx_t_12 = __Pyx_PyInt_SubtractObjC(__pyx_v_b_y, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 460, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_12);
-      __pyx_t_14 = __Pyx_PyObject_GetItem(__pyx_v_y_bin_edges, __pyx_t_12); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 457, __pyx_L1_error)
+      __pyx_t_14 = __Pyx_PyObject_GetItem(__pyx_v_y_bin_edges, __pyx_t_12); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 460, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_14);
       __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-      __pyx_t_12 = PyObject_RichCompare(__pyx_v_y_l, __pyx_t_14, Py_GE); __Pyx_XGOTREF(__pyx_t_12); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 457, __pyx_L1_error)
+      __pyx_t_12 = PyObject_RichCompare(__pyx_v_y_l, __pyx_t_14, Py_GE); __Pyx_XGOTREF(__pyx_t_12); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 460, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
 
-      /* "WHAM/binless.pyx":458
+      /* "WHAM/binless.pyx":461
  *                                                   x_l < x_bin_edges[b_x],
  *                                                   y_l >= y_bin_edges[b_y - 1],
  *                                                   y_l < y_bin_edges[b_y]))             # <<<<<<<<<<<<<<
+ *                 betaF_bin_counts[b_x - 1, b_y - 1] = np.sum(sel_mask)
  * 
- *                 if np.any(sel_mask != False):
  */
-      __pyx_t_14 = __Pyx_PyObject_GetItem(__pyx_v_y_bin_edges, __pyx_v_b_y); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 458, __pyx_L1_error)
+      __pyx_t_14 = __Pyx_PyObject_GetItem(__pyx_v_y_bin_edges, __pyx_v_b_y); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 461, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_14);
-      __pyx_t_15 = PyObject_RichCompare(__pyx_v_y_l, __pyx_t_14, Py_LT); __Pyx_XGOTREF(__pyx_t_15); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 458, __pyx_L1_error)
+      __pyx_t_15 = PyObject_RichCompare(__pyx_v_y_l, __pyx_t_14, Py_LT); __Pyx_XGOTREF(__pyx_t_15); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 461, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
 
-      /* "WHAM/binless.pyx":455
+      /* "WHAM/binless.pyx":458
  *         for b_x in range(1, M_x + 1):
  *             for b_y in range(1, M_y + 1):
  *                 sel_mask = np.logical_and.reduce((x_l >= x_bin_edges[b_x - 1],             # <<<<<<<<<<<<<<
  *                                                   x_l < x_bin_edges[b_x],
  *                                                   y_l >= y_bin_edges[b_y - 1],
  */
-      __pyx_t_14 = PyTuple_New(4); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 455, __pyx_L1_error)
+      __pyx_t_14 = PyTuple_New(4); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 458, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_14);
       __Pyx_GIVEREF(__pyx_t_11);
       PyTuple_SET_ITEM(__pyx_t_14, 0, __pyx_t_11);
@@ -7688,73 +7774,142 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
       __pyx_t_1 = (__pyx_t_15) ? __Pyx_PyObject_Call2Args(__pyx_t_7, __pyx_t_15, __pyx_t_14) : __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_14);
       __Pyx_XDECREF(__pyx_t_15); __pyx_t_15 = 0;
       __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 455, __pyx_L1_error)
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 458, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_XDECREF_SET(__pyx_v_sel_mask, __pyx_t_1);
       __pyx_t_1 = 0;
 
-      /* "WHAM/binless.pyx":460
+      /* "WHAM/binless.pyx":462
+ *                                                   y_l >= y_bin_edges[b_y - 1],
  *                                                   y_l < y_bin_edges[b_y]))
+ *                 betaF_bin_counts[b_x - 1, b_y - 1] = np.sum(sel_mask)             # <<<<<<<<<<<<<<
+ * 
+ *                 if np.any(sel_mask != False):
+ */
+      __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_np); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 462, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_sum); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 462, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_14);
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __pyx_t_7 = NULL;
+      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_14))) {
+        __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_14);
+        if (likely(__pyx_t_7)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_14);
+          __Pyx_INCREF(__pyx_t_7);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_14, function);
+        }
+      }
+      __pyx_t_1 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_14, __pyx_t_7, __pyx_v_sel_mask) : __Pyx_PyObject_CallOneArg(__pyx_t_14, __pyx_v_sel_mask);
+      __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 462, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_1);
+      __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
+      __pyx_t_14 = __Pyx_PyInt_SubtractObjC(__pyx_v_b_x, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 462, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_14);
+      __pyx_t_7 = __Pyx_PyInt_SubtractObjC(__pyx_v_b_y, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 462, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_7);
+      __pyx_t_15 = PyTuple_New(2); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 462, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_15);
+      __Pyx_GIVEREF(__pyx_t_14);
+      PyTuple_SET_ITEM(__pyx_t_15, 0, __pyx_t_14);
+      __Pyx_GIVEREF(__pyx_t_7);
+      PyTuple_SET_ITEM(__pyx_t_15, 1, __pyx_t_7);
+      __pyx_t_14 = 0;
+      __pyx_t_7 = 0;
+      if (unlikely(PyObject_SetItem(__pyx_v_betaF_bin_counts, __pyx_t_15, __pyx_t_1) < 0)) __PYX_ERR(0, 462, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+      /* "WHAM/binless.pyx":464
+ *                 betaF_bin_counts[b_x - 1, b_y - 1] = np.sum(sel_mask)
  * 
  *                 if np.any(sel_mask != False):             # <<<<<<<<<<<<<<
  *                     G_l_bin = G_l[sel_mask]
  *                     betaF_bin[b_x - 1, b_y - 1] = np.log(delta_x_bin[b_x - 1]) + np.log(delta_y_bin[b_y - 1]) - numeric.clogsumexp(-G_l_bin)
  */
-      __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_np); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 460, __pyx_L1_error)
+      __Pyx_GetModuleGlobalName(__pyx_t_15, __pyx_n_s_np); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 464, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_15);
+      __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_15, __pyx_n_s_any); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 464, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
-      __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_any); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 460, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_14);
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      __pyx_t_7 = PyObject_RichCompare(__pyx_v_sel_mask, Py_False, Py_NE); __Pyx_XGOTREF(__pyx_t_7); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 460, __pyx_L1_error)
-      __pyx_t_15 = NULL;
-      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_14))) {
-        __pyx_t_15 = PyMethod_GET_SELF(__pyx_t_14);
-        if (likely(__pyx_t_15)) {
-          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_14);
-          __Pyx_INCREF(__pyx_t_15);
+      __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
+      __pyx_t_15 = PyObject_RichCompare(__pyx_v_sel_mask, Py_False, Py_NE); __Pyx_XGOTREF(__pyx_t_15); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 464, __pyx_L1_error)
+      __pyx_t_14 = NULL;
+      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_7))) {
+        __pyx_t_14 = PyMethod_GET_SELF(__pyx_t_7);
+        if (likely(__pyx_t_14)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_7);
+          __Pyx_INCREF(__pyx_t_14);
           __Pyx_INCREF(function);
-          __Pyx_DECREF_SET(__pyx_t_14, function);
+          __Pyx_DECREF_SET(__pyx_t_7, function);
         }
       }
-      __pyx_t_1 = (__pyx_t_15) ? __Pyx_PyObject_Call2Args(__pyx_t_14, __pyx_t_15, __pyx_t_7) : __Pyx_PyObject_CallOneArg(__pyx_t_14, __pyx_t_7);
-      __Pyx_XDECREF(__pyx_t_15); __pyx_t_15 = 0;
-      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 460, __pyx_L1_error)
+      __pyx_t_1 = (__pyx_t_14) ? __Pyx_PyObject_Call2Args(__pyx_t_7, __pyx_t_14, __pyx_t_15) : __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_15);
+      __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
+      __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
+      if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 464, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-      __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 460, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+      __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 464, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       if (__pyx_t_5) {
 
-        /* "WHAM/binless.pyx":461
+        /* "WHAM/binless.pyx":465
  * 
  *                 if np.any(sel_mask != False):
  *                     G_l_bin = G_l[sel_mask]             # <<<<<<<<<<<<<<
  *                     betaF_bin[b_x - 1, b_y - 1] = np.log(delta_x_bin[b_x - 1]) + np.log(delta_y_bin[b_y - 1]) - numeric.clogsumexp(-G_l_bin)
  *                 else:
  */
-        __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_v_G_l, __pyx_v_sel_mask); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 461, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_v_G_l, __pyx_v_sel_mask); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 465, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_XDECREF_SET(__pyx_v_G_l_bin, __pyx_t_1);
         __pyx_t_1 = 0;
 
-        /* "WHAM/binless.pyx":462
+        /* "WHAM/binless.pyx":466
  *                 if np.any(sel_mask != False):
  *                     G_l_bin = G_l[sel_mask]
  *                     betaF_bin[b_x - 1, b_y - 1] = np.log(delta_x_bin[b_x - 1]) + np.log(delta_y_bin[b_y - 1]) - numeric.clogsumexp(-G_l_bin)             # <<<<<<<<<<<<<<
  *                 else:
  *                     betaF_bin[b_x - 1, b_y - 1] = np.inf
  */
-        __Pyx_GetModuleGlobalName(__pyx_t_14, __pyx_n_s_np); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 462, __pyx_L1_error)
+        __Pyx_GetModuleGlobalName(__pyx_t_7, __pyx_n_s_np); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 466, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_7);
+        __pyx_t_15 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_log); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 466, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_15);
+        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+        __pyx_t_7 = __Pyx_PyInt_SubtractObjC(__pyx_v_b_x, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 466, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_7);
+        __pyx_t_14 = __Pyx_PyObject_GetItem(__pyx_v_delta_x_bin, __pyx_t_7); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 466, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_14);
-        __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_log); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 462, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+        __pyx_t_7 = NULL;
+        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_15))) {
+          __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_15);
+          if (likely(__pyx_t_7)) {
+            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_15);
+            __Pyx_INCREF(__pyx_t_7);
+            __Pyx_INCREF(function);
+            __Pyx_DECREF_SET(__pyx_t_15, function);
+          }
+        }
+        __pyx_t_1 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_15, __pyx_t_7, __pyx_t_14) : __Pyx_PyObject_CallOneArg(__pyx_t_15, __pyx_t_14);
+        __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
+        __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
+        if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 466, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_1);
+        __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
+        __Pyx_GetModuleGlobalName(__pyx_t_14, __pyx_n_s_np); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 466, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_14);
+        __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_14, __pyx_n_s_log); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 466, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
         __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-        __pyx_t_14 = __Pyx_PyInt_SubtractObjC(__pyx_v_b_x, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 462, __pyx_L1_error)
+        __pyx_t_14 = __Pyx_PyInt_SubtractObjC(__pyx_v_b_y, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 466, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_14);
-        __pyx_t_15 = __Pyx_PyObject_GetItem(__pyx_v_delta_x_bin, __pyx_t_14); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 462, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_15);
+        __pyx_t_12 = __Pyx_PyObject_GetItem(__pyx_v_delta_y_bin, __pyx_t_14); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 466, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_12);
         __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
         __pyx_t_14 = NULL;
         if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_7))) {
@@ -7766,87 +7921,61 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
             __Pyx_DECREF_SET(__pyx_t_7, function);
           }
         }
-        __pyx_t_1 = (__pyx_t_14) ? __Pyx_PyObject_Call2Args(__pyx_t_7, __pyx_t_14, __pyx_t_15) : __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_15);
+        __pyx_t_15 = (__pyx_t_14) ? __Pyx_PyObject_Call2Args(__pyx_t_7, __pyx_t_14, __pyx_t_12) : __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_12);
         __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
-        __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-        if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 462, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_1);
-        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-        __Pyx_GetModuleGlobalName(__pyx_t_15, __pyx_n_s_np); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 462, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_15);
-        __pyx_t_14 = __Pyx_PyObject_GetAttrStr(__pyx_t_15, __pyx_n_s_log); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 462, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_14);
-        __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-        __pyx_t_15 = __Pyx_PyInt_SubtractObjC(__pyx_v_b_y, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 462, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_15);
-        __pyx_t_12 = __Pyx_PyObject_GetItem(__pyx_v_delta_y_bin, __pyx_t_15); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 462, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_12);
-        __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
-        __pyx_t_15 = NULL;
-        if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_14))) {
-          __pyx_t_15 = PyMethod_GET_SELF(__pyx_t_14);
-          if (likely(__pyx_t_15)) {
-            PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_14);
-            __Pyx_INCREF(__pyx_t_15);
-            __Pyx_INCREF(function);
-            __Pyx_DECREF_SET(__pyx_t_14, function);
-          }
-        }
-        __pyx_t_7 = (__pyx_t_15) ? __Pyx_PyObject_Call2Args(__pyx_t_14, __pyx_t_15, __pyx_t_12) : __Pyx_PyObject_CallOneArg(__pyx_t_14, __pyx_t_12);
-        __Pyx_XDECREF(__pyx_t_15); __pyx_t_15 = 0;
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-        if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 462, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_7);
-        __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
-        __pyx_t_14 = PyNumber_Add(__pyx_t_1, __pyx_t_7); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 462, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_14);
-        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 466, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_15);
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-        __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_numeric); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 462, __pyx_L1_error)
+        __pyx_t_7 = PyNumber_Add(__pyx_t_1, __pyx_t_15); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 466, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_7);
+        __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+        __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
+        __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_numeric); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 466, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_clogsumexp); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 462, __pyx_L1_error)
+        __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_clogsumexp); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 466, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_12);
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_1 = PyNumber_Negative(__pyx_v_G_l_bin); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 462, __pyx_L1_error)
+        __pyx_t_1 = PyNumber_Negative(__pyx_v_G_l_bin); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 466, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_15 = NULL;
+        __pyx_t_14 = NULL;
         if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_12))) {
-          __pyx_t_15 = PyMethod_GET_SELF(__pyx_t_12);
-          if (likely(__pyx_t_15)) {
+          __pyx_t_14 = PyMethod_GET_SELF(__pyx_t_12);
+          if (likely(__pyx_t_14)) {
             PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_12);
-            __Pyx_INCREF(__pyx_t_15);
+            __Pyx_INCREF(__pyx_t_14);
             __Pyx_INCREF(function);
             __Pyx_DECREF_SET(__pyx_t_12, function);
           }
         }
-        __pyx_t_7 = (__pyx_t_15) ? __Pyx_PyObject_Call2Args(__pyx_t_12, __pyx_t_15, __pyx_t_1) : __Pyx_PyObject_CallOneArg(__pyx_t_12, __pyx_t_1);
-        __Pyx_XDECREF(__pyx_t_15); __pyx_t_15 = 0;
+        __pyx_t_15 = (__pyx_t_14) ? __Pyx_PyObject_Call2Args(__pyx_t_12, __pyx_t_14, __pyx_t_1) : __Pyx_PyObject_CallOneArg(__pyx_t_12, __pyx_t_1);
+        __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 462, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_7);
+        if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 466, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_15);
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-        __pyx_t_12 = PyNumber_Subtract(__pyx_t_14, __pyx_t_7); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 462, __pyx_L1_error)
+        __pyx_t_12 = PyNumber_Subtract(__pyx_t_7, __pyx_t_15); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 466, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_12);
-        __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-        __pyx_t_7 = __Pyx_PyInt_SubtractObjC(__pyx_v_b_x, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 462, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
+        __pyx_t_15 = __Pyx_PyInt_SubtractObjC(__pyx_v_b_x, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 466, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_15);
+        __pyx_t_7 = __Pyx_PyInt_SubtractObjC(__pyx_v_b_y, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 466, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
-        __pyx_t_14 = __Pyx_PyInt_SubtractObjC(__pyx_v_b_y, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 462, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_14);
-        __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 462, __pyx_L1_error)
+        __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 466, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
+        __Pyx_GIVEREF(__pyx_t_15);
+        PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_15);
         __Pyx_GIVEREF(__pyx_t_7);
-        PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_7);
-        __Pyx_GIVEREF(__pyx_t_14);
-        PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_14);
+        PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_t_7);
+        __pyx_t_15 = 0;
         __pyx_t_7 = 0;
-        __pyx_t_14 = 0;
-        if (unlikely(PyObject_SetItem(__pyx_v_betaF_bin, __pyx_t_1, __pyx_t_12) < 0)) __PYX_ERR(0, 462, __pyx_L1_error)
+        if (unlikely(PyObject_SetItem(__pyx_v_betaF_bin, __pyx_t_1, __pyx_t_12) < 0)) __PYX_ERR(0, 466, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
 
-        /* "WHAM/binless.pyx":460
- *                                                   y_l < y_bin_edges[b_y]))
+        /* "WHAM/binless.pyx":464
+ *                 betaF_bin_counts[b_x - 1, b_y - 1] = np.sum(sel_mask)
  * 
  *                 if np.any(sel_mask != False):             # <<<<<<<<<<<<<<
  *                     G_l_bin = G_l[sel_mask]
@@ -7855,38 +7984,38 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
         goto __pyx_L10;
       }
 
-      /* "WHAM/binless.pyx":464
+      /* "WHAM/binless.pyx":468
  *                     betaF_bin[b_x - 1, b_y - 1] = np.log(delta_x_bin[b_x - 1]) + np.log(delta_y_bin[b_y - 1]) - numeric.clogsumexp(-G_l_bin)
  *                 else:
  *                     betaF_bin[b_x - 1, b_y - 1] = np.inf             # <<<<<<<<<<<<<<
  * 
- *         return betaF_bin, (delta_x_bin, delta_y_bin)
+ *         return betaF_bin, (betaF_bin_counts, delta_x_bin, delta_y_bin)
  */
       /*else*/ {
-        __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_np); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 464, __pyx_L1_error)
+        __Pyx_GetModuleGlobalName(__pyx_t_12, __pyx_n_s_np); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 468, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_12);
-        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_inf); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 464, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_inf); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 468, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-        __pyx_t_12 = __Pyx_PyInt_SubtractObjC(__pyx_v_b_x, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 464, __pyx_L1_error)
+        __pyx_t_12 = __Pyx_PyInt_SubtractObjC(__pyx_v_b_x, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 468, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_12);
-        __pyx_t_14 = __Pyx_PyInt_SubtractObjC(__pyx_v_b_y, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 464, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_14);
-        __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 464, __pyx_L1_error)
+        __pyx_t_7 = __Pyx_PyInt_SubtractObjC(__pyx_v_b_y, __pyx_int_1, 1, 0, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 468, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
+        __pyx_t_15 = PyTuple_New(2); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 468, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_15);
         __Pyx_GIVEREF(__pyx_t_12);
-        PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_12);
-        __Pyx_GIVEREF(__pyx_t_14);
-        PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_t_14);
+        PyTuple_SET_ITEM(__pyx_t_15, 0, __pyx_t_12);
+        __Pyx_GIVEREF(__pyx_t_7);
+        PyTuple_SET_ITEM(__pyx_t_15, 1, __pyx_t_7);
         __pyx_t_12 = 0;
-        __pyx_t_14 = 0;
-        if (unlikely(PyObject_SetItem(__pyx_v_betaF_bin, __pyx_t_7, __pyx_t_1) < 0)) __PYX_ERR(0, 464, __pyx_L1_error)
-        __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+        __pyx_t_7 = 0;
+        if (unlikely(PyObject_SetItem(__pyx_v_betaF_bin, __pyx_t_15, __pyx_t_1) < 0)) __PYX_ERR(0, 468, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_15); __pyx_t_15 = 0;
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       }
       __pyx_L10:;
 
-      /* "WHAM/binless.pyx":454
+      /* "WHAM/binless.pyx":457
  * 
  *         for b_x in range(1, M_x + 1):
  *             for b_y in range(1, M_y + 1):             # <<<<<<<<<<<<<<
@@ -7894,48 +8023,51 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
  *                                                   x_l < x_bin_edges[b_x],
  */
     }
-    __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+    __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "WHAM/binless.pyx":453
- *         betaF_bin = np.zeros((M_x, M_y))
+    /* "WHAM/binless.pyx":456
+ *         betaF_bin_counts = np.zeros((M_x, M_y))
  * 
  *         for b_x in range(1, M_x + 1):             # <<<<<<<<<<<<<<
  *             for b_y in range(1, M_y + 1):
  *                 sel_mask = np.logical_and.reduce((x_l >= x_bin_edges[b_x - 1],
  */
   }
-  __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "WHAM/binless.pyx":466
+  /* "WHAM/binless.pyx":470
  *                     betaF_bin[b_x - 1, b_y - 1] = np.inf
  * 
- *         return betaF_bin, (delta_x_bin, delta_y_bin)             # <<<<<<<<<<<<<<
+ *         return betaF_bin, (betaF_bin_counts, delta_x_bin, delta_y_bin)             # <<<<<<<<<<<<<<
  * 
  *     def bin_second_betaF_profile(self, y_l, x_bin, y_bin, G_l=None, x_bin_style='left', y_bin_style='left'):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 466, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
+  __pyx_t_2 = PyTuple_New(3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 470, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_INCREF(__pyx_v_betaF_bin_counts);
+  __Pyx_GIVEREF(__pyx_v_betaF_bin_counts);
+  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_betaF_bin_counts);
   __Pyx_INCREF(__pyx_v_delta_x_bin);
   __Pyx_GIVEREF(__pyx_v_delta_x_bin);
-  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_v_delta_x_bin);
+  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_delta_x_bin);
   __Pyx_INCREF(__pyx_v_delta_y_bin);
   __Pyx_GIVEREF(__pyx_v_delta_y_bin);
-  PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_v_delta_y_bin);
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 466, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_2, 2, __pyx_v_delta_y_bin);
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 470, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_v_betaF_bin);
   __Pyx_GIVEREF(__pyx_v_betaF_bin);
-  PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_betaF_bin);
-  __Pyx_GIVEREF(__pyx_t_3);
-  PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_t_3);
-  __pyx_t_3 = 0;
-  __pyx_r = __pyx_t_2;
+  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_v_betaF_bin);
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_t_2);
   __pyx_t_2 = 0;
+  __pyx_r = __pyx_t_3;
+  __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "WHAM/binless.pyx":377
- *         return betaF_bin
+  /* "WHAM/binless.pyx":378
+ *         return betaF_bin, betaF_bin_counts
  * 
  *     def bin_2D_betaF_profile(self, y_l, x_bin, y_bin, G_l=None, x_bin_style='left', y_bin_style='left'):             # <<<<<<<<<<<<<<
  *         """Bins weights corresponding to each sample into a 2D free energy
@@ -7964,6 +8096,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
   __Pyx_XDECREF(__pyx_v_y_bin_edges);
   __Pyx_XDECREF(__pyx_v_delta_y_bin);
   __Pyx_XDECREF(__pyx_v_betaF_bin);
+  __Pyx_XDECREF(__pyx_v_betaF_bin_counts);
   __Pyx_XDECREF(__pyx_v_b_x);
   __Pyx_XDECREF(__pyx_v_b_y);
   __Pyx_XDECREF(__pyx_v_sel_mask);
@@ -7974,8 +8107,8 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_24bin_2D_betaF_profile(struct _
   return __pyx_r;
 }
 
-/* "WHAM/binless.pyx":468
- *         return betaF_bin, (delta_x_bin, delta_y_bin)
+/* "WHAM/binless.pyx":472
+ *         return betaF_bin, (betaF_bin_counts, delta_x_bin, delta_y_bin)
  * 
  *     def bin_second_betaF_profile(self, y_l, x_bin, y_bin, G_l=None, x_bin_style='left', y_bin_style='left'):             # <<<<<<<<<<<<<<
  *         """Bins weights corresponding to each sample into a 2D free energy
@@ -8032,13 +8165,13 @@ static PyObject *__pyx_pw_4WHAM_7binless_6Calc1D_27bin_second_betaF_profile(PyOb
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_x_bin)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("bin_second_betaF_profile", 0, 3, 6, 1); __PYX_ERR(0, 468, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("bin_second_betaF_profile", 0, 3, 6, 1); __PYX_ERR(0, 472, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_y_bin)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("bin_second_betaF_profile", 0, 3, 6, 2); __PYX_ERR(0, 468, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("bin_second_betaF_profile", 0, 3, 6, 2); __PYX_ERR(0, 472, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
@@ -8060,7 +8193,7 @@ static PyObject *__pyx_pw_4WHAM_7binless_6Calc1D_27bin_second_betaF_profile(PyOb
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "bin_second_betaF_profile") < 0)) __PYX_ERR(0, 468, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "bin_second_betaF_profile") < 0)) __PYX_ERR(0, 472, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -8086,7 +8219,7 @@ static PyObject *__pyx_pw_4WHAM_7binless_6Calc1D_27bin_second_betaF_profile(PyOb
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("bin_second_betaF_profile", 0, 3, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 468, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("bin_second_betaF_profile", 0, 3, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 472, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("WHAM.binless.Calc1D.bin_second_betaF_profile", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -8101,6 +8234,7 @@ static PyObject *__pyx_pw_4WHAM_7binless_6Calc1D_27bin_second_betaF_profile(PyOb
 
 static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_26bin_second_betaF_profile(struct __pyx_obj_4WHAM_7binless_Calc1D *__pyx_v_self, PyObject *__pyx_v_y_l, PyObject *__pyx_v_x_bin, PyObject *__pyx_v_y_bin, PyObject *__pyx_v_G_l, PyObject *__pyx_v_x_bin_style, PyObject *__pyx_v_y_bin_style) {
   PyObject *__pyx_v_betaF_xy = NULL;
+  CYTHON_UNUSED PyObject *__pyx_v_betaF_bin_counts = NULL;
   PyObject *__pyx_v_delta_x_bin = NULL;
   CYTHON_UNUSED PyObject *__pyx_v_delta_y_bin = NULL;
   PyObject *__pyx_v_betaF_y = NULL;
@@ -8114,24 +8248,25 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_26bin_second_betaF_profile(stru
   PyObject *(*__pyx_t_5)(PyObject *);
   PyObject *__pyx_t_6 = NULL;
   PyObject *__pyx_t_7 = NULL;
-  Py_ssize_t __pyx_t_8;
+  PyObject *__pyx_t_8 = NULL;
   Py_ssize_t __pyx_t_9;
   Py_ssize_t __pyx_t_10;
+  Py_ssize_t __pyx_t_11;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("bin_second_betaF_profile", 0);
 
-  /* "WHAM/binless.pyx":492
+  /* "WHAM/binless.pyx":496
  *                 binned as per y-bin (2nd dim).
  *         """
- *         betaF_xy, (delta_x_bin, delta_y_bin) = self.bin_2D_betaF_profile(y_l, x_bin, y_bin, G_l=G_l, x_bin_style=x_bin_style, y_bin_style=y_bin_style)             # <<<<<<<<<<<<<<
+ *         betaF_xy, (betaF_bin_counts, delta_x_bin, delta_y_bin) = self.bin_2D_betaF_profile(y_l, x_bin, y_bin, G_l=G_l, x_bin_style=x_bin_style, y_bin_style=y_bin_style)             # <<<<<<<<<<<<<<
  *         betaF_xy = np.nan_to_num(betaF_xy)
  *         print(betaF_xy.shape)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_bin_2D_betaF_profile); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 492, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_bin_2D_betaF_profile); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 496, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 492, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 496, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_v_y_l);
   __Pyx_GIVEREF(__pyx_v_y_l);
@@ -8142,12 +8277,12 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_26bin_second_betaF_profile(stru
   __Pyx_INCREF(__pyx_v_y_bin);
   __Pyx_GIVEREF(__pyx_v_y_bin);
   PyTuple_SET_ITEM(__pyx_t_2, 2, __pyx_v_y_bin);
-  __pyx_t_3 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 492, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 496, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_G_l, __pyx_v_G_l) < 0) __PYX_ERR(0, 492, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_x_bin_style, __pyx_v_x_bin_style) < 0) __PYX_ERR(0, 492, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_y_bin_style, __pyx_v_y_bin_style) < 0) __PYX_ERR(0, 492, __pyx_L1_error)
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 492, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_G_l, __pyx_v_G_l) < 0) __PYX_ERR(0, 496, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_x_bin_style, __pyx_v_x_bin_style) < 0) __PYX_ERR(0, 496, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_y_bin_style, __pyx_v_y_bin_style) < 0) __PYX_ERR(0, 496, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 496, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -8158,7 +8293,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_26bin_second_betaF_profile(stru
     if (unlikely(size != 2)) {
       if (size > 2) __Pyx_RaiseTooManyValuesError(2);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 492, __pyx_L1_error)
+      __PYX_ERR(0, 496, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     if (likely(PyTuple_CheckExact(sequence))) {
@@ -8171,15 +8306,15 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_26bin_second_betaF_profile(stru
     __Pyx_INCREF(__pyx_t_3);
     __Pyx_INCREF(__pyx_t_2);
     #else
-    __pyx_t_3 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 492, __pyx_L1_error)
+    __pyx_t_3 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 496, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 492, __pyx_L1_error)
+    __pyx_t_2 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 496, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     #endif
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   } else {
     Py_ssize_t index = -1;
-    __pyx_t_1 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 492, __pyx_L1_error)
+    __pyx_t_1 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 496, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __pyx_t_5 = Py_TYPE(__pyx_t_1)->tp_iternext;
@@ -8187,7 +8322,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_26bin_second_betaF_profile(stru
     __Pyx_GOTREF(__pyx_t_3);
     index = 1; __pyx_t_2 = __pyx_t_5(__pyx_t_1); if (unlikely(!__pyx_t_2)) goto __pyx_L3_unpacking_failed;
     __Pyx_GOTREF(__pyx_t_2);
-    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_1), 2) < 0) __PYX_ERR(0, 492, __pyx_L1_error)
+    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_1), 2) < 0) __PYX_ERR(0, 496, __pyx_L1_error)
     __pyx_t_5 = NULL;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     goto __pyx_L4_unpacking_done;
@@ -8195,7 +8330,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_26bin_second_betaF_profile(stru
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_5 = NULL;
     if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-    __PYX_ERR(0, 492, __pyx_L1_error)
+    __PYX_ERR(0, 496, __pyx_L1_error)
     __pyx_L4_unpacking_done:;
   }
   __pyx_v_betaF_xy = __pyx_t_3;
@@ -8203,64 +8338,73 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_26bin_second_betaF_profile(stru
   if ((likely(PyTuple_CheckExact(__pyx_t_2))) || (PyList_CheckExact(__pyx_t_2))) {
     PyObject* sequence = __pyx_t_2;
     Py_ssize_t size = __Pyx_PySequence_SIZE(sequence);
-    if (unlikely(size != 2)) {
-      if (size > 2) __Pyx_RaiseTooManyValuesError(2);
+    if (unlikely(size != 3)) {
+      if (size > 3) __Pyx_RaiseTooManyValuesError(3);
       else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-      __PYX_ERR(0, 492, __pyx_L1_error)
+      __PYX_ERR(0, 496, __pyx_L1_error)
     }
     #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
     if (likely(PyTuple_CheckExact(sequence))) {
       __pyx_t_1 = PyTuple_GET_ITEM(sequence, 0); 
       __pyx_t_6 = PyTuple_GET_ITEM(sequence, 1); 
+      __pyx_t_7 = PyTuple_GET_ITEM(sequence, 2); 
     } else {
       __pyx_t_1 = PyList_GET_ITEM(sequence, 0); 
       __pyx_t_6 = PyList_GET_ITEM(sequence, 1); 
+      __pyx_t_7 = PyList_GET_ITEM(sequence, 2); 
     }
     __Pyx_INCREF(__pyx_t_1);
     __Pyx_INCREF(__pyx_t_6);
+    __Pyx_INCREF(__pyx_t_7);
     #else
-    __pyx_t_1 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 492, __pyx_L1_error)
+    __pyx_t_1 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 496, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 492, __pyx_L1_error)
+    __pyx_t_6 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 496, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
+    __pyx_t_7 = PySequence_ITEM(sequence, 2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 496, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
     #endif
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   } else {
     Py_ssize_t index = -1;
-    __pyx_t_7 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 492, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_8 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 496, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_5 = Py_TYPE(__pyx_t_7)->tp_iternext;
-    index = 0; __pyx_t_1 = __pyx_t_5(__pyx_t_7); if (unlikely(!__pyx_t_1)) goto __pyx_L5_unpacking_failed;
+    __pyx_t_5 = Py_TYPE(__pyx_t_8)->tp_iternext;
+    index = 0; __pyx_t_1 = __pyx_t_5(__pyx_t_8); if (unlikely(!__pyx_t_1)) goto __pyx_L5_unpacking_failed;
     __Pyx_GOTREF(__pyx_t_1);
-    index = 1; __pyx_t_6 = __pyx_t_5(__pyx_t_7); if (unlikely(!__pyx_t_6)) goto __pyx_L5_unpacking_failed;
+    index = 1; __pyx_t_6 = __pyx_t_5(__pyx_t_8); if (unlikely(!__pyx_t_6)) goto __pyx_L5_unpacking_failed;
     __Pyx_GOTREF(__pyx_t_6);
-    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_7), 2) < 0) __PYX_ERR(0, 492, __pyx_L1_error)
+    index = 2; __pyx_t_7 = __pyx_t_5(__pyx_t_8); if (unlikely(!__pyx_t_7)) goto __pyx_L5_unpacking_failed;
+    __Pyx_GOTREF(__pyx_t_7);
+    if (__Pyx_IternextUnpackEndCheck(__pyx_t_5(__pyx_t_8), 3) < 0) __PYX_ERR(0, 496, __pyx_L1_error)
     __pyx_t_5 = NULL;
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     goto __pyx_L6_unpacking_done;
     __pyx_L5_unpacking_failed:;
-    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     __pyx_t_5 = NULL;
     if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-    __PYX_ERR(0, 492, __pyx_L1_error)
+    __PYX_ERR(0, 496, __pyx_L1_error)
     __pyx_L6_unpacking_done:;
   }
-  __pyx_v_delta_x_bin = __pyx_t_1;
+  __pyx_v_betaF_bin_counts = __pyx_t_1;
   __pyx_t_1 = 0;
-  __pyx_v_delta_y_bin = __pyx_t_6;
+  __pyx_v_delta_x_bin = __pyx_t_6;
   __pyx_t_6 = 0;
+  __pyx_v_delta_y_bin = __pyx_t_7;
+  __pyx_t_7 = 0;
 
-  /* "WHAM/binless.pyx":493
+  /* "WHAM/binless.pyx":497
  *         """
- *         betaF_xy, (delta_x_bin, delta_y_bin) = self.bin_2D_betaF_profile(y_l, x_bin, y_bin, G_l=G_l, x_bin_style=x_bin_style, y_bin_style=y_bin_style)
+ *         betaF_xy, (betaF_bin_counts, delta_x_bin, delta_y_bin) = self.bin_2D_betaF_profile(y_l, x_bin, y_bin, G_l=G_l, x_bin_style=x_bin_style, y_bin_style=y_bin_style)
  *         betaF_xy = np.nan_to_num(betaF_xy)             # <<<<<<<<<<<<<<
  *         print(betaF_xy.shape)
  *         print(delta_x_bin.shape)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 493, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 497, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_nan_to_num); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 493, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_nan_to_num); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 497, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -8275,97 +8419,97 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_26bin_second_betaF_profile(stru
   }
   __pyx_t_4 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_2, __pyx_v_betaF_xy) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_betaF_xy);
   __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 493, __pyx_L1_error)
+  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 497, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF_SET(__pyx_v_betaF_xy, __pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "WHAM/binless.pyx":494
- *         betaF_xy, (delta_x_bin, delta_y_bin) = self.bin_2D_betaF_profile(y_l, x_bin, y_bin, G_l=G_l, x_bin_style=x_bin_style, y_bin_style=y_bin_style)
+  /* "WHAM/binless.pyx":498
+ *         betaF_xy, (betaF_bin_counts, delta_x_bin, delta_y_bin) = self.bin_2D_betaF_profile(y_l, x_bin, y_bin, G_l=G_l, x_bin_style=x_bin_style, y_bin_style=y_bin_style)
  *         betaF_xy = np.nan_to_num(betaF_xy)
  *         print(betaF_xy.shape)             # <<<<<<<<<<<<<<
  *         print(delta_x_bin.shape)
  *         betaF_y = np.zeros(len(y_bin))
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_betaF_xy, __pyx_n_s_shape); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 494, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_betaF_xy, __pyx_n_s_shape); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 498, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_PrintOne(0, __pyx_t_4) < 0) __PYX_ERR(0, 494, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_t_4) < 0) __PYX_ERR(0, 498, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "WHAM/binless.pyx":495
+  /* "WHAM/binless.pyx":499
  *         betaF_xy = np.nan_to_num(betaF_xy)
  *         print(betaF_xy.shape)
  *         print(delta_x_bin.shape)             # <<<<<<<<<<<<<<
  *         betaF_y = np.zeros(len(y_bin))
  *         for yi in range(len(y_bin)):
  */
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_delta_x_bin, __pyx_n_s_shape); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 495, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_delta_x_bin, __pyx_n_s_shape); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 499, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (__Pyx_PrintOne(0, __pyx_t_4) < 0) __PYX_ERR(0, 495, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_t_4) < 0) __PYX_ERR(0, 499, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "WHAM/binless.pyx":496
+  /* "WHAM/binless.pyx":500
  *         print(betaF_xy.shape)
  *         print(delta_x_bin.shape)
  *         betaF_y = np.zeros(len(y_bin))             # <<<<<<<<<<<<<<
  *         for yi in range(len(y_bin)):
  *             betaF_y[yi] = -numeric.clogsumexp(-betaF_xy[:, yi], b=delta_x_bin ** 2, axis=0)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 496, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 500, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 496, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 500, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_8 = PyObject_Length(__pyx_v_y_bin); if (unlikely(__pyx_t_8 == ((Py_ssize_t)-1))) __PYX_ERR(0, 496, __pyx_L1_error)
-  __pyx_t_3 = PyInt_FromSsize_t(__pyx_t_8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 496, __pyx_L1_error)
+  __pyx_t_9 = PyObject_Length(__pyx_v_y_bin); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 500, __pyx_L1_error)
+  __pyx_t_3 = PyInt_FromSsize_t(__pyx_t_9); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 500, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_6 = NULL;
+  __pyx_t_7 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_2))) {
-    __pyx_t_6 = PyMethod_GET_SELF(__pyx_t_2);
-    if (likely(__pyx_t_6)) {
+    __pyx_t_7 = PyMethod_GET_SELF(__pyx_t_2);
+    if (likely(__pyx_t_7)) {
       PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_2);
-      __Pyx_INCREF(__pyx_t_6);
+      __Pyx_INCREF(__pyx_t_7);
       __Pyx_INCREF(function);
       __Pyx_DECREF_SET(__pyx_t_2, function);
     }
   }
-  __pyx_t_4 = (__pyx_t_6) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_6, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_t_4 = (__pyx_t_7) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_7, __pyx_t_3) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 496, __pyx_L1_error)
+  if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 500, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_betaF_y = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "WHAM/binless.pyx":497
+  /* "WHAM/binless.pyx":501
  *         print(delta_x_bin.shape)
  *         betaF_y = np.zeros(len(y_bin))
  *         for yi in range(len(y_bin)):             # <<<<<<<<<<<<<<
  *             betaF_y[yi] = -numeric.clogsumexp(-betaF_xy[:, yi], b=delta_x_bin ** 2, axis=0)
  *         return betaF_y
  */
-  __pyx_t_8 = PyObject_Length(__pyx_v_y_bin); if (unlikely(__pyx_t_8 == ((Py_ssize_t)-1))) __PYX_ERR(0, 497, __pyx_L1_error)
-  __pyx_t_9 = __pyx_t_8;
-  for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
-    __pyx_v_yi = __pyx_t_10;
+  __pyx_t_9 = PyObject_Length(__pyx_v_y_bin); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 501, __pyx_L1_error)
+  __pyx_t_10 = __pyx_t_9;
+  for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
+    __pyx_v_yi = __pyx_t_11;
 
-    /* "WHAM/binless.pyx":498
+    /* "WHAM/binless.pyx":502
  *         betaF_y = np.zeros(len(y_bin))
  *         for yi in range(len(y_bin)):
  *             betaF_y[yi] = -numeric.clogsumexp(-betaF_xy[:, yi], b=delta_x_bin ** 2, axis=0)             # <<<<<<<<<<<<<<
  *         return betaF_y
  * 
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_numeric); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 498, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_numeric); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 502, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_clogsumexp); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 498, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_clogsumexp); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 502, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = PyInt_FromSsize_t(__pyx_v_yi); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 498, __pyx_L1_error)
+    __pyx_t_4 = PyInt_FromSsize_t(__pyx_v_yi); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 502, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 498, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 502, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_INCREF(__pyx_slice_);
     __Pyx_GIVEREF(__pyx_slice_);
@@ -8373,37 +8517,37 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_26bin_second_betaF_profile(stru
     __Pyx_GIVEREF(__pyx_t_4);
     PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_t_4);
     __pyx_t_4 = 0;
-    __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_v_betaF_xy, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 498, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_GetItem(__pyx_v_betaF_xy, __pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 502, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = PyNumber_Negative(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 498, __pyx_L1_error)
+    __pyx_t_3 = PyNumber_Negative(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 502, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 498, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 502, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_3);
     __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 498, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 502, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_6 = PyNumber_Power(__pyx_v_delta_x_bin, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 498, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
-    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_b, __pyx_t_6) < 0) __PYX_ERR(0, 498, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_axis, __pyx_int_0) < 0) __PYX_ERR(0, 498, __pyx_L1_error)
-    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 498, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_6);
+    __pyx_t_7 = PyNumber_Power(__pyx_v_delta_x_bin, __pyx_int_2, Py_None); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 502, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_b, __pyx_t_7) < 0) __PYX_ERR(0, 502, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_axis, __pyx_int_0) < 0) __PYX_ERR(0, 502, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 502, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = PyNumber_Negative(__pyx_t_6); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 498, __pyx_L1_error)
+    __pyx_t_3 = PyNumber_Negative(__pyx_t_7); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 502, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    if (unlikely(__Pyx_SetItemInt(__pyx_v_betaF_y, __pyx_v_yi, __pyx_t_3, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1) < 0)) __PYX_ERR(0, 498, __pyx_L1_error)
+    __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
+    if (unlikely(__Pyx_SetItemInt(__pyx_v_betaF_y, __pyx_v_yi, __pyx_t_3, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1) < 0)) __PYX_ERR(0, 502, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
 
-  /* "WHAM/binless.pyx":499
+  /* "WHAM/binless.pyx":503
  *         for yi in range(len(y_bin)):
  *             betaF_y[yi] = -numeric.clogsumexp(-betaF_xy[:, yi], b=delta_x_bin ** 2, axis=0)
  *         return betaF_y             # <<<<<<<<<<<<<<
@@ -8415,8 +8559,8 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_26bin_second_betaF_profile(stru
   __pyx_r = __pyx_v_betaF_y;
   goto __pyx_L0;
 
-  /* "WHAM/binless.pyx":468
- *         return betaF_bin, (delta_x_bin, delta_y_bin)
+  /* "WHAM/binless.pyx":472
+ *         return betaF_bin, (betaF_bin_counts, delta_x_bin, delta_y_bin)
  * 
  *     def bin_second_betaF_profile(self, y_l, x_bin, y_bin, G_l=None, x_bin_style='left', y_bin_style='left'):             # <<<<<<<<<<<<<<
  *         """Bins weights corresponding to each sample into a 2D free energy
@@ -8431,10 +8575,12 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_26bin_second_betaF_profile(stru
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
+  __Pyx_XDECREF(__pyx_t_8);
   __Pyx_AddTraceback("WHAM.binless.Calc1D.bin_second_betaF_profile", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_betaF_xy);
+  __Pyx_XDECREF(__pyx_v_betaF_bin_counts);
   __Pyx_XDECREF(__pyx_v_delta_x_bin);
   __Pyx_XDECREF(__pyx_v_delta_y_bin);
   __Pyx_XDECREF(__pyx_v_betaF_y);
@@ -8443,7 +8589,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_26bin_second_betaF_profile(stru
   return __pyx_r;
 }
 
-/* "WHAM/binless.pyx":504
+/* "WHAM/binless.pyx":508
  *     # Alternate API call          #
  *     ###############################
  *     def compute_betaF_profile(self, x_it, x_bin, u_i, beta, bin_style='left', solver='log-likelihood', **solverkwargs):             # <<<<<<<<<<<<<<
@@ -8503,19 +8649,19 @@ static PyObject *__pyx_pw_4WHAM_7binless_6Calc1D_29compute_betaF_profile(PyObjec
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_x_bin)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_betaF_profile", 0, 4, 6, 1); __PYX_ERR(0, 504, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("compute_betaF_profile", 0, 4, 6, 1); __PYX_ERR(0, 508, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_u_i)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_betaF_profile", 0, 4, 6, 2); __PYX_ERR(0, 504, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("compute_betaF_profile", 0, 4, 6, 2); __PYX_ERR(0, 508, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_beta)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("compute_betaF_profile", 0, 4, 6, 3); __PYX_ERR(0, 504, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("compute_betaF_profile", 0, 4, 6, 3); __PYX_ERR(0, 508, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
@@ -8531,7 +8677,7 @@ static PyObject *__pyx_pw_4WHAM_7binless_6Calc1D_29compute_betaF_profile(PyObjec
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_solverkwargs, values, pos_args, "compute_betaF_profile") < 0)) __PYX_ERR(0, 504, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, __pyx_v_solverkwargs, values, pos_args, "compute_betaF_profile") < 0)) __PYX_ERR(0, 508, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -8556,7 +8702,7 @@ static PyObject *__pyx_pw_4WHAM_7binless_6Calc1D_29compute_betaF_profile(PyObjec
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("compute_betaF_profile", 0, 4, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 504, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("compute_betaF_profile", 0, 4, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 508, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_DECREF(__pyx_v_solverkwargs); __pyx_v_solverkwargs = 0;
   __Pyx_AddTraceback("WHAM.binless.Calc1D.compute_betaF_profile", __pyx_clineno, __pyx_lineno, __pyx_filename);
@@ -8577,6 +8723,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_28compute_betaF_profile(struct 
   PyObject *__pyx_v_N_i = NULL;
   PyObject *__pyx_v_status = NULL;
   PyObject *__pyx_v_betaF_bin = NULL;
+  PyObject *__pyx_v_betaF_bin_counts = NULL;
   PyObject *__pyx_v_arr = NULL;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -8589,50 +8736,51 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_28compute_betaF_profile(struct 
   PyObject *__pyx_t_7 = NULL;
   PyObject *(*__pyx_t_8)(PyObject *);
   PyObject *__pyx_t_9 = NULL;
+  PyObject *(*__pyx_t_10)(PyObject *);
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("compute_betaF_profile", 0);
 
-  /* "WHAM/binless.pyx":523
+  /* "WHAM/binless.pyx":527
  *         """
  *         # Unroll x_it into a single array
  *         x_l = x_it[0]             # <<<<<<<<<<<<<<
  *         for i in range(1, len(x_it)):
  *             x_l = np.hstack((x_l, x_it[i]))
  */
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_x_it, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 523, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_x_it, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 527, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_x_l = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "WHAM/binless.pyx":524
+  /* "WHAM/binless.pyx":528
  *         # Unroll x_it into a single array
  *         x_l = x_it[0]
  *         for i in range(1, len(x_it)):             # <<<<<<<<<<<<<<
  *             x_l = np.hstack((x_l, x_it[i]))
  * 
  */
-  __pyx_t_2 = PyObject_Length(__pyx_v_x_it); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 524, __pyx_L1_error)
+  __pyx_t_2 = PyObject_Length(__pyx_v_x_it); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 528, __pyx_L1_error)
   __pyx_t_3 = __pyx_t_2;
   for (__pyx_t_4 = 1; __pyx_t_4 < __pyx_t_3; __pyx_t_4+=1) {
     __pyx_v_i = __pyx_t_4;
 
-    /* "WHAM/binless.pyx":525
+    /* "WHAM/binless.pyx":529
  *         x_l = x_it[0]
  *         for i in range(1, len(x_it)):
  *             x_l = np.hstack((x_l, x_it[i]))             # <<<<<<<<<<<<<<
  * 
  *         # Compute window counts
  */
-    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 525, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 529, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_hstack); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 525, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_hstack); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 529, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_x_it, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 525, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_x_it, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 1, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 529, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 525, __pyx_L1_error)
+    __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 529, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_INCREF(__pyx_v_x_l);
     __Pyx_GIVEREF(__pyx_v_x_l);
@@ -8653,51 +8801,51 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_28compute_betaF_profile(struct 
     __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_6, __pyx_t_5, __pyx_t_7) : __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_7);
     __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
     __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 525, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 529, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __Pyx_DECREF_SET(__pyx_v_x_l, __pyx_t_1);
     __pyx_t_1 = 0;
   }
 
-  /* "WHAM/binless.pyx":528
+  /* "WHAM/binless.pyx":532
  * 
  *         # Compute window counts
  *         N_i = np.array([len(arr) for arr in x_it])             # <<<<<<<<<<<<<<
  * 
  *         status = self.compute_point_weights(x_l, N_i, u_i, beta, solver=solver, **solverkwargs)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 528, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_np); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 532, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_array); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 528, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_array); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 532, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 528, __pyx_L1_error)
+  __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 532, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   if (likely(PyList_CheckExact(__pyx_v_x_it)) || PyTuple_CheckExact(__pyx_v_x_it)) {
     __pyx_t_5 = __pyx_v_x_it; __Pyx_INCREF(__pyx_t_5); __pyx_t_2 = 0;
     __pyx_t_8 = NULL;
   } else {
-    __pyx_t_2 = -1; __pyx_t_5 = PyObject_GetIter(__pyx_v_x_it); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 528, __pyx_L1_error)
+    __pyx_t_2 = -1; __pyx_t_5 = PyObject_GetIter(__pyx_v_x_it); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 532, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_8 = Py_TYPE(__pyx_t_5)->tp_iternext; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 528, __pyx_L1_error)
+    __pyx_t_8 = Py_TYPE(__pyx_t_5)->tp_iternext; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 532, __pyx_L1_error)
   }
   for (;;) {
     if (likely(!__pyx_t_8)) {
       if (likely(PyList_CheckExact(__pyx_t_5))) {
         if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_5)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_9 = PyList_GET_ITEM(__pyx_t_5, __pyx_t_2); __Pyx_INCREF(__pyx_t_9); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 528, __pyx_L1_error)
+        __pyx_t_9 = PyList_GET_ITEM(__pyx_t_5, __pyx_t_2); __Pyx_INCREF(__pyx_t_9); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 532, __pyx_L1_error)
         #else
-        __pyx_t_9 = PySequence_ITEM(__pyx_t_5, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 528, __pyx_L1_error)
+        __pyx_t_9 = PySequence_ITEM(__pyx_t_5, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 532, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_9);
         #endif
       } else {
         if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_5)) break;
         #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-        __pyx_t_9 = PyTuple_GET_ITEM(__pyx_t_5, __pyx_t_2); __Pyx_INCREF(__pyx_t_9); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 528, __pyx_L1_error)
+        __pyx_t_9 = PyTuple_GET_ITEM(__pyx_t_5, __pyx_t_2); __Pyx_INCREF(__pyx_t_9); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 532, __pyx_L1_error)
         #else
-        __pyx_t_9 = PySequence_ITEM(__pyx_t_5, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 528, __pyx_L1_error)
+        __pyx_t_9 = PySequence_ITEM(__pyx_t_5, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 532, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_9);
         #endif
       }
@@ -8707,7 +8855,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_28compute_betaF_profile(struct 
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 528, __pyx_L1_error)
+          else __PYX_ERR(0, 532, __pyx_L1_error)
         }
         break;
       }
@@ -8715,10 +8863,10 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_28compute_betaF_profile(struct 
     }
     __Pyx_XDECREF_SET(__pyx_v_arr, __pyx_t_9);
     __pyx_t_9 = 0;
-    __pyx_t_3 = PyObject_Length(__pyx_v_arr); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 528, __pyx_L1_error)
-    __pyx_t_9 = PyInt_FromSsize_t(__pyx_t_3); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 528, __pyx_L1_error)
+    __pyx_t_3 = PyObject_Length(__pyx_v_arr); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 532, __pyx_L1_error)
+    __pyx_t_9 = PyInt_FromSsize_t(__pyx_t_3); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 532, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    if (unlikely(__Pyx_ListComp_Append(__pyx_t_6, (PyObject*)__pyx_t_9))) __PYX_ERR(0, 528, __pyx_L1_error)
+    if (unlikely(__Pyx_ListComp_Append(__pyx_t_6, (PyObject*)__pyx_t_9))) __PYX_ERR(0, 532, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   }
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -8735,22 +8883,22 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_28compute_betaF_profile(struct 
   __pyx_t_1 = (__pyx_t_5) ? __Pyx_PyObject_Call2Args(__pyx_t_7, __pyx_t_5, __pyx_t_6) : __Pyx_PyObject_CallOneArg(__pyx_t_7, __pyx_t_6);
   __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 528, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 532, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __pyx_v_N_i = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "WHAM/binless.pyx":530
+  /* "WHAM/binless.pyx":534
  *         N_i = np.array([len(arr) for arr in x_it])
  * 
  *         status = self.compute_point_weights(x_l, N_i, u_i, beta, solver=solver, **solverkwargs)             # <<<<<<<<<<<<<<
- *         betaF_bin = self.bin_betaF_profile(x_bin, bin_style='left')
+ *         betaF_bin, betaF_bin_counts = self.bin_betaF_profile(x_bin, bin_style='left')
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_compute_point_weights); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 530, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_compute_point_weights); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 534, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_7 = PyTuple_New(4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 530, __pyx_L1_error)
+  __pyx_t_7 = PyTuple_New(4); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 534, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_INCREF(__pyx_v_x_l);
   __Pyx_GIVEREF(__pyx_v_x_l);
@@ -8764,13 +8912,13 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_28compute_betaF_profile(struct 
   __Pyx_INCREF(__pyx_v_beta);
   __Pyx_GIVEREF(__pyx_v_beta);
   PyTuple_SET_ITEM(__pyx_t_7, 3, __pyx_v_beta);
-  __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 530, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 534, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_solver, __pyx_v_solver) < 0) __PYX_ERR(0, 530, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_solver, __pyx_v_solver) < 0) __PYX_ERR(0, 534, __pyx_L1_error)
   __pyx_t_6 = __pyx_t_5;
   __pyx_t_5 = 0;
-  if (__Pyx_MergeKeywords(__pyx_t_6, __pyx_v_solverkwargs) < 0) __PYX_ERR(0, 530, __pyx_L1_error)
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_7, __pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 530, __pyx_L1_error)
+  if (__Pyx_MergeKeywords(__pyx_t_6, __pyx_v_solverkwargs) < 0) __PYX_ERR(0, 534, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_7, __pyx_t_6); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 534, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -8778,50 +8926,101 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_28compute_betaF_profile(struct 
   __pyx_v_status = __pyx_t_5;
   __pyx_t_5 = 0;
 
-  /* "WHAM/binless.pyx":531
+  /* "WHAM/binless.pyx":535
  * 
  *         status = self.compute_point_weights(x_l, N_i, u_i, beta, solver=solver, **solverkwargs)
- *         betaF_bin = self.bin_betaF_profile(x_bin, bin_style='left')             # <<<<<<<<<<<<<<
+ *         betaF_bin, betaF_bin_counts = self.bin_betaF_profile(x_bin, bin_style='left')             # <<<<<<<<<<<<<<
  * 
- *         return betaF_bin, status
+ *         return betaF_bin, betaF_bin_counts, status
  */
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_bin_betaF_profile); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 531, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_bin_betaF_profile); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 535, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 531, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 535, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_INCREF(__pyx_v_x_bin);
   __Pyx_GIVEREF(__pyx_v_x_bin);
   PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_v_x_bin);
-  __pyx_t_7 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 531, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 535, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_bin_style, __pyx_n_s_left) < 0) __PYX_ERR(0, 531, __pyx_L1_error)
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 531, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_bin_style, __pyx_n_s_left) < 0) __PYX_ERR(0, 535, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_6, __pyx_t_7); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 535, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_v_betaF_bin = __pyx_t_1;
-  __pyx_t_1 = 0;
+  if ((likely(PyTuple_CheckExact(__pyx_t_1))) || (PyList_CheckExact(__pyx_t_1))) {
+    PyObject* sequence = __pyx_t_1;
+    Py_ssize_t size = __Pyx_PySequence_SIZE(sequence);
+    if (unlikely(size != 2)) {
+      if (size > 2) __Pyx_RaiseTooManyValuesError(2);
+      else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
+      __PYX_ERR(0, 535, __pyx_L1_error)
+    }
+    #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
+    if (likely(PyTuple_CheckExact(sequence))) {
+      __pyx_t_7 = PyTuple_GET_ITEM(sequence, 0); 
+      __pyx_t_6 = PyTuple_GET_ITEM(sequence, 1); 
+    } else {
+      __pyx_t_7 = PyList_GET_ITEM(sequence, 0); 
+      __pyx_t_6 = PyList_GET_ITEM(sequence, 1); 
+    }
+    __Pyx_INCREF(__pyx_t_7);
+    __Pyx_INCREF(__pyx_t_6);
+    #else
+    __pyx_t_7 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 535, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_7);
+    __pyx_t_6 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 535, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_6);
+    #endif
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  } else {
+    Py_ssize_t index = -1;
+    __pyx_t_5 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 535, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_5);
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_10 = Py_TYPE(__pyx_t_5)->tp_iternext;
+    index = 0; __pyx_t_7 = __pyx_t_10(__pyx_t_5); if (unlikely(!__pyx_t_7)) goto __pyx_L7_unpacking_failed;
+    __Pyx_GOTREF(__pyx_t_7);
+    index = 1; __pyx_t_6 = __pyx_t_10(__pyx_t_5); if (unlikely(!__pyx_t_6)) goto __pyx_L7_unpacking_failed;
+    __Pyx_GOTREF(__pyx_t_6);
+    if (__Pyx_IternextUnpackEndCheck(__pyx_t_10(__pyx_t_5), 2) < 0) __PYX_ERR(0, 535, __pyx_L1_error)
+    __pyx_t_10 = NULL;
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    goto __pyx_L8_unpacking_done;
+    __pyx_L7_unpacking_failed:;
+    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+    __pyx_t_10 = NULL;
+    if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
+    __PYX_ERR(0, 535, __pyx_L1_error)
+    __pyx_L8_unpacking_done:;
+  }
+  __pyx_v_betaF_bin = __pyx_t_7;
+  __pyx_t_7 = 0;
+  __pyx_v_betaF_bin_counts = __pyx_t_6;
+  __pyx_t_6 = 0;
 
-  /* "WHAM/binless.pyx":533
- *         betaF_bin = self.bin_betaF_profile(x_bin, bin_style='left')
+  /* "WHAM/binless.pyx":537
+ *         betaF_bin, betaF_bin_counts = self.bin_betaF_profile(x_bin, bin_style='left')
  * 
- *         return betaF_bin, status             # <<<<<<<<<<<<<<
+ *         return betaF_bin, betaF_bin_counts, status             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 533, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 537, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_betaF_bin);
   __Pyx_GIVEREF(__pyx_v_betaF_bin);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_betaF_bin);
+  __Pyx_INCREF(__pyx_v_betaF_bin_counts);
+  __Pyx_GIVEREF(__pyx_v_betaF_bin_counts);
+  PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_betaF_bin_counts);
   __Pyx_INCREF(__pyx_v_status);
   __Pyx_GIVEREF(__pyx_v_status);
-  PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_status);
+  PyTuple_SET_ITEM(__pyx_t_1, 2, __pyx_v_status);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "WHAM/binless.pyx":504
+  /* "WHAM/binless.pyx":508
  *     # Alternate API call          #
  *     ###############################
  *     def compute_betaF_profile(self, x_it, x_bin, u_i, beta, bin_style='left', solver='log-likelihood', **solverkwargs):             # <<<<<<<<<<<<<<
@@ -8843,6 +9042,7 @@ static PyObject *__pyx_pf_4WHAM_7binless_6Calc1D_28compute_betaF_profile(struct 
   __Pyx_XDECREF(__pyx_v_N_i);
   __Pyx_XDECREF(__pyx_v_status);
   __Pyx_XDECREF(__pyx_v_betaF_bin);
+  __Pyx_XDECREF(__pyx_v_betaF_bin_counts);
   __Pyx_XDECREF(__pyx_v_arr);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
@@ -11897,7 +12097,7 @@ static PyTypeObject __pyx_type_4WHAM_7binless_Calc1D = {
   0, /*tp_setattro*/
   0, /*tp_as_buffer*/
   Py_TPFLAGS_DEFAULT|Py_TPFLAGS_HAVE_VERSION_TAG|Py_TPFLAGS_CHECKTYPES|Py_TPFLAGS_HAVE_NEWBUFFER|Py_TPFLAGS_BASETYPE|Py_TPFLAGS_HAVE_GC, /*tp_flags*/
-  "Class containing methods to compute free energy profiles\n    from umbrella sampling data using binless WHAM.\n    Handles empty bins when computing free energy profiles by setting\n    bin free energy to inf.\n\n    Note:\n        Binless WHAM implements several features which are not part of binned WHAM, such as reweighting,\n        and binning 2D free energy profile given a related (unbiased) order parameter.f\n\n    Important:\n        Usage patterns for this module differ from binned WHAM. For a complete usage example, look at tests/test_binless.py.\n\n    Example:\n        >>> calc = Calc1D()\n        >>> status = calc.compute_point_weights(x_l, ...)\n        >>> status\n        True\n        >>> G_l = calc.G_l\n        >>> g_i = calc.g_i\n        >>> betaF_x = calc.bin_betaF_profile(x_l, G_l, x_bin, ...)\n        >>> betaF_xy = calc.bin_2D_betaF_profile(x_l, y_l, G_l, x_bin, y_bin, ...)\n\n    Attributes:\n        x_l (ndarray): 1-dimensional array containing unrolled order parameter\n            which is being biased.\n        G_l (ndarray): 1-dimensional array containing weights corresponding to\n            each (unrolled) order parameter.\n        g_i (ndarray): 1-dimensional array of size N (=no of windows) containing\n            free energies for each window.\n    ", /*tp_doc*/
+  "Class containing methods to compute free energy profiles\n    from umbrella sampling data using binless WHAM.\n    Handles empty bins when computing free energy profiles by setting\n    bin free energy to inf.\n\n    Note:\n        Binless WHAM implements several features which are not part of binned WHAM, such as reweighting,\n        and binning 2D free energy profile given a related (unbiased) order parameter.f\n\n    Important:\n        Usage patterns for this module differ from binned WHAM. For a complete usage example, look at tests/test_binless.py.\n\n    Example:\n        >>> calc = Calc1D()\n        >>> status = calc.compute_point_weights(x_l, ...)\n        >>> status\n        True\n        >>> G_l = calc.G_l\n        >>> g_i = calc.g_i\n        >>> betaF_x, betaF_x_counts = calc.bin_betaF_profile(x_l, G_l, x_bin, ...)\n        >>> betaF_xy, _ = calc.bin_2D_betaF_profile(x_l, y_l, G_l, x_bin, y_bin, ...)\n\n    Attributes:\n        x_l (ndarray): 1-dimensional array containing unrolled order parameter\n            which is being biased.\n        G_l (ndarray): 1-dimensional array containing weights corresponding to\n            each (unrolled) order parameter.\n        g_i (ndarray): 1-dimensional array of size N (=no of windows) containing\n            free energies for each window.\n    ", /*tp_doc*/
   __pyx_tp_traverse_4WHAM_7binless_Calc1D, /*tp_traverse*/
   __pyx_tp_clear_4WHAM_7binless_Calc1D, /*tp_clear*/
   0, /*tp_richcompare*/
@@ -12194,61 +12394,61 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "WHAM/binless.pyx":348
+  /* "WHAM/binless.pyx":346
  * 
  *         if bin_style == 'left':
  *             bin_edges[:-1] = x_bin             # <<<<<<<<<<<<<<
  *             # add an artificial edge after the last center
  *             bin_edges[-1] = x_bin[-1] + (x_bin[-1] - x_bin[-2])
  */
-  __pyx_slice__8 = PySlice_New(Py_None, __pyx_int_neg_1, Py_None); if (unlikely(!__pyx_slice__8)) __PYX_ERR(0, 348, __pyx_L1_error)
+  __pyx_slice__8 = PySlice_New(Py_None, __pyx_int_neg_1, Py_None); if (unlikely(!__pyx_slice__8)) __PYX_ERR(0, 346, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice__8);
   __Pyx_GIVEREF(__pyx_slice__8);
 
-  /* "WHAM/binless.pyx":357
+  /* "WHAM/binless.pyx":355
  *             bin_edges[-1] = x_bin[-1] + (x_bin[-1] - x_bin[-2]) / 2
  *             # bin edges are at the midpoints of bin centers
  *             bin_edges[1:-1] = (x_bin[1:] + x_bin[:-1]) / 2             # <<<<<<<<<<<<<<
  *         else:
  *             raise ValueError('Bin style not recognized.')
  */
-  __pyx_slice__9 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__9)) __PYX_ERR(0, 357, __pyx_L1_error)
+  __pyx_slice__9 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__9)) __PYX_ERR(0, 355, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice__9);
   __Pyx_GIVEREF(__pyx_slice__9);
-  __pyx_slice__10 = PySlice_New(__pyx_int_1, __pyx_int_neg_1, Py_None); if (unlikely(!__pyx_slice__10)) __PYX_ERR(0, 357, __pyx_L1_error)
+  __pyx_slice__10 = PySlice_New(__pyx_int_1, __pyx_int_neg_1, Py_None); if (unlikely(!__pyx_slice__10)) __PYX_ERR(0, 355, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice__10);
   __Pyx_GIVEREF(__pyx_slice__10);
 
-  /* "WHAM/binless.pyx":359
+  /* "WHAM/binless.pyx":357
  *             bin_edges[1:-1] = (x_bin[1:] + x_bin[:-1]) / 2
  *         else:
  *             raise ValueError('Bin style not recognized.')             # <<<<<<<<<<<<<<
  * 
  *         delta_x_bin = bin_edges[1:] - bin_edges[:-1]
  */
-  __pyx_tuple__11 = PyTuple_Pack(1, __pyx_kp_s_Bin_style_not_recognized); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 359, __pyx_L1_error)
+  __pyx_tuple__11 = PyTuple_Pack(1, __pyx_kp_s_Bin_style_not_recognized); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 357, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__11);
   __Pyx_GIVEREF(__pyx_tuple__11);
 
-  /* "WHAM/binless.pyx":426
+  /* "WHAM/binless.pyx":428
  *             x_bin_edges[1:-1] = (x_bin[1:] + x_bin[:-1]) / 2
  *         else:
  *             raise ValueError('x-bin style not recognized.')             # <<<<<<<<<<<<<<
  * 
  *         delta_x_bin = x_bin_edges[1:] - x_bin_edges[:-1]
  */
-  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_kp_s_x_bin_style_not_recognized); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 426, __pyx_L1_error)
+  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_kp_s_x_bin_style_not_recognized); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 428, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__12);
   __Pyx_GIVEREF(__pyx_tuple__12);
 
-  /* "WHAM/binless.pyx":445
+  /* "WHAM/binless.pyx":447
  *             y_bin_edges[1:-1] = (y_bin[1:] + y_bin[:-1]) / 2
  *         else:
  *             raise ValueError('y-bin style not recognized.')             # <<<<<<<<<<<<<<
  * 
  *         delta_y_bin = y_bin_edges[1:] - y_bin_edges[:-1]
  */
-  __pyx_tuple__13 = PyTuple_Pack(1, __pyx_kp_s_y_bin_style_not_recognized); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(0, 445, __pyx_L1_error)
+  __pyx_tuple__13 = PyTuple_Pack(1, __pyx_kp_s_y_bin_style_not_recognized); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(0, 447, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__13);
   __Pyx_GIVEREF(__pyx_tuple__13);
 

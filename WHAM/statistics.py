@@ -115,7 +115,7 @@ def binless_reweighted_win_betaF(calc, x_bin, u_i, beta, bin_style='left'):
     betaF_il_reweight = np.zeros((S, M))
     for i in range(S):
         G_l_reweight = calc.reweight(beta, u_i[i])
-        betaF_il_reweight[i, :] = calc.bin_betaF_profile(x_bin, G_l=G_l_reweight, bin_style=bin_style)
+        betaF_il_reweight[i, :], _ = calc.bin_betaF_profile(x_bin, G_l=G_l_reweight, bin_style=bin_style)
 
     return betaF_il_reweight
 
