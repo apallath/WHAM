@@ -71,9 +71,9 @@ def test_binless_self_consistent():
 
     # Perform WHAM calculation
     calc = WHAM.binless.Calc1D()
-    betaF_bin, status = calc.compute_betaF_profile(Ntw_win, bin_points, umbrella_win, beta,
-                                                   bin_style='left', solver='self-consistent',
-                                                   tol=1e-2, logevery=100)
+    betaF_bin, betaF_bin_counts, status = calc.compute_betaF_profile(Ntw_win, bin_points, umbrella_win, beta,
+                                                                     bin_style='left', solver='self-consistent',
+                                                                     tol=1e-2, logevery=100)
     g_i = calc.g_i
 
     # Optimized?
@@ -140,9 +140,9 @@ def test_binless_self_consistent():
     g_i = np.load("test_out/binless_scf_gi.npy")
 
     # Perform WHAM calculation
-    betaF_bin, status = calc.compute_betaF_profile(Ntw_win, bin_points, umbrella_win, beta,
-                                                   bin_style='left', solver='self-consistent',
-                                                   g_i=g_i, tol=1e-12, logevery=100)
+    betaF_bin, betaF_bin_counts, status = calc.compute_betaF_profile(Ntw_win, bin_points, umbrella_win, beta,
+                                                                     bin_style='left', solver='self-consistent',
+                                                                     g_i=g_i, tol=1e-12, logevery=100)
     g_i = calc.g_i
 
     # Optimized?
@@ -211,9 +211,9 @@ def test_binless_log_likelihood():
 
     # Perform WHAM calculation
     calc = WHAM.binless.Calc1D()
-    betaF_bin, status = calc.compute_betaF_profile(Ntw_win, bin_points, umbrella_win, beta,
-                                                   bin_style='left', solver='log-likelihood',
-                                                   logevery=1)
+    betaF_bin, betaF_bin_counts, status = calc.compute_betaF_profile(Ntw_win, bin_points, umbrella_win, beta,
+                                                                     bin_style='left', solver='log-likelihood',
+                                                                     logevery=1)
     g_i = calc.g_i
 
     # Optimized?
@@ -284,9 +284,9 @@ def test_binless_log_likelihood_phi_ensemble():
     # Perform WHAM calculation
     calc = WHAM.binless.Calc1D()
 
-    betaF_bin, status = calc.compute_betaF_profile(Ntw_win, bin_points, umbrella_win, beta,
-                                                   bin_style='left', solver='log-likelihood',
-                                                   logevery=1)
+    betaF_bin, betaF_bin_counts, status = calc.compute_betaF_profile(Ntw_win, bin_points, umbrella_win, beta,
+                                                                     bin_style='left', solver='log-likelihood',
+                                                                     logevery=1)
     g_i = calc.g_i
 
     # Optimized?
@@ -320,8 +320,8 @@ def boot_worker(boot_worker_idx):
     # Perform WHAM calculation
     calc = WHAM.binless.Calc1D()
 
-    betaF_bin, status = calc.compute_betaF_profile(Ntw_win_boot, bin_points, umbrella_win, beta,
-                                                   bin_style='left', solver='log-likelihood')
+    betaF_bin, betaF_bin_counts, status = calc.compute_betaF_profile(Ntw_win_boot, bin_points, umbrella_win, beta,
+                                                                     bin_style='left', solver='log-likelihood')
 
     N_avg_vals, N_var_vals = WHAM.statistics.binless_reweight_phi_ensemble(calc, phi_vals, beta)
 
