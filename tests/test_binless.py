@@ -304,16 +304,24 @@ def test_binless_log_likelihood_phi_ensemble():
     ax[0].set_xlabel(r"$\phi$ (kJ/mol)")
     ax[0].set_ylabel(r"$\langle \tilde{N} \rangle_\phi$")
 
-    ax[1].plot(phi_vals, N_var_vals)
+    ax[1].plot(phi_vals, N_var_vals, label=r"From averages, $\langle \delta \tilde{N}^2 \rangle_\phi$")
     ax[1].set_xlabel(r"$\phi$ (kJ/mol)")
     ax[1].set_ylabel(r"$\langle \delta \tilde{N}^2 \rangle_\phi$")
 
+    susc = np.gradient(N_avg_vals, phi_vals)
+    ax[1].plot(phi_vals, -1 / beta * susc, label=r"From derivatives, $-\frac{1}{\beta} \frac{\partial \langle \tilde{N} \rangle}{\partial \beta \phi}$")
+
+    ax[1].legend()
+
     plt.savefig("test_out/binless_log_likelihood_phi_ensemble.png")
+
+    assert(np.allclose(N_var_vals, -1 / beta * susc, atol=1))
+
 
 def boot_worker(boot_worker_idx):
     n_star_win, Ntw_win, bin_points, umbrella_win, beta = get_test_data()
 
-    phi_vals = np.linspace(0, 10, 101) # phi-ensemble definition
+    phi_vals = np.linspace(0, 10, 101)  # phi-ensemble definition
 
     Ntw_win_boot = timeseries.bootstrap_window_samples(Ntw_win)
 
@@ -331,10 +339,11 @@ def boot_worker(boot_worker_idx):
 def test_bootstrap_binless_log_likelihood_phi_ensemble():
     """Tests reweighting to linear potentials (phi-ensemble) while calculating
     error bars using bootstrapping"""
+    n_star_win, Ntw_win, bin_points, umbrella_win, beta = get_test_data()
 
-    phi_vals = np.linspace(0, 10, 101) # phi-ensemble definition
+    phi_vals = np.linspace(0, 10, 101)  # phi-ensemble definition
 
-    Nboot = 100 # number of bootstrap samples
+    Nboot = 100  # number of bootstrap samples
 
     with Pool(processes=8) as pool:
         ret = pool.map(boot_worker, range(Nboot))
@@ -354,12 +363,18 @@ def test_bootstrap_binless_log_likelihood_phi_ensemble():
     ax[0].set_xlabel(r"$\phi$ (kJ/mol)")
     ax[0].set_ylabel(r"$\langle \tilde{N} \rangle_\phi$")
 
-    ax[1].plot(phi_vals, N_var)
+    ax[1].plot(phi_vals, N_var, label=r"From averages, $\langle \delta \tilde{N}^2 \rangle_\phi$")
     ax[1].fill_between(phi_vals, N_var - N_var_err, N_var + N_var_err, alpha=0.5)
     ax[1].set_xlabel(r"$\phi$ (kJ/mol)")
     ax[1].set_ylabel(r"$\langle \delta \tilde{N}^2 \rangle_\phi$")
 
+    susc = np.gradient(N_avg, phi_vals)
+    ax[1].plot(phi_vals, -1 / beta * susc, label=r"From derivatives, $-\frac{1}{\beta} \frac{\partial \langle \tilde{N} \rangle}{\partial \beta \phi}$")
+
+    ax[1].legend()
     plt.savefig("test_out/binless_bootstrap_log_likelihood_phi_ensemble.png")
+
+    assert(np.allclose(N_var, -1 / beta * susc, atol=1))
 
 
 def get_2D_test_data():
@@ -512,6 +527,7 @@ def test_binless_2D_log_likelihood():
 
 
 """Alternate binning patterns"""
+
 
 def get_2D_test_data_halfbin():
     # N* associated with each window
