@@ -28,6 +28,10 @@ from libcpp cimport bool
 
 from functools import partial
 
+# Logging
+import logging
+logger = logging.getLogger(__name__)
+
 
 cdef class Calc1D:
     """Class containing methods to compute free energy profiles
@@ -87,7 +91,7 @@ cdef class Calc1D:
 
     def _min_callback(self, g_i, args, logevery=0):
         if self._min_ctr % logevery == 0:
-            print("{:10d} {:.5f}".format(self._min_ctr, self.NLL(g_i, *args)))
+            logger.debug("{:10d} {:.5f}".format(self._min_ctr, self.NLL(g_i, *args)))
         self._min_ctr += 1
 
     cpdef minimize_NLL_solver(self, N_i, M_l, W_il, g_i=None, opt_method='L-BFGS-B', logevery=0):
@@ -117,7 +121,7 @@ cdef class Calc1D:
             g_i = np.random.rand(len(N_i))  # TODO: Smarter initial guess
 
         # Optimize
-        print("      Iter NLL")
+        logger.debug("      Iter NLL")
         self._min_ctr = 0
         res = scipy.optimize.minimize(value_and_grad(self.NLL), g_i, jac=True,
                                       args=(N_i, M_l, W_il),
@@ -186,11 +190,11 @@ cdef class Calc1D:
 
             if logevery > 0:
                 if iter % logevery == 0:
-                    print("Self-consistent solver error = {:.2e}.".format(tol_check))
+                    logger.info("Self-consistent solver error = {:.2e}.".format(tol_check))
 
             if increment[np.argmax(increment)] < tol:
                 if logevery > 0:
-                    print("Self-consistent solver error = {:.2e}.".format(tol_check))
+                    logger.info("Self-consistent solver error = {:.2e}.".format(tol_check))
                 status = True
                 break
 

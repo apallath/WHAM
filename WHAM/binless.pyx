@@ -22,6 +22,10 @@ cimport numpy as np
 
 from functools import partial
 
+# Logging
+import logging
+logger = logging.getLogger(__name__)
+
 
 cdef class Calc1D:
     """Class containing methods to compute free energy profiles
@@ -109,7 +113,7 @@ cdef class Calc1D:
 
     def _min_callback(self, g_i, args, logevery=100000000):
         if self._min_ctr % logevery == 0:
-            print("{:10d} {:.5f}".format(self._min_ctr, self.NLL(g_i, *args)))
+            logger.debug("{:10d} {:.5f}".format(self._min_ctr, self.NLL(g_i, *args)))
         self._min_ctr += 1
 
     def minimize_NLL_solver(self, x_l, N_i, W_il, g_i=None, opt_method='L-BFGS-B', logevery=100000000):
@@ -140,7 +144,7 @@ cdef class Calc1D:
             g_i = np.random.rand(len(N_i))  # TODO: Smarter initial guess
 
         # Optimize
-        print("      Iter NLL")
+        logger.debug("      Iter NLL")
         self._min_ctr = 0
         res = scipy.optimize.minimize(value_and_grad(self.NLL), g_i, jac=True,
                                       args=(x_l, N_i, W_il),
@@ -211,11 +215,11 @@ cdef class Calc1D:
 
             if logevery > 0:
                 if iter % logevery == 0:
-                    print("Self-consistent solver error = {:.2e}.".format(tol_check))
+                    logger.info("Self-consistent solver error = {:.2e}.".format(tol_check))
 
             if increment[np.argmax(increment)] < tol:
                 if logevery > 0:
-                    print("Self-consistent solver error = {:.2e}.".format(tol_check))
+                    logger.info("Self-consistent solver error = {:.2e}.".format(tol_check))
                 status = True
                 break
 
@@ -495,8 +499,8 @@ cdef class Calc1D:
         """
         betaF_xy, (betaF_bin_counts, delta_x_bin, delta_y_bin) = self.bin_2D_betaF_profile(y_l, x_bin, y_bin, G_l=G_l, x_bin_style=x_bin_style, y_bin_style=y_bin_style)
         betaF_xy = np.nan_to_num(betaF_xy)
-        print(betaF_xy.shape)
-        print(delta_x_bin.shape)
+        logger.debug(betaF_xy.shape)
+        logger.debug(delta_x_bin.shape)
         betaF_y = np.zeros(len(y_bin))
         for yi in range(len(y_bin)):
             betaF_y[yi] = -numeric.clogsumexp(-betaF_xy[:, yi], b=delta_x_bin ** 2, axis=0)
