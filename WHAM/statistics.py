@@ -118,8 +118,10 @@ def binned_reweighted_win_betaF(x_bin, betaF_bin, u_i, beta):
 
     for i in range(S):
         ui_bin = u_i[i](np.array(x_bin))
-        betaF_il_reweight[i, :] = betaF_bin + ui_bin
-        norm = betaF_il_reweight[i, :] = logsumexp()
+        # Add bias
+        betaF_il_reweight[i, :] = betaF_bin + beta * ui_bin
+        # No need to normalize: handle by subtracting out minimum
+        betaF_il_reweight[i, :] = betaF_il_reweight[i, :] - np.min(betaF_il_reweight[i, :])
 
     return betaF_il_reweight
 
