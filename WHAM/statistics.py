@@ -1,5 +1,7 @@
 """Functions for checking consistency of WHAM calculations."""
 import numpy as np
+from scipy.special import logsumexp
+
 from WHAM.lib.timeseries import statisticalInefficiency
 from WHAM.lib import potentials
 
@@ -80,7 +82,6 @@ def win_betaF(x_it, x_bin, u_i, beta, bin_style='left', scale_stat_ineff=False):
         n_il[i, :] = n_il[i, :] / stat_ineff[i]
 
     N_i = n_il.sum(axis=1)
-    M_l = n_il.sum(axis=0)
 
     # Compute biased free energy profiles for each window
     betaF_il = np.zeros((S, M))
@@ -89,6 +90,38 @@ def win_betaF(x_it, x_bin, u_i, beta, bin_style='left', scale_stat_ineff=False):
         betaF_il[i, :] = -np.log(p_il / delta_x_bin)
 
     return betaF_il, delta_x_bin
+
+
+def binned_reweighted_win_betaF(x_bin, betaF_bin, u_i, beta):
+    """
+    Computes free energy profile for each window i by reweighting the entire free
+    energy profile betaF_bin at x_bin to the biased ensemble with bias potential
+    specified by u_i[i]. This function can be used to reweight free energy profiles
+    constructed using either binned or binless WHAM.
+
+    Args:
+        x_bin (list): Array of bin left-edges/centers of length M.
+        betaF_bin (list): Array of free energies of length M.
+        u_i (list): List of length S, u_i[i] is the umbrella potential function u_i(x)
+            acting on the i'th window.
+        beta: beta, in inverse units to the units of u_i(x).
+
+    Returns:
+        betaF_il_reweight (np.array): 2-D array of biased free energies for each window, of shape (S, M)
+    """
+    np.errstate(divide='ignore')
+
+    S = len(u_i)
+    M = len(x_bin)
+
+    betaF_il_reweight = np.zeros((S, M))
+
+    for i in range(S):
+        ui_bin = u_i[i](np.array(x_bin))
+        betaF_il_reweight[i, :] = betaF_bin + ui_bin
+        norm = betaF_il_reweight[i, :] = logsumexp()
+
+    return betaF_il_reweight
 
 
 def binless_reweighted_win_betaF(calc, x_bin, u_i, beta, bin_style='left'):
