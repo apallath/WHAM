@@ -40,5 +40,9 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Unit tests and integration tests
       run: |
-        cd tests
+        cd tests/tests_unit
         pytest
+        cd ../..
+        cd tests/tests_integration
+        pytest
+        cd ../..
