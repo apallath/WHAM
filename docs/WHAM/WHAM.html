@@ -1,71 +1,32 @@
-
-
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
-  <title>WHAM package &mdash; WHAM 0.1.0 documentation</title>
-  
-
-  
-  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-
-  
-  
-
-  
-  
-
-  
-
-  
+  <title>WHAM package &mdash; WHAM 0.1.0 documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  
-    
-      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/language_data.js"></script>
-    
-    <script type="text/javascript" src="../_static/js/theme.js"></script>
-
-    
+    <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="WHAM.lib package" href="WHAM.lib.html" />
     <link rel="prev" title="WHAM" href="../index.html" /> 
 </head>
 
-<body class="wy-body-for-nav">
-
-   
+<body class="wy-body-for-nav"> 
   <div class="wy-grid-for-nav">
-    
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-          
-
-          
             <a href="../index.html" class="icon icon-home"> WHAM
-          
-
-          
           </a>
-
-          
-            
-            
-          
-
-          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -73,18 +34,7 @@
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
-
-          
-        </div>
-
-        
-        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-          
-            
-            
-              
-            
-            
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">WHAM package</a><ul>
@@ -97,116 +47,53 @@
 <li class="toctree-l1"><a class="reference internal" href="WHAM.lib.html">WHAM.lib package</a></li>
 </ul>
 
-            
-          
         </div>
-        
       </div>
     </nav>
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
-
-      
-      <nav class="wy-nav-top" aria-label="top navigation">
-        
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="../index.html">WHAM</a>
-        
       </nav>
 
-
       <div class="wy-nav-content">
-        
         <div class="rst-content">
-        
-          
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div role="navigation" aria-label="breadcrumbs navigation">
-
+          <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-    
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-        
       <li>WHAM package</li>
-    
-    
       <li class="wy-breadcrumbs-aside">
-        
-          
             <a href="../_sources/WHAM/WHAM.rst.txt" rel="nofollow"> View page source</a>
-          
-        
       </li>
-    
   </ul>
-
-  
   <hr/>
 </div>
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
-            
+             
   <div class="section" id="wham-package">
-<h1>WHAM package<a class="headerlink" href="#wham-package" title="Permalink to this headline">¶</a></h1>
+<h1>WHAM package<a class="headerlink" href="#wham-package" title="Permalink to this headline"></a></h1>
 <div class="section" id="submodules">
-<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
 </div>
 <div class="section" id="module-WHAM.binless">
-<span id="wham-binless-module"></span><h2>WHAM.binless module<a class="headerlink" href="#module-WHAM.binless" title="Permalink to this headline">¶</a></h2>
+<span id="wham-binless-module"></span><h2>WHAM.binless module<a class="headerlink" href="#module-WHAM.binless" title="Permalink to this headline"></a></h2>
 <dl class="simple">
 <dt>Implementation of binless WHAM (described in Shirts M., &amp; Chodera J. D. (2008)) using</dt><dd><ul class="simple">
-<li><p>Negative log-likelihood maximization, inspired from Zhu, F., &amp; Hummer, G. (2012)</p></li>
+<li><p>Negative log-likelihood maximization, inspired by Zhu, F., &amp; Hummer, G. (2012), with automatic differentiation.</p></li>
 <li><p>Self-consistent iteration.</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="py class">
+<dl class="class">
 <dt id="WHAM.binless.Calc1D">
-<em class="property">class </em><code class="sig-prename descclassname">WHAM.binless.</code><code class="sig-name descname">Calc1D</code><a class="headerlink" href="#WHAM.binless.Calc1D" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">WHAM.binless.</code><code class="sig-name descname">Calc1D</code><a class="headerlink" href="#WHAM.binless.Calc1D" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class containing methods to compute free energy profiles
-from umbrella sampling data using binless WHAM.
-Handles empty bins when computing free energy profiles by setting
-bin free energy to inf.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Binless WHAM implements several features which are not part of binned WHAM, such as reweighting,
-and binning 2D free energy profile given a related (unbiased) order parameter.f</p>
-</div>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>Usage patterns for this module differ from binned WHAM. For a complete usage example, look at tests/test_binless.py.</p>
-</div>
-<p class="rubric">Example</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">calc</span> <span class="o">=</span> <span class="n">Calc1D</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">status</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">compute_point_weights</span><span class="p">(</span><span class="n">x_l</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">status</span>
-<span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">G_l</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">G_l</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">g_i</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">g_i</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">betaF_x</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">bin_betaF_profile</span><span class="p">(</span><span class="n">x_l</span><span class="p">,</span> <span class="n">G_l</span><span class="p">,</span> <span class="n">x_bin</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">betaF_xy</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">bin_2D_betaF_profile</span><span class="p">(</span><span class="n">x_l</span><span class="p">,</span> <span class="n">y_l</span><span class="p">,</span> <span class="n">G_l</span><span class="p">,</span> <span class="n">x_bin</span><span class="p">,</span> <span class="n">y_bin</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
-</pre></div>
-</div>
-<dl class="py attribute">
+<p>Class containing methods to compute free energy profiles from 1D umbrella sampling data
+(i.e. data from biasing a single order parameter) using binless WHAM.</p>
+<dl class="attribute">
 <dt id="WHAM.binless.Calc1D.x_l">
-<code class="sig-name descname">x_l</code><a class="headerlink" href="#WHAM.binless.Calc1D.x_l" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">x_l</code><a class="headerlink" href="#WHAM.binless.Calc1D.x_l" title="Permalink to this definition"></a></dt>
 <dd><p>1-dimensional array containing unrolled order parameter
 which is being biased.</p>
 <dl class="field-list simple">
@@ -216,10 +103,10 @@ which is being biased.</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
+<dl class="attribute">
 <dt id="WHAM.binless.Calc1D.G_l">
-<code class="sig-name descname">G_l</code><a class="headerlink" href="#WHAM.binless.Calc1D.G_l" title="Permalink to this definition">¶</a></dt>
-<dd><p>1-dimensional array containing weights corresponding to
+<code class="sig-name descname">G_l</code><a class="headerlink" href="#WHAM.binless.Calc1D.G_l" title="Permalink to this definition"></a></dt>
+<dd><p>1-dimensional array containing WHAM-omputed weights corresponding to
 each (unrolled) order parameter.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -228,11 +115,11 @@ each (unrolled) order parameter.</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
+<dl class="attribute">
 <dt id="WHAM.binless.Calc1D.g_i">
-<code class="sig-name descname">g_i</code><a class="headerlink" href="#WHAM.binless.Calc1D.g_i" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">g_i</code><a class="headerlink" href="#WHAM.binless.Calc1D.g_i" title="Permalink to this definition"></a></dt>
 <dd><p>1-dimensional array of size N (=no of windows) containing
-free energies for each window.</p>
+WHAM-computed free energies for each window.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>ndarray</p>
@@ -240,9 +127,29 @@ free energies for each window.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>All data must be at the same temperature.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Binless WHAM handles empty bins when computing free energy profiles by setting bin free energy to inf.</p>
+</div>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">calc</span> <span class="o">=</span> <span class="n">Calc1D</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">status</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">compute_point_weights</span><span class="p">(</span><span class="n">x_l</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">status</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G_l</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">G_l</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g_i</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">g_i</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">betaF_x</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">bin_betaF_profile</span><span class="p">(</span><span class="n">x_l</span><span class="p">,</span> <span class="n">G_l</span><span class="p">,</span> <span class="n">x_bin</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">betaF_xy</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">bin_2D_betaF_profile</span><span class="p">(</span><span class="n">x_l</span><span class="p">,</span> <span class="n">y_l</span><span class="p">,</span> <span class="n">G_l</span><span class="p">,</span> <span class="n">x_bin</span><span class="p">,</span> <span class="n">y_bin</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For comprehensive examples, check out the Jupyter notebooks in the <cite>examples/</cite> folder.</p>
+<dl class="method">
 <dt id="WHAM.binless.Calc1D.NLL">
-<code class="sig-name descname">NLL</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.NLL" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">NLL</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.NLL" title="Permalink to this definition"></a></dt>
 <dd><p>Computes the negative log-likelihood objective function to minimize.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -264,18 +171,19 @@ free energies for each window.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="WHAM.binless.Calc1D.bin_2D_betaF_profile">
-<code class="sig-name descname">bin_2D_betaF_profile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.bin_2D_betaF_profile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bins weights corresponding to each sample into a 2D free energy
-profile, given a related order parameter y_l.
-If weights are not passed as an argument, then computed WHAM weights are
-used for binning. Passing weights allows for computing reweighted
+<code class="sig-name descname">bin_2D_betaF_profile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.bin_2D_betaF_profile" title="Permalink to this definition"></a></dt>
+<dd><p>Bins weights corresponding to each sample into a 2D free energy profile in order parameters x_l (which is biased) and y_l (a related unbiased order parameter).
+If point weights G_l are not passed as an argument, then the computed WHAM weights are
+used for binning. You can pass custom weights G_l to compute reweighted
 free energy profiles.</p>
 <div class="admonition caution">
 <p class="admonition-title">Caution</p>
-<p>This calculation requires that the order parameter samples [self.x_l] (which the
-weights correspond to) are available.</p>
+<p>This calculation uses the order parameter samples [self.x_l]. These will be
+available if you have called the compute function <cite>compute_point_weights</cite>
+or the main API call <cite>compute_betaF_profile</cite>. If you haven’t done so, you must initialize
+the Calc1D object’s x_l variable before calling this function.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -290,8 +198,9 @@ weights correspond to) are available.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><dl class="simple">
-<dt>tuple(betaF_bin, tuple(delta_x_bin, delta_y_bin))</dt><dd><ul class="simple">
-<li><p>betaF_bin (ndarray): 2-D free energy profile of shape (M_x, M_y), binned as per x_bin (1st dim) and y-bin (2nd dim).</p></li>
+<dt>tuple(betaF_bin, tuple(betaF_bin_counts, delta_x_bin, delta_y_bin))</dt><dd><ul class="simple">
+<li><p>betaF_bin (ndarray): 2-D free energy profile of shape (M_x, M_y), binned using x_bin (1st dim) and y-bin (2nd dim).</p></li>
+<li><p>betaF_bin_counts (ndarray): 2-D bin counts of shape (M_x, M_y)</p></li>
 <li><p>delta_x_bin: Array of length M_x containing bin intervals along x.</p></li>
 <li><p>delta_y_bin: Array of length M_y containing bin intervals along y.</p></li>
 </ul>
@@ -302,17 +211,19 @@ weights correspond to) are available.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="WHAM.binless.Calc1D.bin_betaF_profile">
-<code class="sig-name descname">bin_betaF_profile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.bin_betaF_profile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bins weights corresponding to each sample into a 1D free energy
-profile. If weights are not passed as an argument, then computed WHAM weights are
-used for binning. Passing weights allows for computing reweighted
+<code class="sig-name descname">bin_betaF_profile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.bin_betaF_profile" title="Permalink to this definition"></a></dt>
+<dd><p>Bins weights corresponding to each sample into a 1D free energy profile.
+If point weights G_l are not passed as an argument, then the computed WHAM weights are
+used for binning. You can pass custom weights G_l to compute reweighted
 free energy profiles.</p>
 <div class="admonition caution">
 <p class="admonition-title">Caution</p>
-<p>This calculation requires that the order parameter samples [self.x_l] (which the
-weights correspond to) are available.</p>
+<p>This calculation uses the order parameter samples [self.x_l]. These will be
+available if you have called the compute function <cite>compute_point_weights</cite>
+or the main API call <cite>compute_betaF_profile</cite>. If you haven’t done so, you must initialize
+the Calc1D object’s x_l variable before calling this function.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -323,7 +234,8 @@ weights correspond to) are available.</p>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Free energy profile, binned as per x_bin.</p>
+<dd class="field-even"><p>Free energy profile, binned as per x_bin.
+betaF_bin_counts (ndarray): Bin counts</p>
 </dd>
 <dt class="field-odd">Return type</dt>
 <dd class="field-odd"><p>betaF_bin (ndarray)</p>
@@ -331,19 +243,19 @@ weights correspond to) are available.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="WHAM.binless.Calc1D.bin_second_betaF_profile">
-<code class="sig-name descname">bin_second_betaF_profile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.bin_second_betaF_profile" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bins weights corresponding to each sample into a 2D free energy
-profile of x_l related order parameter y_l, then integrates out x_l
-to get a free energy profile in terms of y_l.
-If weights are not passed as an argument, then computed WHAM weights are
-used for binning. Passing weights allows for computing reweighted
+<code class="sig-name descname">bin_second_betaF_profile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.bin_second_betaF_profile" title="Permalink to this definition"></a></dt>
+<dd><p>Bins weights corresponding to each sample into a into a 2D free energy profile in x_l (which is biased) and y_l (a related unbiased order parameter), then integrates out x_l
+to get a free energy profile in y_l. If point weights G_l are not passed as an argument, then the computed WHAM weights are
+used for binning. You can pass custom weights G_l to compute reweighted
 free energy profiles.</p>
 <div class="admonition caution">
 <p class="admonition-title">Caution</p>
-<p>This calculation requires that the order parameter samples [self.x_l] (which the
-weights correspond to) are available.</p>
+<p>This calculation uses the order parameter samples [self.x_l]. These will be
+available if you have called the compute function <cite>compute_point_weights</cite>
+or the main API call <cite>compute_betaF_profile</cite>. If you haven’t done so, you must initialize
+the Calc1D object’s x_l variable before calling this function.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -369,9 +281,9 @@ weights correspond to) are available.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="WHAM.binless.Calc1D.check_data">
-<code class="sig-name descname">check_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.check_data" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">check_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.check_data" title="Permalink to this definition"></a></dt>
 <dd><p>Verifies that x_l is not None, else raises RuntimeError.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises</dt>
@@ -380,9 +292,9 @@ weights correspond to) are available.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="WHAM.binless.Calc1D.check_weights">
-<code class="sig-name descname">check_weights</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.check_weights" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">check_weights</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.check_weights" title="Permalink to this definition"></a></dt>
 <dd><p>Verifies that g_i and G_l are not None, else raises RuntimeError.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Raises</dt>
@@ -391,9 +303,9 @@ weights correspond to) are available.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="WHAM.binless.Calc1D.compute_betaF_profile">
-<code class="sig-name descname">compute_betaF_profile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.compute_betaF_profile" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">compute_betaF_profile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.compute_betaF_profile" title="Permalink to this definition"></a></dt>
 <dd><p>Computes the binned free energy profile and window total free energies.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -419,9 +331,9 @@ status (bool): Solver status.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="WHAM.binless.Calc1D.compute_point_weights">
-<code class="sig-name descname">compute_point_weights</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.compute_point_weights" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">compute_point_weights</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.compute_point_weights" title="Permalink to this definition"></a></dt>
 <dd><p>Computes WHAM weights corresponding to each order parameter sample
 and total window free energies. This is the main computation call
 for the Calc1D class.</p>
@@ -440,9 +352,9 @@ acting on the i’th window.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="WHAM.binless.Calc1D.minimize_NLL_solver">
-<code class="sig-name descname">minimize_NLL_solver</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.minimize_NLL_solver" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">minimize_NLL_solver</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.minimize_NLL_solver" title="Permalink to this definition"></a></dt>
 <dd><p>Computes optimal g_i by minimizing the negative log-likelihood
 for jointly observing the bin counts in the independent windows in the dataset.</p>
 <div class="admonition note">
@@ -477,15 +389,16 @@ by default. Gradient information required for L-BFGS-B is computed using autogra
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="WHAM.binless.Calc1D.reweight">
-<code class="sig-name descname">reweight</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.reweight" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">reweight</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.reweight" title="Permalink to this definition"></a></dt>
 <dd><p>Reweights sample weights to a biased ensemble. Does not change computed
 WHAM weights.</p>
 <div class="admonition caution">
 <p class="admonition-title">Caution</p>
 <p>This is a post-processing calculation, and needs to be performed after
-computing weights through <cite>compute_point_weights</cite>.</p>
+computing weights through <cite>compute_point_weights</cite> or through the main
+API call <cite>compute_betaF_profile</cite>.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -503,11 +416,11 @@ computing weights through <cite>compute_point_weights</cite>.</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="WHAM.binless.Calc1D.self_consistent_solver">
-<code class="sig-name descname">self_consistent_solver</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.self_consistent_solver" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">self_consistent_solver</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.Calc1D.self_consistent_solver" title="Permalink to this definition"></a></dt>
 <dd><p>Computes optimal parameters g_i by solving the coupled MBAR equations self-consistently
-until convergence. Optimized using Cython.</p>
+until convergence.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -538,27 +451,150 @@ until convergence. Optimized using Cython.</p>
 
 </dd></dl>
 
+<dl class="class">
+<dt id="WHAM.binless.CalcDD">
+<em class="property">class </em><code class="sig-prename descclassname">WHAM.binless.</code><code class="sig-name descname">CalcDD</code><a class="headerlink" href="#WHAM.binless.CalcDD" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class containing methods to compute free energy profiles from D-dimensional umbrella sampling data
+(i.e. data from biasing a D order parameters) using binless WHAM.</p>
+<dl class="attribute">
+<dt id="WHAM.binless.CalcDD.X_l">
+<code class="sig-name descname">X_l</code><a class="headerlink" href="#WHAM.binless.CalcDD.X_l" title="Permalink to this definition"></a></dt>
+<dd><p>DxM matrix containing unrolled order parameter
+which is being biased, where (D=no of dimensions, M=no of data points).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="WHAM.binless.CalcDD.G_l">
+<code class="sig-name descname">G_l</code><a class="headerlink" href="#WHAM.binless.CalcDD.G_l" title="Permalink to this definition"></a></dt>
+<dd><p>1-dimensional array of length M (=no of data points) containing WHAM-computed weights corresponding to
+each (unrolled) order parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="WHAM.binless.CalcDD.g_i">
+<code class="sig-name descname">g_i</code><a class="headerlink" href="#WHAM.binless.CalcDD.g_i" title="Permalink to this definition"></a></dt>
+<dd><p>1-dimensional array of size N (=no of windows) containing
+WHAM-computed free energies for each window.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>All data must be at the same temperature.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Binless WHAM handles empty bins when computing free energy profiles by setting bin free energy to inf.</p>
+</div>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">calc</span> <span class="o">=</span> <span class="n">CalcND</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">status</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">compute_point_weights</span><span class="p">(</span><span class="n">X_l</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">status</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G_l</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">G_l</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g_i</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">g_i</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">betaF_x</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">bin_betaF_profile</span><span class="p">(</span><span class="n">X_l</span><span class="p">,</span> <span class="n">G_l</span><span class="p">,</span> <span class="n">X_bin</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For comprehensive examples, check out the Jupyter notebooks in the <cite>examples/</cite> folder.</p>
+<dl class="method">
+<dt id="WHAM.binless.CalcDD.NLL">
+<code class="sig-name descname">NLL</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.CalcDD.NLL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">X_l</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="WHAM.binless.CalcDD.bin_betaF_profile">
+<code class="sig-name descname">bin_betaF_profile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.CalcDD.bin_betaF_profile" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="WHAM.binless.CalcDD.check_data">
+<code class="sig-name descname">check_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.CalcDD.check_data" title="Permalink to this definition"></a></dt>
+<dd><p>Verifies that X_l is not None, else raises RuntimeError.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>RuntimeError</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="WHAM.binless.CalcDD.check_weights">
+<code class="sig-name descname">check_weights</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.CalcDD.check_weights" title="Permalink to this definition"></a></dt>
+<dd><p>Verifies that g_i and G_l are not None, else raises RuntimeError.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>RuntimeError</strong> – </p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="WHAM.binless.CalcDD.compute_betaF_profile">
+<code class="sig-name descname">compute_betaF_profile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.CalcDD.compute_betaF_profile" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="WHAM.binless.CalcDD.compute_point_weights">
+<code class="sig-name descname">compute_point_weights</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.CalcDD.compute_point_weights" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="WHAM.binless.CalcDD.minimize_NLL_solver">
+<code class="sig-name descname">minimize_NLL_solver</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.CalcDD.minimize_NLL_solver" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="WHAM.binless.CalcDD.reweight">
+<code class="sig-name descname">reweight</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.CalcDD.reweight" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="WHAM.binless.CalcDD.self_consistent_solver">
+<code class="sig-name descname">self_consistent_solver</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.CalcDD.self_consistent_solver" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-WHAM.binned">
-<span id="wham-binned-module"></span><h2>WHAM.binned module<a class="headerlink" href="#module-WHAM.binned" title="Permalink to this headline">¶</a></h2>
+<span id="wham-binned-module"></span><h2>WHAM.binned module<a class="headerlink" href="#module-WHAM.binned" title="Permalink to this headline"></a></h2>
 <dl class="simple">
 <dt>Implementation of binned WHAM using</dt><dd><ul class="simple">
-<li><p>Negative log-likelihood maximization as described in Zhu, F., &amp; Hummer, G. (2012)</p></li>
+<li><p>Negative log-likelihood maximization as described in Zhu, F., &amp; Hummer, G. (2012) with automatic differentiation.</p></li>
 <li><p>Self-consistent iteration.</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="py class">
+<dl class="class">
 <dt id="WHAM.binned.Calc1D">
-<em class="property">class </em><code class="sig-prename descclassname">WHAM.binned.</code><code class="sig-name descname">Calc1D</code><a class="headerlink" href="#WHAM.binned.Calc1D" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">WHAM.binned.</code><code class="sig-name descname">Calc1D</code><a class="headerlink" href="#WHAM.binned.Calc1D" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Class containing methods to compute free energy profiles
-from umbrella sampling data using binned WHAM. Cannot perform
-WHAM calculations if bins are empty.</p>
-<p>For a complete usage example, look at tests/test_binned.py.</p>
-<dl class="py attribute">
+<p>Class containing methods to compute free energy profiles from 1D umbrella sampling data
+(i.e. data from biasing a single order parameter) using binned WHAM.</p>
+<dl class="attribute">
 <dt id="WHAM.binned.Calc1D.x_l">
-<code class="sig-name descname">x_l</code><a class="headerlink" href="#WHAM.binned.Calc1D.x_l" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">x_l</code><a class="headerlink" href="#WHAM.binned.Calc1D.x_l" title="Permalink to this definition"></a></dt>
 <dd><p>1-dimensional array of bin left-edges/centers</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -567,9 +603,9 @@ WHAM calculations if bins are empty.</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
+<dl class="attribute">
 <dt id="WHAM.binned.Calc1D.betaF_l">
-<code class="sig-name descname">betaF_l</code><a class="headerlink" href="#WHAM.binned.Calc1D.betaF_l" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">betaF_l</code><a class="headerlink" href="#WHAM.binned.Calc1D.betaF_l" title="Permalink to this definition"></a></dt>
 <dd><p>1-dimensional array of size M (=no of bins) containing
 computed consensus free energy profile</p>
 <dl class="field-list simple">
@@ -579,9 +615,9 @@ computed consensus free energy profile</p>
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
+<dl class="attribute">
 <dt id="WHAM.binned.Calc1D.g_i">
-<code class="sig-name descname">g_i</code><a class="headerlink" href="#WHAM.binned.Calc1D.g_i" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">g_i</code><a class="headerlink" href="#WHAM.binned.Calc1D.g_i" title="Permalink to this definition"></a></dt>
 <dd><p>1-dimensional array of size N (=no of windows) containing
 free energies for each window</p>
 <dl class="field-list simple">
@@ -591,6 +627,20 @@ free energies for each window</p>
 </dl>
 </dd></dl>
 
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>All data must be at the same temperature.</p>
+</div>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>If you want to compute 2D free energy profiles in x_l and a second (related, unbiased) order parameter y_l,</dt><dd><p>use binless WHAM instead, or use 2D binned WHAM.</p>
+</dd>
+</dl>
+</li>
+<li><p>Binned WHAM fails if bins are empty.</p></li>
+<li><p>While binless WHAM is generally more accurate, binned WHAM is generally faster.</p></li>
+</ul>
 <p class="rubric">Example</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">calc</span> <span class="o">=</span> <span class="n">Calc1D</span><span class="p">()</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">status</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">compute_betaF_profile</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
@@ -600,9 +650,10 @@ free energies for each window</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">g_i</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">g_i</span>
 </pre></div>
 </div>
-<dl class="py method">
+<p>For comprehensive examples, check out the Jupyter notebooks in the <cite>examples/</cite> folder.</p>
+<dl class="method">
 <dt id="WHAM.binned.Calc1D.NLL">
-<code class="sig-name descname">NLL</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binned.Calc1D.NLL" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">NLL</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binned.Calc1D.NLL" title="Permalink to this definition"></a></dt>
 <dd><p>Computes the negative log-likelihood objective function to minimize.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -624,9 +675,9 @@ free energies for each window</p>
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="WHAM.binned.Calc1D.compute_betaF_profile">
-<code class="sig-name descname">compute_betaF_profile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binned.Calc1D.compute_betaF_profile" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">compute_betaF_profile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binned.Calc1D.compute_betaF_profile" title="Permalink to this definition"></a></dt>
 <dd><p>Computes the binned free energy profile and window total free energies.
 Raises an Exception if any of the bins are empty.</p>
 <dl class="field-list simple">
@@ -653,9 +704,9 @@ acting on the i’th window.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="WHAM.binned.Calc1D.minimize_NLL_solver">
-<code class="sig-name descname">minimize_NLL_solver</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binned.Calc1D.minimize_NLL_solver" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">minimize_NLL_solver</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binned.Calc1D.minimize_NLL_solver" title="Permalink to this definition"></a></dt>
 <dd><p>Computes optimal g_i by minimizing the negative log-likelihood
 for jointly observing the bin counts in the independent windows in the dataset.</p>
 <div class="admonition note">
@@ -689,11 +740,11 @@ by default. Gradient information required for L-BFGS-B is computed using autogra
 </dl>
 </dd></dl>
 
-<dl class="py method">
+<dl class="method">
 <dt id="WHAM.binned.Calc1D.self_consistent_solver">
-<code class="sig-name descname">self_consistent_solver</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binned.Calc1D.self_consistent_solver" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">self_consistent_solver</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binned.Calc1D.self_consistent_solver" title="Permalink to this definition"></a></dt>
 <dd><p>Computes optimal parameters g_i by solving the coupled WHAM equations self-consistently
-until convergence. Optimized using Cython.</p>
+until convergence.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -723,13 +774,101 @@ until convergence. Optimized using Cython.</p>
 
 </dd></dl>
 
+<dl class="class">
+<dt id="WHAM.binned.CalcDD">
+<em class="property">class </em><code class="sig-prename descclassname">WHAM.binned.</code><code class="sig-name descname">CalcDD</code><a class="headerlink" href="#WHAM.binned.CalcDD" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class containing methods to compute free energy profiles from D-dimensional umbrella sampling data
+(i.e. data from biasing a D order parameters) using binless WHAM.</p>
+<dl class="attribute">
+<dt id="WHAM.binned.CalcDD.X_l">
+<code class="sig-name descname">X_l</code><a class="headerlink" href="#WHAM.binned.CalcDD.X_l" title="Permalink to this definition"></a></dt>
+<dd><p>DxM matrix containing unrolled order parameter
+which is being biased, where (D=no of dimensions, M=no of data points).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="WHAM.binned.CalcDD.G_l">
+<code class="sig-name descname">G_l</code><a class="headerlink" href="#WHAM.binned.CalcDD.G_l" title="Permalink to this definition"></a></dt>
+<dd><p>1-dimensional array of length M (=no of data points) containing WHAM-computed weights corresponding to
+each (unrolled) order parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="WHAM.binned.CalcDD.g_i">
+<code class="sig-name descname">g_i</code><a class="headerlink" href="#WHAM.binned.CalcDD.g_i" title="Permalink to this definition"></a></dt>
+<dd><p>1-dimensional array of size N (=no of windows) containing
+WHAM-computed free energies for each window.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>All data must be at the same temperature.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Binless WHAM handles empty bins when computing free energy profiles by setting bin free energy to inf.</p>
+</div>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">calc</span> <span class="o">=</span> <span class="n">CalcND</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">status</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">compute_point_weights</span><span class="p">(</span><span class="n">X_l</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">status</span>
+<span class="go">True</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">G_l</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">G_l</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">g_i</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">g_i</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">betaF_x</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">calc</span><span class="o">.</span><span class="n">bin_betaF_profile</span><span class="p">(</span><span class="n">X_l</span><span class="p">,</span> <span class="n">G_l</span><span class="p">,</span> <span class="n">X_bin</span><span class="p">,</span> <span class="o">...</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For comprehensive examples, check out the Jupyter notebooks in the <cite>examples/</cite> folder.</p>
+<dl class="method">
+<dt id="WHAM.binned.CalcDD.NLL">
+<code class="sig-name descname">NLL</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binned.CalcDD.NLL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt>
+<code class="sig-name descname">X_l</code></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="WHAM.binned.CalcDD.compute_betaF_profile">
+<code class="sig-name descname">compute_betaF_profile</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binned.CalcDD.compute_betaF_profile" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="WHAM.binned.CalcDD.minimize_NLL_solver">
+<code class="sig-name descname">minimize_NLL_solver</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binned.CalcDD.minimize_NLL_solver" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="WHAM.binned.CalcDD.self_consistent_solver">
+<code class="sig-name descname">self_consistent_solver</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binned.CalcDD.self_consistent_solver" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-WHAM.statistics">
-<span id="wham-statistics-module"></span><h2>WHAM.statistics module<a class="headerlink" href="#module-WHAM.statistics" title="Permalink to this headline">¶</a></h2>
+<span id="wham-statistics-module"></span><h2>WHAM.statistics module<a class="headerlink" href="#module-WHAM.statistics" title="Permalink to this headline"></a></h2>
 <p>Functions for checking consistency of WHAM calculations.</p>
-<dl class="py function">
+<dl class="function">
 <dt id="WHAM.statistics.D_KL">
-<code class="sig-prename descclassname">WHAM.statistics.</code><code class="sig-name descname">D_KL</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">betaF_P</span></em>, <em class="sig-param"><span class="n">betaF_Q</span></em>, <em class="sig-param"><span class="n">delta_x_bin</span></em><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.statistics.D_KL" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">WHAM.statistics.</code><code class="sig-name descname">D_KL</code><span class="sig-paren">(</span><em class="sig-param">betaF_P</em>, <em class="sig-param">betaF_Q</em>, <em class="sig-param">delta_x_bin</em><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.statistics.D_KL" title="Permalink to this definition"></a></dt>
 <dd><p>Computes the KL divergence between two probability distributions P
 and Q corresponding to free energy profiles betaF_P and betaF_Q.</p>
 <dl class="field-list simple">
@@ -746,11 +885,16 @@ and Q corresponding to free energy profiles betaF_P and betaF_Q.</p>
 </dl>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
+<dt id="WHAM.statistics.D_KL_DD">
+<code class="sig-prename descclassname">WHAM.statistics.</code><code class="sig-name descname">D_KL_DD</code><span class="sig-paren">(</span><em class="sig-param">betaF_P</em>, <em class="sig-param">betaF_Q</em>, <em class="sig-param">delta_X_bin</em><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.statistics.D_KL_DD" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="WHAM.statistics.binless_KLD_reweighted_win_betaF">
-<code class="sig-prename descclassname">WHAM.statistics.</code><code class="sig-name descname">binless_KLD_reweighted_win_betaF</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">calc</span></em>, <em class="sig-param"><span class="n">x_it</span></em>, <em class="sig-param"><span class="n">x_bin</span></em>, <em class="sig-param"><span class="n">u_i</span></em>, <em class="sig-param"><span class="n">beta</span></em>, <em class="sig-param"><span class="n">bin_style</span><span class="o">=</span><span class="default_value">'left'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.statistics.binless_KLD_reweighted_win_betaF" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">WHAM.statistics.</code><code class="sig-name descname">binless_KLD_reweighted_win_betaF</code><span class="sig-paren">(</span><em class="sig-param">calc</em>, <em class="sig-param">x_it</em>, <em class="sig-param">x_bin</em>, <em class="sig-param">u_i</em>, <em class="sig-param">beta</em>, <em class="sig-param">bin_style='left'</em><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.statistics.binless_KLD_reweighted_win_betaF" title="Permalink to this definition"></a></dt>
 <dd><p>Computes the KL divergence between probability distributions corresponding to
-(sampled) bias free energy profile and reweighted biased free energy profile (constructed from consensus WHAM)
+(sampled) bias free energy profile and reweighted biased free energy profile (constructed by reweighting binless WHAM profile)
 for each window.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -774,33 +918,38 @@ acting on the i’th window.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
+<dt id="WHAM.statistics.binless_KLD_reweighted_win_betaF_DD">
+<code class="sig-prename descclassname">WHAM.statistics.</code><code class="sig-name descname">binless_KLD_reweighted_win_betaF_DD</code><span class="sig-paren">(</span><em class="sig-param">calc</em>, <em class="sig-param">X_it</em>, <em class="sig-param">X_bin</em>, <em class="sig-param">u_i</em>, <em class="sig-param">beta</em>, <em class="sig-param">bin_style='left'</em><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.statistics.binless_KLD_reweighted_win_betaF_DD" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="WHAM.statistics.binless_reweight_phi_ensemble">
-<code class="sig-prename descclassname">WHAM.statistics.</code><code class="sig-name descname">binless_reweight_phi_ensemble</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">calc</span></em>, <em class="sig-param"><span class="n">phi_vals</span></em>, <em class="sig-param"><span class="n">beta</span></em><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.statistics.binless_reweight_phi_ensemble" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">WHAM.statistics.</code><code class="sig-name descname">binless_reweight_phi_ensemble</code><span class="sig-paren">(</span><em class="sig-param">calc</em>, <em class="sig-param">phi_vals</em>, <em class="sig-param">beta</em><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.statistics.binless_reweight_phi_ensemble" title="Permalink to this definition"></a></dt>
 <dd><p>Computes &lt;x_l&gt; and &lt;dx_l^2&gt; v/s phi by reweighting the underlying free energy profile
 in calc to the phi-ensemble specified by phi_vals and beta.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>calc</strong> (<a class="reference internal" href="#WHAM.binless.Calc1D" title="WHAM.binless.Calc1D"><em>WHAM.binless.Calc1D</em></a>) – Binless Calc1D object, with weights pre-computed.</p></li>
-<li><p><strong>phi_vals</strong> (<em>ndarray</em>) – Array of phi values to compute &lt;x_l&gt; at, units of phi in kJ/mol.</p></li>
+<li><p><strong>phi_vals</strong> (<em>ndarray</em>) – Array of phi values to compute &lt;x_l&gt; at, units of phi (e.g. kJ/mol).</p></li>
 <li><p><strong>beta</strong> – beta, in inverse units to the units of u_i(x).</p></li>
 <li><p><strong>bin_style</strong> (<em>string</em>) – ‘left’ or ‘center’.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Array containing &lt;x_l&gt; corresponding to each value of phi.
-N_var_vals (ndarray): Array containing &lt;dx_l^2&gt; corresponding to each value of phi.</p>
+x_var_vals (ndarray): Array containing &lt;dx_l^2&gt; corresponding to each value of phi.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>N_avg_vals (ndarray)</p>
+<dd class="field-odd"><p>x_avg_vals (ndarray)</p>
 </dd>
 </dl>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
 <dt id="WHAM.statistics.binless_reweighted_win_betaF">
-<code class="sig-prename descclassname">WHAM.statistics.</code><code class="sig-name descname">binless_reweighted_win_betaF</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">calc</span></em>, <em class="sig-param"><span class="n">x_bin</span></em>, <em class="sig-param"><span class="n">u_i</span></em>, <em class="sig-param"><span class="n">beta</span></em>, <em class="sig-param"><span class="n">bin_style</span><span class="o">=</span><span class="default_value">'left'</span></em><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.statistics.binless_reweighted_win_betaF" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">WHAM.statistics.</code><code class="sig-name descname">binless_reweighted_win_betaF</code><span class="sig-paren">(</span><em class="sig-param">calc</em>, <em class="sig-param">x_bin</em>, <em class="sig-param">u_i</em>, <em class="sig-param">beta</em>, <em class="sig-param">bin_style='left'</em><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.statistics.binless_reweighted_win_betaF" title="Permalink to this definition"></a></dt>
 <dd><p>Computes free energy profiles for each window i by reweighting the entire
 free energy profile to the biased ensemble with bias potential specified
 by u_i[i].</p>
@@ -824,10 +973,113 @@ acting on the i’th window.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="py function">
+<dl class="function">
+<dt id="WHAM.statistics.binless_reweighted_win_betaF_DD">
+<code class="sig-prename descclassname">WHAM.statistics.</code><code class="sig-name descname">binless_reweighted_win_betaF_DD</code><span class="sig-paren">(</span><em class="sig-param">calc</em>, <em class="sig-param">X_bin</em>, <em class="sig-param">u_i</em>, <em class="sig-param">beta</em>, <em class="sig-param">bin_style='left'</em><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.statistics.binless_reweighted_win_betaF_DD" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="WHAM.statistics.binned_KLD_reweighted_win_betaF">
+<code class="sig-prename descclassname">WHAM.statistics.</code><code class="sig-name descname">binned_KLD_reweighted_win_betaF</code><span class="sig-paren">(</span><em class="sig-param">x_it</em>, <em class="sig-param">x_bin</em>, <em class="sig-param">betaF_bin</em>, <em class="sig-param">u_i</em>, <em class="sig-param">beta</em>, <em class="sig-param">bin_style='left'</em><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.statistics.binned_KLD_reweighted_win_betaF" title="Permalink to this definition"></a></dt>
+<dd><p>Computes the KL divergence between probability distributions corresponding to
+(sampled) bias free energy profile and reweighted biased free energy profile (constructed by reweighting binned WHAM profile)
+for each window.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_it</strong> (<em>list</em>) – Nested list of length S, x_it[i] is an array containing timeseries
+data from the i’th window.</p></li>
+<li><p><strong>x_bin</strong> (<em>list</em>) – Array of bin left-edges/centers of length M.</p></li>
+<li><p><strong>betaF_bin</strong> (<em>list</em>) – Array of (consensus) free energies of length M.</p></li>
+<li><p><strong>u_i</strong> (<em>list</em>) – List of length S, u_i[i] is the umbrella potential function u_i(x)
+acting on the i’th window.</p></li>
+<li><p><strong>beta</strong> – beta, in inverse units to the units of u_i(x).</p></li>
+<li><p><strong>bin_style</strong> (<em>string</em>) – ‘left’ or ‘center’.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>For the best results, use the same bin style as the consensus free energy profile.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Array of length S containing KL divergence for each window</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>D_KL_i (ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="WHAM.statistics.binned_KLD_reweighted_win_betaF_DD">
+<code class="sig-prename descclassname">WHAM.statistics.</code><code class="sig-name descname">binned_KLD_reweighted_win_betaF_DD</code><span class="sig-paren">(</span><em class="sig-param">X_it</em>, <em class="sig-param">X_bin</em>, <em class="sig-param">betaF_bin</em>, <em class="sig-param">u_i</em>, <em class="sig-param">beta</em>, <em class="sig-param">bin_style='left'</em><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.statistics.binned_KLD_reweighted_win_betaF_DD" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="WHAM.statistics.binned_reweight_phi_ensemble">
+<code class="sig-prename descclassname">WHAM.statistics.</code><code class="sig-name descname">binned_reweight_phi_ensemble</code><span class="sig-paren">(</span><em class="sig-param">x_bin</em>, <em class="sig-param">betaF_bin</em>, <em class="sig-param">phi_vals</em>, <em class="sig-param">beta</em><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.statistics.binned_reweight_phi_ensemble" title="Permalink to this definition"></a></dt>
+<dd><p>Computes &lt;x_l&gt; and &lt;dx_l^2&gt; v/s phi by reweighting the free energy profile
+betaF_bin to the phi-ensemble specified by phi_vals and beta.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_bin</strong> (<em>list</em>) – Array of bin left-edges/centers of length M.</p></li>
+<li><p><strong>phi_vals</strong> (<em>ndarray</em>) – Array of phi values to compute &lt;x_l&gt; at, units of phi (e.g. kJ/mol).</p></li>
+<li><p><strong>betaF_bin</strong> (<em>list</em>) – Array of free energies of length M.</p></li>
+<li><p><strong>beta</strong> – beta, in inverse units to the units of u_i(x).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Array containing &lt;x_l&gt; corresponding to each value of phi.
+x_var_vals (ndarray): Array containing &lt;dx_l^2&gt; corresponding to each value of phi.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>x_avg_vals (ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="WHAM.statistics.binned_reweighted_win_betaF">
+<code class="sig-prename descclassname">WHAM.statistics.</code><code class="sig-name descname">binned_reweighted_win_betaF</code><span class="sig-paren">(</span><em class="sig-param">x_bin</em>, <em class="sig-param">betaF_bin</em>, <em class="sig-param">u_i</em>, <em class="sig-param">beta</em><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.statistics.binned_reweighted_win_betaF" title="Permalink to this definition"></a></dt>
+<dd><p>Computes free energy profile for each window i by reweighting the entire free
+energy profile betaF_bin at x_bin to the biased ensemble with bias potential
+specified by u_i[i].</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function can be also be used to reweight free energy profiles
+constructed using binless WHAM.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_bin</strong> (<em>list</em>) – Array of bin left-edges/centers of length M.</p></li>
+<li><p><strong>betaF_bin</strong> (<em>list</em>) – Array of free energies of length M.</p></li>
+<li><p><strong>u_i</strong> (<em>list</em>) – List of length S, u_i[i] is the umbrella potential function u_i(x)
+acting on the i’th window.</p></li>
+<li><p><strong>beta</strong> – beta, in inverse units to the units of u_i(x).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>2-D array of biased free energies for each window, of shape (S, M)</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>betaF_il_reweight (np.array)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="WHAM.statistics.binned_reweighted_win_betaF_DD">
+<code class="sig-prename descclassname">WHAM.statistics.</code><code class="sig-name descname">binned_reweighted_win_betaF_DD</code><span class="sig-paren">(</span><em class="sig-param">X_bin</em>, <em class="sig-param">betaF_bin</em>, <em class="sig-param">u_i</em>, <em class="sig-param">beta</em><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.statistics.binned_reweighted_win_betaF_DD" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="WHAM.statistics.win_betaF">
-<code class="sig-prename descclassname">WHAM.statistics.</code><code class="sig-name descname">win_betaF</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x_it</span></em>, <em class="sig-param"><span class="n">x_bin</span></em>, <em class="sig-param"><span class="n">u_i</span></em>, <em class="sig-param"><span class="n">beta</span></em>, <em class="sig-param"><span class="n">bin_style</span><span class="o">=</span><span class="default_value">'left'</span></em>, <em class="sig-param"><span class="n">scale_stat_ineff</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.statistics.win_betaF" title="Permalink to this definition">¶</a></dt>
-<dd><p>Computes free energy profiles for each window.</p>
+<code class="sig-prename descclassname">WHAM.statistics.</code><code class="sig-name descname">win_betaF</code><span class="sig-paren">(</span><em class="sig-param">x_it</em>, <em class="sig-param">x_bin</em>, <em class="sig-param">u_i</em>, <em class="sig-param">beta</em>, <em class="sig-param">bin_style='left'</em>, <em class="sig-param">scale_stat_ineff=False</em><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.statistics.win_betaF" title="Permalink to this definition"></a></dt>
+<dd><p>Computes biased free energy profiles for each umbrella window from raw data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -853,55 +1105,43 @@ acting on the i’th window.</p></li>
 </dl>
 </dd></dl>
 
+<dl class="function">
+<dt id="WHAM.statistics.win_betaF_DD">
+<code class="sig-prename descclassname">WHAM.statistics.</code><code class="sig-name descname">win_betaF_DD</code><span class="sig-paren">(</span><em class="sig-param">X_it</em>, <em class="sig-param">X_bin</em>, <em class="sig-param">u_i</em>, <em class="sig-param">beta</em>, <em class="sig-param">bin_style='left'</em>, <em class="sig-param">scale_stat_ineff=False</em><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.statistics.win_betaF_DD" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
 </div>
 </div>
 
 
            </div>
-           
           </div>
-          <footer>
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="WHAM.lib.html" class="btn btn-neutral float-right" title="WHAM.lib package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../index.html" class="btn btn-neutral float-left" title="WHAM" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="WHAM.lib.html" class="btn btn-neutral float-right" title="WHAM.lib package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
 
   <div role="contentinfo">
-    <p>
-        &#169; Copyright 2021, Akash Pallath.
-
-    </p>
+    <p>&#169; Copyright 2021, Akash Pallath.</p>
   </div>
-    
-    
-    
-    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    
-    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
 
 </footer>
         </div>
       </div>
-
     </section>
-
   </div>
-  
-
-  <script type="text/javascript">
+  <script>
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-
-  
-  
-    
-   
+  </script> 
 
 </body>
 </html>

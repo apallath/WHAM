@@ -1,6 +1,6 @@
 # WHAM
 
-Optimized python code for constructing free energy profiles from umbrella sampling simulation data.
+Python package to construct free energy profiles from umbrella sampling simulation data.
 
 Link to [documentation](https://apallath.github.io/WHAM).
 
@@ -17,17 +17,16 @@ Link to [documentation](https://apallath.github.io/WHAM).
 
 ## Details
 
-### Binned formulation (`WHAM.binned`)
-- Implemented using self-consistent iteration (baseline/debugging)
-- Implemented using log-likelihood maximization for superlinear convergence
+### Binless formulation/MBAR (`WHAM.binless`) [more accurate]
+- Implemented using log-likelihood maximization for superlinear convergence and self-consistent iteration (as a baseline/for debugging)
+- Support for both 1D and multidimensional* umbrella sampling.
+- Support for reweighting 1D profiles to 2D (in a second related order parameter).
 
-### Binless formulation/MBAR (`WHAM.binless`) [preferred]
-- Implemented using self-consistent iteration (baseline/debugging)
-- Implemented using log-likelihood maximization for superlinear convergence
+### Binned formulation (`WHAM.binned`) [faster]
+- Implemented using log-likelihood maximization for superlinear convergence and self-consistent iteration (as a baseline/for debugging)
+- Support for both 1D and multidimensional* umbrella sampling.
 
 Both log-likelihood maximization approaches can use multiple nonlinear optimization algorithms. Read the documentation to see which algorithms are available.
-
-Binless WHAM supports reweighting and binning 2D free energy profiles given a related (unbiased) order parameter.
 
 ## Installation
 
@@ -50,7 +49,7 @@ pip install .
 ```
 
 ## Tests
-Integration tests are in the directory `tests/` and unit tests are in the directory `tests/tests_unit`. To run all tests at once, navigate to the directory `tests/` and run
+Integration tests are in the directory `tests/tests_integration` and unit tests are in the directory `tests/tests_unit`. Navigate to a test directory and run:
 
 ```sh
 pytest

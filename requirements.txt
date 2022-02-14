@@ -2,7 +2,7 @@
 Cython
 numpy
 scipy
-autograd    
+autograd
 matplotlib
 
 #Other requirements
@@ -14,4 +14,6 @@ tqdm
 pytest
 
 #Docs
+sphinx
+sphinx_rtd_theme
 sphinxcontrib-napoleon

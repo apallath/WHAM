@@ -68,33 +68,11 @@ from slow convergence.
 Choose between the two different WHAM formulations and solution
 approaches based on your needs.
 
-To compute a 1-D free energy profile betaF_l using binned WHAM:
-
-.. code-block:: python
-
-  import WHAM.binned
-  calc = WHAM.binned.Calc1D()
-  betaF_l, betaF_il, g_i, status = calc.compute_betaF_profile(...)
-
-To compute a 1-D free energy profile betaF_bin using binless WHAM:
-
-.. code-block:: python
-
-  import WHAM.binless
-  calc = WHAM.binless.Calc1D()
-  betaF_bin, g_i, status = calc.compute_betaF_profile(...)
-
 Look at the documentation of the statistics module to understand how to
-use statistical checks to verify the consistency of binless WHAM
-calculations. (Only binless WHAM stats are supported at the moment.)
+use statistical checks to verify the consistency of WHAM
+calculations.
 
-For complete examples demonstrating free energy profile calculation
-(on `INDUS`_ data), see `tests/test_binned.py`_ and `tests/test_binless.py`_
-in the WHAM source directory.
-
-.. _`INDUS`: https://github.com/seanmarks/INDUS
-.. _`tests/test_binned.py`: https://github.com/apallath/WHAM/blob/master/tests/test_binned.py
-.. _`tests/test_binless.py`: https://github.com/apallath/WHAM/blob/master/tests/test_binless.py
+For examples demonstrating free energy profile calculations, see the `examples` directory.
 
 
 References

@@ -1,44 +1,41 @@
 """
 Implementation of binned WHAM using
-    - Negative log-likelihood maximization as described in Zhu, F., & Hummer, G. (2012)
+    - Negative log-likelihood maximization as described in Zhu, F., & Hummer, G. (2012) with automatic differentiation.
     - Self-consistent iteration.
 """
+from functools import partial
+import logging
+
+from autograd import value_and_grad
+import autograd.numpy as anp
 import numpy as np
+import scipy.optimize
+from tqdm import tqdm
 
 import WHAM.lib.potentials
 import WHAM.lib.timeseries
 from WHAM.lib import numeric
 
-# from pymbar.timeseries import statisticalInefficiency
 from WHAM.lib.timeseries import statisticalInefficiency
 
-import pymbar.timeseries
-
-import scipy.optimize
-
-from tqdm import tqdm
-
-# Automatic differentiation, for log-likelihood maximization
-import autograd.numpy as anp
-from autograd import value_and_grad
-
-# Cython optimization for self-consistent iteration
+# Cython imports
 cimport numpy as np
 from libcpp cimport bool
 
-from functools import partial
-
 # Logging
-import logging
 logger = logging.getLogger(__name__)
 
 
-cdef class Calc1D:
-    """Class containing methods to compute free energy profiles
-    from umbrella sampling data using binned WHAM. Cannot perform
-    WHAM calculations if bins are empty.
+################################################################################
+#
+# Biasing one order parameter
+#
+################################################################################
 
-    For a complete usage example, look at tests/test_binned.py.
+
+cdef class Calc1D:
+    """Class containing methods to compute free energy profiles from 1D umbrella sampling data
+    (i.e. data from biasing a single order parameter) using binned WHAM.
 
     Attributes:
         x_l (ndarray): 1-dimensional array of bin left-edges/centers
@@ -47,6 +44,15 @@ cdef class Calc1D:
         g_i (ndarray): 1-dimensional array of size N (=no of windows) containing
             free energies for each window
 
+    Caution:
+        All data must be at the same temperature.
+
+    Notes:
+        - If you want to compute 2D free energy profiles in x_l and a second (related, unbiased) order parameter y_l,
+            use binless WHAM instead, or use 2D binned WHAM.
+        - Binned WHAM fails if bins are empty.
+        - While binless WHAM is generally more accurate, binned WHAM is generally faster.
+
     Example:
         >>> calc = Calc1D()
         >>> status = calc.compute_betaF_profile(...)
@@ -54,6 +60,8 @@ cdef class Calc1D:
         True
         >>> betaF_l = calc.betaF_l
         >>> g_i = calc.g_i
+
+        For comprehensive examples, check out the Jupyter notebooks in the `examples/` folder.
     """
 
     # Counter for log-likelihood minimizer
@@ -63,6 +71,27 @@ cdef class Calc1D:
     cdef public np.ndarray x_l
     cdef public np.ndarray betaF_l
     cdef public np.ndarray g_i
+
+    def __cinit__(self):
+        self._min_ctr = 0
+        self.x_l = None
+        self.betaF_l = None
+        self.g_i = None
+
+    ############################################################################
+    # IMP: Required for serialization.
+    # Removing this will break pickling
+
+    def __getstate__(self):
+        return (self.x_l, self.betaF_l, self.g_i)
+
+    def __setstate__(self, state):
+        x_l, betaF_l, g_i = state
+        self.x_l = x_l
+        self.betaF_l = betaF_l
+        self.g_i = g_i
+
+    ############################################################################
 
     def NLL(self, g_i, N_i, M_l, W_il):
         """Computes the negative log-likelihood objective function to minimize.
@@ -79,22 +108,21 @@ cdef class Calc1D:
         Returns:
             A(g) (np.float): Negative log-likelihood objective function.
         """
-        anp.errstate(divide='ignore')  # ignore divide by zero warnings
+        with anp.errstate(divide='ignore'):  # ignore divide by zero warnings
+            term1 = -anp.sum(N_i * g_i)
+            log_p_l = anp.log(M_l) - numeric.alogsumexp(g_i[:, np.newaxis] + W_il, b=N_i[:, np.newaxis], axis=0)
+            term2 = -anp.sum(M_l * log_p_l)
 
-        term1 = -anp.sum(N_i * g_i)
-        log_p_l = anp.log(M_l) - numeric.alogsumexp(g_i[:, np.newaxis] + W_il, b=N_i[:, np.newaxis], axis=0)
-        term2 = -anp.sum(M_l * log_p_l)
+            A = term1 + term2
 
-        A = term1 + term2
+            return A
 
-        return A
-
-    def _min_callback(self, g_i, args, logevery=0):
+    def _min_callback(self, g_i, args, logevery=100000000):
         if self._min_ctr % logevery == 0:
-            logger.debug("{:10d} {:.5f}".format(self._min_ctr, self.NLL(g_i, *args)))
+            logger.info("{:10d} {:.5f}".format(self._min_ctr, self.NLL(g_i, *args)))
         self._min_ctr += 1
 
-    cpdef minimize_NLL_solver(self, N_i, M_l, W_il, g_i=None, opt_method='L-BFGS-B', logevery=0):
+    def minimize_NLL_solver(self, N_i, M_l, W_il, g_i=None, opt_method='L-BFGS-B', logevery=100000000):
         """Computes optimal g_i by minimizing the negative log-likelihood
         for jointly observing the bin counts in the independent windows in the dataset.
 
@@ -118,7 +146,7 @@ cdef class Calc1D:
                 - status (bool): Solution status.
         """
         if g_i is None:
-            g_i = np.random.rand(len(N_i))  # TODO: Smarter initial guess
+            g_i = np.random.rand(len(N_i))  # TODO: Smarter initial guess using BAR
 
         # Optimize
         logger.debug("      Iter NLL")
@@ -135,9 +163,9 @@ cdef class Calc1D:
         return g_i, res.success
 
     cpdef self_consistent_solver(self, np.ndarray N_i, np.ndarray M_l, np.ndarray W_il,
-                                 np.ndarray g_i=np.zeros(1), float tol=1e-7, int maxiter=100000, int logevery=0):
+                                 np.ndarray g_i=np.zeros(1), float tol=1e-7, int maxiter=100000, int logevery=100000000):
         """Computes optimal parameters g_i by solving the coupled WHAM equations self-consistently
-        until convergence. Optimized using Cython.
+        until convergence.
 
         Args:
             N_i (np.array of shape (S,)): Array of total sample counts for the windows
@@ -155,8 +183,6 @@ cdef class Calc1D:
                 - g_i (np.array of shape(S,)),
                 - status (bool): Solution status.
         """
-        np.errstate(divide='ignore')
-
         cdef float EPS = 1e-24
         cdef int S = len(N_i)
         cdef int M = len(M_l)
@@ -190,19 +216,20 @@ cdef class Calc1D:
 
             if logevery > 0:
                 if iter % logevery == 0:
-                    logger.info("Self-consistent solver error = {:.2e}.".format(tol_check))
+                    logger.info("Self-consistent solver error = {:.8e}.".format(tol_check))
 
             if increment[np.argmax(increment)] < tol:
                 if logevery > 0:
-                    logger.info("Self-consistent solver error = {:.2e}.".format(tol_check))
+                    logger.info("Self-consistent solver error = {:.8e}.".format(tol_check))
                 status = True
                 break
 
         return g_i, status
 
-    ###############################
-    # Main computation call       #
-    ###############################
+    ############################################################################
+    # One-step API call
+    ############################################################################
+
     def compute_betaF_profile(self, x_it, x_l, u_i, beta, bin_style='left', solver='log-likelihood', scale_stat_ineff=False, **solverkwargs):
         """Computes the binned free energy profile and window total free energies.
         Raises an Exception if any of the bins are empty.
@@ -222,8 +249,6 @@ cdef class Calc1D:
         Returns:
             status (bool): Solver status.
         """
-        np.errstate(divide='ignore')
-
         self.x_l = x_l
 
         S = len(u_i)
@@ -287,3 +312,88 @@ cdef class Calc1D:
         self.g_i = g_i
 
         return status
+
+
+################################################################################
+#
+# Biasing D order parameters
+#
+################################################################################
+
+cdef class CalcDD:
+    """Class containing methods to compute free energy profiles from D-dimensional umbrella sampling data
+    (i.e. data from biasing a D order parameters) using binless WHAM.
+
+    Attributes:
+        X_l (ndarray): DxM matrix containing unrolled order parameter
+            which is being biased, where (D=no of dimensions, M=no of data points).
+        G_l (ndarray): 1-dimensional array of length M (=no of data points) containing WHAM-computed weights corresponding to
+            each (unrolled) order parameter.
+        g_i (ndarray): 1-dimensional array of size N (=no of windows) containing
+            WHAM-computed free energies for each window.
+
+    Caution:
+        All data must be at the same temperature.
+
+    Note:
+        Binless WHAM handles empty bins when computing free energy profiles by setting bin free energy to inf.
+
+    Example:
+        >>> calc = CalcND()
+        >>> status = calc.compute_point_weights(X_l, ...)
+        >>> status
+        True
+        >>> G_l = calc.G_l
+        >>> g_i = calc.g_i
+        >>> betaF_x, _ = calc.bin_betaF_profile(X_l, G_l, X_bin, ...)
+
+        For comprehensive examples, check out the Jupyter notebooks in the `examples/` folder.
+    """
+    # Counter for log-likelihood minimizer
+    cdef int _min_ctr
+
+    # Output arrays
+    cdef public np.ndarray X_l
+    cdef public np.ndarray betaF_l
+    cdef public np.ndarray g_i
+
+    def __cinit__(self):
+        self._min_ctr = 0
+        self.X_l = None
+        self.betaF_l = None
+        self.g_i = None
+
+    ############################################################################
+    # IMP: Required for serialization.
+    # Removing this will break pickling
+
+    def __getstate__(self):
+        return (self.X_l, self.betaF_l, self.g_i)
+
+    def __setstate__(self, state):
+        X_l, betaF_l, g_i = state
+        self.X_l = X_l
+        self.betaF_l = betaF_l
+        self.g_i = g_i
+
+    ############################################################################
+
+    def NLL(self, g_i, N_i, M_l, W_il):
+        raise NotImplementedError()
+
+    def _min_callback(self, g_i, args, logevery=100000000):
+        raise NotImplementedError()
+
+    def minimize_NLL_solver(self, N_i, M_l, W_il, g_i=None, opt_method='L-BFGS-B', logevery=100000000):
+        raise NotImplementedError()
+
+    cpdef self_consistent_solver(self, np.ndarray N_i, np.ndarray M_l, np.ndarray W_il,
+                                 np.ndarray g_i=np.zeros(1), float tol=1e-7, int maxiter=100000, int logevery=100000000):
+        raise NotImplementedError()
+
+    ############################################################################
+    # One-step API call
+    ############################################################################
+
+    def compute_betaF_profile(self, X_it, X_l, u_i, beta, bin_style='left', solver='log-likelihood', scale_stat_ineff=False, **solverkwargs):
+        raise NotImplementedError()
