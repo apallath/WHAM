@@ -89,7 +89,7 @@ cdef class Calc1D:
 
     ############################################################################
 
-    def NLL(self, g_i, x_l, N_i, W_il):
+    def NLL(self, g_i, x_l, N_i, W_il, autograd=True):
         """Computes the negative log-likelihood objective function to minimize.
 
         Args:
@@ -100,31 +100,36 @@ cdef class Calc1D:
                 0, 1, 2, ..., S-1.
             W_il (ndarray of shape (S, Ntot)): Array of weights, W_il = -beta * U_i(x_l) for the windows
                 0, 1, 2, ..., S-1.
+            autograd (bool): Use autograd to compute gradient.
 
         Returns:
             A(g) (np.float): Negative log-likelihood objective function.
         """
-        with anp.errstate(divide='ignore'):
-            Ntot = anp.sum(N_i)
-            term1 = -anp.sum(N_i / Ntot * g_i)
-            term2 = 1 / Ntot * anp.sum(numeric.alogsumexp(g_i[:, np.newaxis] + W_il, b=N_i[:, np.newaxis] / Ntot, axis=0))
+        if autograd:
+            with anp.errstate(divide='ignore'):
+                Ntot = anp.sum(N_i)
+                term1 = -anp.sum(N_i / Ntot * g_i)
+                term2 = 1 / Ntot * anp.sum(numeric.alogsumexp(g_i[:, np.newaxis] + W_il, b=N_i[:, np.newaxis] / Ntot, axis=0))
 
-            A = term1 + term2
+                A = term1 + term2
 
-            return A
+                return A
+        else:
+            raise NotImplementedError()
 
     def _min_callback(self, g_i, args, logevery=100000000):
         if self._min_ctr % logevery == 0:
             logger.info("{:10d} {:.5f}".format(self._min_ctr, self.NLL(g_i, *args)))
         self._min_ctr += 1
 
-    def minimize_NLL_solver(self, x_l, N_i, W_il, g_i=None, opt_method='L-BFGS-B', logevery=100000000):
+    def minimize_NLL_solver(self, x_l, N_i, W_il, g_i=None, opt_method='L-BFGS-B', logevery=100000000, autograd=True):
         """Computes optimal g_i by minimizing the negative log-likelihood
         for jointly observing the bin counts in the independent windows in the dataset.
 
         Note:
             Any optimization method which scipy.optimize supports can be used. L-BFGS-B is used
-            by default. Gradient information required for L-BFGS-B is computed using autograd.
+            by default. Gradient information required for L-BFGS-B can either be computed
+            analytically or using autograd.
 
         Args:
             x_l (ndarray of shape (Ntot,)): Array containing each sample.
@@ -135,6 +140,7 @@ cdef class Calc1D:
             g_i (ndarray of shape (S,)): Total free energy initial guess.
             opt_method (string): Optimization algorithm to use (default: L-BFGS-B).
             logevery (int): Interval to log negative log-likelihood (default=100000000, i.e. no logging).
+            autograd (bool): Use autograd to compute gradient.
 
         Returns:
             tuple(bG_l, g_i, status)
@@ -143,16 +149,21 @@ cdef class Calc1D:
                 - status (bool): Solution status.
         """
         if g_i is None:
-            g_i = np.random.rand(len(N_i))  # TODO: Smarter initial guess using BAR
+            g_i = np.random.rand(len(N_i))
 
         # Optimize
         logger.debug("      Iter NLL")
         self._min_ctr = 0
-        res = scipy.optimize.minimize(value_and_grad(self.NLL), g_i, jac=True,
-                                      args=(x_l, N_i, W_il),
-                                      method=opt_method,
-                                      callback=partial(self._min_callback, args=(x_l, N_i, W_il), logevery=logevery))
-        self._min_callback(res.x, args=(x_l, N_i, W_il), logevery=1)
+        
+        if autograd:
+            res = scipy.optimize.minimize(value_and_grad(self.NLL), g_i, jac=True,
+                                          args=(x_l, N_i, W_il, True),
+                                          method=opt_method,
+                                          callback=partial(self._min_callback, args=(x_l, N_i, W_il, True), logevery=logevery))
+        else:
+            raise NotImplementedError()
+
+        self._min_callback(res.x, args=(x_l, N_i, W_il, autograd), logevery=1)
 
         g_i = res.x
         g_i = g_i - g_i[0]

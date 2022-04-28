@@ -122,3 +122,13 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+
+# test output
+test_out/
+*/test_out/*
+test_statistics_output/
+*/test_statistics_output/*
+
+# examples output
+examples_out/
+*/examples_out/*
