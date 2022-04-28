@@ -126,8 +126,8 @@ dmypy.json
 # test output
 test_out/
 */test_out/*
-test_statistics_output/
-*/test_statistics_output/*
+test_statistics_outputs/
+*/test_statistics_outputs/*
 
 # examples output
 examples_out/
