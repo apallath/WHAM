@@ -62,7 +62,7 @@ class Potential2D(openmm.CustomExternalForce):
 
 class TwoBasinPotential2D(Potential2D):
     r"""
-    2-basin potential.
+    2-basin potential varying in both the $x$ and the $y$ coordinates.
     $$U(x, y) = \left( \left(\frac{(y - y\_0)^2}{y\_scale} - y\_shift \right)^2 + \frac{(x - y - xy\_0)^2}{xy\_scale} \right)$$
     """
     def __init__(self, y_0=1, y_scale=5, y_shift=4, xy_0=0, xy_scale=2):
@@ -96,10 +96,24 @@ class TwoBasinPotential2D(Potential2D):
 
 class HarmonicBias(openmm.CustomExternalForce):
     """
-    
+
     """
     def __init__(self, kappa_x=0, x_0=0, kappa_y=0, y_0=0):
-        self.force = "{kappa_x} * (x - {x_0})^2 + {kappa_y} * (y - {y_0})^2 + 1000 * z^2"
+        self.kappa_x = kappa_x
+        self.x_0 = x_0
+        self.kappa_y = kappa_y
+        self.y_0 = y_0
+
+        constvals = {"kappa_x": self.kappa_x,
+                     "x_0": self.x_0,
+                     "kappa_y": self.kappa_y,
+                     "y_0": self.y_0}
+
+        self.force = "{kappa_x} / 2 * (x - {x_0})^2 + {kappa_y} / 2 * (y - {y_0})^2 + 1000 * z^2".format(**constvals)
+
+        # Print force expression
+        print("[Bias] Initializing bias with expression:\n" + self.force)
+
         super().__init__(self.force)
 
 
@@ -161,13 +175,15 @@ class SingleParticleSimulation:
 
         # Init simulation objects
         self.system = openmm.System()
-        self.potential = potential
         self.system.addParticle(self.mass)
+        self.potential = potential
         self.potential.addParticle(0, [])  # no parameters associated with each particle
-        self.system.addForce(potential)
+        self.system.addForce(self.potential)
 
         # Add bias
         if bias is not None:
+            self.bias = bias
+            self.bias.addParticle(0, [])  # no parameters associated with each particle
             self.system.addForce(bias)
 
         self.integrator = openmm.LangevinIntegrator(self.temp,
@@ -271,6 +287,74 @@ class SingleParticleSimulation:
         with open(ofilename, "a") as of:
             of.write("{:10.5f}\t{:10.7f}\t{:10.7f}\n".format(t, PE, KE))
 
+
+################################################################################
+#
+# Reading trajectory data
+#
+################################################################################
+
+
+class TrajectoryReader:
+    """Utility class for reading large trajectories.
+
+    Args:
+        traj_file (str): Path to trajectory file.
+        comment_char (str): Character marking the beginning of a comment line.
+        format (str): Format of each line (options = 'txyz' or 'xyz'; default = 'txyz')
+    """
+    def __init__(self, traj_file, comment_char='#', format='txyz'):
+        self.traj_file = traj_file
+        self.comment_char = comment_char
+        self.format = format
+
+    def read_traj(self, skip=1):
+        """
+        Reads trajectory.
+
+        Args:
+            skip (int): Number of frames to skip between reads (default = 1).
+
+        Returns:
+            tuple(T, traj) if self.format == 'txyz'
+            traj if self.format == 'xyz'
+        """
+        if self.format == 'txyz':
+            return self._read_traj_txyz(skip)
+        elif self.format == 'xyz':
+            return self._read_traj_xyz(skip)
+        else:
+            raise ValueError('Invalid format {}'.format(format))
+
+    def _read_traj_txyz(self, skip):
+        times = []
+        traj = []
+
+        count = 0
+        with open(self.traj_file, 'r') as trajf:
+            for line in trajf:
+                if line.strip()[0] != self.comment_char:
+                    if count % skip == 0:
+                        txyz = [float(c) for c in line.strip().split()]
+                        times.append(txyz[0])
+                        traj.append([txyz[1], txyz[2], txyz[3]])
+
+        return np.array(times), np.array(traj)
+
+    def _read_traj_xyz(self, skip):
+        traj = []
+
+        count = 0
+        with open(self.traj_file, 'r') as trajf:
+            for line in trajf:
+                if line.strip()[0] != self.comment_char:
+                    if count % skip == 0:
+                        xyz = [float(c) for c in line.strip().split()]
+                        traj.append([xyz[0], xyz[1], xyz[2]])
+
+        return np.array(traj)
+
+
 ################################################################################
 #
 # Visualization
@@ -363,6 +447,31 @@ class VisualizePotential2D:
         ax.set_xlabel("$x$")
         ax.set_ylim([0, None])
         return (fig, ax, x, Fx)
+
+    def plot_projection_y(self):
+        """
+        Plots the y-projection of potential within (xrange[0], xrange[1])
+        and (yrange[0], yrange[1]).
+        """
+        # Compute 2D free energy profile
+        xx, yy = np.meshgrid(np.linspace(self.xrange[0], self.xrange[1], self.mesh), np.linspace(self.yrange[0], self.yrange[1], self.mesh))
+        x = xx.ravel()
+        y = yy.ravel()
+        v = self.potential2D.potential(x, y)
+        V = v.reshape(self.mesh, self.mesh) / self.kT
+
+        # Integrate over y-coordinate to get free-energy along x-coordinate
+        Fy = -logsumexp(-V, axis=1)
+        Fy = Fy - np.min(Fy)
+        y = np.linspace(self.yrange[0], self.yrange[1], self.mesh)
+
+        # Plot
+        fig, ax = plt.subplots(dpi=150)
+        ax.plot(y, Fy)
+        ax.set_ylabel(r"Potential ($k_B T$)")
+        ax.set_xlabel("$y$")
+        ax.set_ylim([0, None])
+        return (fig, ax, y, Fy)
 
     def scatter_traj(self, traj, every=1, s=1, c='black'):
         """
