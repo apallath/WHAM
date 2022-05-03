@@ -62,6 +62,22 @@ class Potential2D(openmm.CustomExternalForce):
 
 class TwoBasinPotential2D(Potential2D):
     r"""
+    2-basin potential varuing in the $x$ coordinate.
+    $$U(x, y) = M \left( (x^2 - 1)^2 + y^2 \right)$$
+    """
+    def __init__(self, magnitude=1):
+        self.magnitude = magnitude
+
+        self.force = '''{magnitude} * ((x^2 - 1)^2 + y^2)'''.format(magnitude=self.magnitude)
+
+        super().__init__()
+
+    def potential(self, x, y):
+        return self.magnitude * ((x ** 2 - 1) ** 2 + y ** 2)
+
+
+class SlipBondPotential2D(Potential2D):
+    r"""
     2-basin potential varying in both the $x$ and the $y$ coordinates.
     $$U(x, y) = \left( \left(\frac{(y - y\_0)^2}{y\_scale} - y\_shift \right)^2 + \frac{(x - y - xy\_0)^2}{xy\_scale} \right)$$
     """
