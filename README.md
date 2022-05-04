@@ -15,6 +15,8 @@ Link to [documentation](https://apallath.github.io/WHAM).
 [![Python](https://img.shields.io/github/languages/top/apallath/WHAM)](https://www.python.org/downloads/release/python-370/)
 [![Google Python Style](https://img.shields.io/badge/Code%20Style-Google%20Python%20Style-brightgreen)](https://google.github.io/styleguide/pyguide.html)
 
+![](wham.svg)
+
 ## Details
 
 ### Binless formulation/MBAR (`WHAM.binless`) [more accurate]
@@ -47,6 +49,10 @@ python setup.py build_ext --inplace
 ```sh
 pip install .
 ```
+
+## Usage
+
+See the Jupyter notebooks in the `examples/` directory.
 
 ## Tests
 Integration tests are in the directory `tests/tests_integration` and unit tests are in the directory `tests/tests_unit`. Navigate to a test directory and run:
