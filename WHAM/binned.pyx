@@ -389,19 +389,6 @@ cdef class CalcDD:
 
     ############################################################################
 
-    def NLL(self, g_i, N_i, M_l, W_il):
-        raise NotImplementedError()
-
-    def _min_callback(self, g_i, args, logevery=100000000):
-        raise NotImplementedError()
-
-    def minimize_NLL_solver(self, N_i, M_l, W_il, g_i=None, opt_method='L-BFGS-B', logevery=100000000):
-        raise NotImplementedError()
-
-    cpdef self_consistent_solver(self, np.ndarray N_i, np.ndarray M_l, np.ndarray W_il,
-                                 np.ndarray g_i=np.zeros(1), float tol=1e-7, int maxiter=100000, int logevery=100000000):
-        raise NotImplementedError()
-
     ############################################################################
     # One-step API call
     ############################################################################

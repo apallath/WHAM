@@ -1,16 +1,24 @@
 """Unit tests for WHAM.statistics"""
-import sys
 import inspect
+import os
 import re
+import sys
 
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+import pytest
 
 import WHAM.statistics
 
-
 matplotlib.use('Agg')
+
+
+@pytest.fixture(autouse=True)
+def arrange():
+    """Prepares temp directories for test output."""
+    if not os.path.exists("test_statistics_outputs"):
+        os.makedirs("test_statistics_outputs")
 
 
 def test_binned_reweight():

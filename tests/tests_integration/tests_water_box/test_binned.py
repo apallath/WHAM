@@ -1,18 +1,27 @@
 """
 Calculates free energy profile of test INDUS data using binned WHAM.
 """
-import sys
 import inspect
+import os
 import re
-
-import numpy as np
-import matplotlib.pyplot as plt
-
-from WHAM.lib import potentials
-import WHAM.binned
+import sys
 
 import matplotlib
+import matplotlib.pyplot as plt
+import numpy as np
+import pytest
+
+import WHAM.binned
+from WHAM.lib import potentials
+
 matplotlib.use('Agg')
+
+
+@pytest.fixture(autouse=True)
+def arrange():
+    """Prepares temp directories for test output."""
+    if not os.path.exists("test_out"):
+        os.makedirs("test_out")
 
 
 def get_test_data():
@@ -92,7 +101,7 @@ def test_binned_self_consistent():
                                         g_i=g_i, tol=1e-12, logevery=100)  # solver kwargs
     betaF_l = calc.betaF_l
     g_i = calc.g_i
-    
+
     # Optimized?
     print(status)
 

@@ -1,22 +1,32 @@
 """
 Calculates free energy profile of test INDUS data using binless WHAM
 """
-import sys
 import inspect
-import re
 from multiprocessing import Pool
-
-import numpy as np
-import matplotlib.pyplot as plt
-from mpl_toolkits.axes_grid1 import make_axes_locatable
-import matplotlib.colors as mcolors
-
-from WHAM.lib import timeseries, potentials
-import WHAM.binless
-import WHAM.statistics
+import os
+import re
+import sys
 
 import matplotlib
+import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+import numpy as np
+import pytest
+
+import WHAM.binless
+import WHAM.statistics
+from WHAM.lib import timeseries, potentials
+
+
 matplotlib.use('Agg')
+
+
+@pytest.fixture(autouse=True)
+def arrange():
+    """Prepares temp directories for test output."""
+    if not os.path.exists("test_out"):
+        os.makedirs("test_out")
 
 
 def get_test_data():

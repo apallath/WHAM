@@ -89,13 +89,12 @@ cdef class Calc1D:
 
     ############################################################################
 
-    def NLL(self, g_i, x_l, N_i, W_il, autograd=True):
+    def NLL(self, g_i, N_i, W_il, autograd=True):
         """Computes the negative log-likelihood objective function to minimize.
 
         Args:
             g_i (ndarray of shape (S,)) Array of total free energies associated with the windows
                 0, 1, 2, ..., S-1.
-            x_l (ndarray of shape (Ntot,)): Array containing each sample.
             N_i (ndarray of shape (S,)): Array of total sample counts for the windows
                 0, 1, 2, ..., S-1.
             W_il (ndarray of shape (S, Ntot)): Array of weights, W_il = -beta * U_i(x_l) for the windows
@@ -122,7 +121,7 @@ cdef class Calc1D:
             logger.info("{:10d} {:.5f}".format(self._min_ctr, self.NLL(g_i, *args)))
         self._min_ctr += 1
 
-    def minimize_NLL_solver(self, x_l, N_i, W_il, g_i=None, opt_method='L-BFGS-B', logevery=100000000, autograd=True):
+    def minimize_NLL_solver(self, N_i, W_il, g_i=None, opt_method='L-BFGS-B', logevery=100000000, autograd=True):
         """Computes optimal g_i by minimizing the negative log-likelihood
         for jointly observing the bin counts in the independent windows in the dataset.
 
@@ -132,7 +131,6 @@ cdef class Calc1D:
             analytically or using autograd.
 
         Args:
-            x_l (ndarray of shape (Ntot,)): Array containing each sample.
             N_i (ndarray of shape (S,)): Array of total sample counts for the windows
                 0, 1, 2, ..., S-1.
             W_il (ndarray of shape (S, Ntot)): Array of weights, W_il = -beta * U_i(x_l) for the windows
@@ -154,16 +152,16 @@ cdef class Calc1D:
         # Optimize
         logger.debug("      Iter NLL")
         self._min_ctr = 0
-        
+
         if autograd:
             res = scipy.optimize.minimize(value_and_grad(self.NLL), g_i, jac=True,
-                                          args=(x_l, N_i, W_il, True),
+                                          args=(N_i, W_il, True),
                                           method=opt_method,
-                                          callback=partial(self._min_callback, args=(x_l, N_i, W_il, True), logevery=logevery))
+                                          callback=partial(self._min_callback, args=(N_i, W_il, True), logevery=logevery))
         else:
             raise NotImplementedError()
 
-        self._min_callback(res.x, args=(x_l, N_i, W_il, autograd), logevery=1)
+        self._min_callback(res.x, args=(N_i, W_il, autograd), logevery=1)
 
         g_i = res.x
         g_i = g_i - g_i[0]
@@ -172,13 +170,12 @@ cdef class Calc1D:
 
         return G_l, g_i, res.success
 
-    cpdef self_consistent_solver(self, np.ndarray x_l, np.ndarray N_i, np.ndarray W_il,
+    cpdef self_consistent_solver(self, np.ndarray N_i, np.ndarray W_il,
                                  np.ndarray g_i=np.zeros(1), float tol=1e-7, int maxiter=100000, int logevery=100000000):
         """Computes optimal parameters g_i by solving the coupled MBAR equations self-consistently
         until convergence.
 
         Args:
-            x_l (ndarray of shape (Ntot,)): Array containing each sample.
             N_i (ndarray of shape (S,)): Array of total sample counts for the windows
                 0, 1, 2, ..., S-1.
             W_il (ndarray of shape (S, Ntot)): Array of weights, W_il = -beta * U_i(x_l) for the windows
@@ -196,7 +193,7 @@ cdef class Calc1D:
         """
         cdef float EPS = 1e-24
         cdef int S = len(N_i)
-        cdef int Ntot = len(x_l)
+        cdef int Ntot = N_i.sum()
 
         if np.allclose(g_i, np.zeros(1)):
             g_i = EPS * np.ones(S, dtype=np.float)
@@ -267,9 +264,9 @@ cdef class Calc1D:
 
         # Get free energy profile through binless WHAM/MBAR
         if solver == 'log-likelihood':
-            G_l, g_i, status = self.minimize_NLL_solver(x_l, N_i, W_il, **solverkwargs)
+            G_l, g_i, status = self.minimize_NLL_solver(N_i, W_il, **solverkwargs)
         elif solver == 'self-consistent':
-            G_l, g_i, status = self.self_consistent_solver(x_l, N_i, W_il, **solverkwargs)
+            G_l, g_i, status = self.self_consistent_solver(N_i, W_il, **solverkwargs)
         else:
             raise ValueError("Requested solution technique not a recognized option.")
 
@@ -629,20 +626,6 @@ cdef class CalcDD:
         self.g_i = g_i
 
     ############################################################################
-
-
-    def NLL(self, g_i, X_l, N_i, W_il):
-        raise NotImplementedError()
-
-    def _min_callback(self, g_i, args, logevery=100000000):
-        raise NotImplementedError()
-
-    def minimize_NLL_solver(self, X_l, N_i, W_il, g_i=None, opt_method='L-BFGS-B', logevery=100000000):
-        raise NotImplementedError()
-
-    cpdef self_consistent_solver(self, np.ndarray X_l, np.ndarray N_i, np.ndarray W_il,
-                                 np.ndarray g_i=np.zeros(1), float tol=1e-7, int maxiter=100000, int logevery=100000000):
-        pass
 
     ############################################################################
     # Computations on point data
