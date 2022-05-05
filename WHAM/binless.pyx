@@ -24,13 +24,21 @@ logger = logging.getLogger(__name__)
 
 ################################################################################
 #
-# Basic solver functionality
+# Core solver functionality
 #
 ################################################################################
 
 cdef class CalcBase:
     """
     Class containing basic binless WHAM solver functionality.
+
+    Attributes:
+        x_l (ndarray): 1-dimensional or 2-dimensional array containing unrolled order parameter
+            which is being biased.
+        G_l (ndarray): 1-dimensional array containing WHAM-computed weights corresponding to
+            each (unrolled) order parameter.
+        g_i (ndarray): 1-dimensional array of size N (=no of windows) containing
+            WHAM-computed free energies for each window.
 
     Caution:
         All data must be at the same temperature.
@@ -42,13 +50,30 @@ cdef class CalcBase:
     cdef int _min_ctr
 
     # Output arrays
+    cdef public np.ndarray x_l
     cdef public np.ndarray G_l
     cdef public np.ndarray g_i
 
     def __cinit__(self):
         self._min_ctr = 0
-        self.G_l = None
-        self.g_i = None
+        self.x_l = None  # shape (N, D) or (N,)
+        self.G_l = None  # shape (N,)
+        self.g_i = None  # shape (S,)
+
+    ############################################################################
+    # IMP: Required for serialization.
+    # Removing this will break pickling
+
+    def __getstate__(self):
+        return (self.x_l, self.G_l, self.g_i)
+
+    def __setstate__(self, state):
+        x_l, G_l, g_i = state
+        self.x_l = x_l
+        self.G_l = G_l
+        self.g_i = g_i
+
+    ############################################################################
 
     def NLL(self, g_i, N_i, W_il, autograd=True):
         """Computes the negative log-likelihood objective function to minimize.
@@ -194,65 +219,6 @@ cdef class CalcBase:
 
         return G_l, g_i, status
 
-
-################################################################################
-#
-# Biasing one order parameter
-#
-################################################################################
-
-cdef class Calc1D(CalcBase):
-    """Class containing methods to compute free energy profiles from 1D umbrella sampling data
-    (i.e. data from biasing a single order parameter) using binless WHAM.
-
-    Attributes:
-        x_l (ndarray): 1-dimensional array containing unrolled order parameter
-            which is being biased.
-        G_l (ndarray): 1-dimensional array containing WHAM-omputed weights corresponding to
-            each (unrolled) order parameter.
-        g_i (ndarray): 1-dimensional array of size N (=no of windows) containing
-            WHAM-computed free energies for each window.
-
-    Caution:
-        All data must be at the same temperature.
-
-    Note:
-        Binless WHAM handles empty bins when computing free energy profiles by setting bin free energy to inf.
-
-    Example:
-        >>> calc = Calc1D()
-        >>> status = calc.compute_point_weights(x_l, ...)
-        >>> status
-        True
-        >>> G_l = calc.G_l
-        >>> g_i = calc.g_i
-        >>> betaF_x, _ = calc.bin_betaF_profile(x_l, G_l, x_bin, ...)
-        >>> betaF_xy, _ = calc.bin_2D_betaF_profile(x_l, y_l, G_l, x_bin, y_bin, ...)
-
-        For comprehensive examples, check out the Jupyter notebooks in the `examples/` folder.
-    """
-
-    # Output arrays
-    cdef public np.ndarray x_l
-
-    def __cinit__(self):
-        self.x_l = None
-
-    ############################################################################
-    # IMP: Required for serialization.
-    # Removing this will break pickling
-
-    def __getstate__(self):
-        return (self.x_l, self.G_l, self.g_i)
-
-    def __setstate__(self, state):
-        x_l, G_l, g_i = state
-        self.x_l = x_l
-        self.G_l = G_l
-        self.g_i = g_i
-
-    ############################################################################
-
     ############################################################################
     # Computations on point data
     ############################################################################
@@ -274,7 +240,7 @@ cdef class Calc1D(CalcBase):
         self.x_l = x_l
 
         S = len(u_i)
-        Ntot = len(x_l)
+        Ntot = x_l.shape[0]  # (N, D) or (N, 1)
 
         # Compute weights for each data point
         W_il = np.zeros((S, Ntot))
@@ -321,6 +287,66 @@ cdef class Calc1D(CalcBase):
         G_l_bias = self.G_l + beta * u_bias(self.x_l) - g_bias
 
         return G_l_bias
+
+    ############################################################################
+    # Checks
+    ############################################################################
+
+    def check_data(self):
+        """Verifies that x_l is not None, else raises RuntimeError.
+
+        Raises:
+            RuntimeError"""
+        if self.x_l is None:
+            raise RuntimeError("Data points not available.")
+
+    def check_weights(self):
+        """Verifies that g_i and G_l are not None, else raises RuntimeError.
+
+        Raises:
+            RuntimeError"""
+        if self.g_i is None:
+            raise RuntimeError("Window free energies not available.")
+        if self.G_l is None:
+            raise RuntimeError("Point weights not available.")
+
+
+################################################################################
+#
+# Biasing one order parameter
+#
+################################################################################
+
+cdef class Calc1D(CalcBase):
+    """Class containing methods to compute free energy profiles from 1D umbrella sampling data
+    (i.e. data from biasing a single order parameter) using binless WHAM.
+
+    Attributes:
+        x_l (ndarray): 1-dimensional array containing unrolled order parameter
+            which is being biased.
+        G_l (ndarray): 1-dimensional array containing WHAM-computed weights corresponding to
+            each (unrolled) order parameter.
+        g_i (ndarray): 1-dimensional array of size N (=no of windows) containing
+            WHAM-computed free energies for each window.
+
+    Caution:
+        All data must be at the same temperature.
+
+    Note:
+        Binless WHAM handles empty bins when computing free energy profiles by setting bin free energy to inf.
+
+    Example:
+        >>> calc = Calc1D()
+        >>> status = calc.compute_point_weights(x_l, ...)
+        >>> status
+        True
+        >>> G_l = calc.G_l
+        >>> g_i = calc.g_i
+        >>> betaF_x, _ = calc.bin_betaF_profile(x_l, G_l, x_bin, ...)
+        >>> betaF_xy, _ = calc.bin_2D_betaF_profile(x_l, y_l, G_l, x_bin, y_bin, ...)
+
+        For comprehensive examples, check out the Jupyter notebooks in the `examples/` folder.
+    """
 
     ############################################################################
     # Binning point weights
@@ -390,28 +416,6 @@ cdef class Calc1D(CalcBase):
                 betaF_bin[b - 1] = np.inf
 
         return betaF_bin, betaF_bin_counts
-
-    ############################################################################
-    # Checks
-    ############################################################################
-
-    def check_data(self):
-        """Verifies that x_l is not None, else raises RuntimeError.
-
-        Raises:
-            RuntimeError"""
-        if self.x_l is None:
-            raise RuntimeError("Data points not available.")
-
-    def check_weights(self):
-        """Verifies that g_i and G_l are not None, else raises RuntimeError.
-
-        Raises:
-            RuntimeError"""
-        if self.g_i is None:
-            raise RuntimeError("Window free energies not available.")
-        if self.G_l is None:
-            raise RuntimeError("Point weights not available.")
 
     ############################################################################
     # One-step API call to compute free energy profile
@@ -590,14 +594,14 @@ cdef class Calc1D(CalcBase):
 
 cdef class CalcDD(CalcBase):
     """Class containing methods to compute free energy profiles from D-dimensional umbrella sampling data
-    (i.e. data from biasing a D order parameters) using binless WHAM.
+    (i.e. data from biasing D order parameters) using binless WHAM.
 
     Attributes:
-        x_l (ndarray): DxM matrix containing unrolled order parameter
-            which is being biased, where (D=no of dimensions, M=no of data points).
-        G_l (ndarray): 1-dimensional array of length M (=no of data points) containing WHAM-computed weights corresponding to
+        x_l (ndarray): DxN matrix containing unrolled order parameter
+            which is being biased, where (D=no of dimensions, N=no of data points).
+        G_l (ndarray): 1-dimensional array of length N (=no of data points) containing WHAM-computed weights corresponding to
             each (unrolled) order parameter.
-        g_i (ndarray): 1-dimensional array of size N (=no of windows) containing
+        g_i (ndarray): 1-dimensional array of size S (=no of windows) containing
             WHAM-computed free energies for each window.
 
     Caution:
@@ -618,65 +622,31 @@ cdef class CalcDD(CalcBase):
         For comprehensive examples, check out the Jupyter notebooks in the `examples/` folder.
     """
 
-    # Output arrays
-    cdef public np.ndarray x_l
-
-    def __cinit__(self):
-        self.x_l = None
-
-    ############################################################################
-    # IMP: Required for serialization.
-    # Removing this will break pickling
-
-    def __getstate__(self):
-        return (self.x_l, self.G_l, self.g_i)
-
-    def __setstate__(self, state):
-        x_l, G_l, g_i = state
-        self.x_l = x_l
-        self.G_l = G_l
-        self.g_i = g_i
-
-    ############################################################################
-
-    ############################################################################
-    # Computations on point data
-    ############################################################################
-
-    def compute_point_weights(self, x_l, N_i, u_i, beta, solver='log-likelihood', **solverkwargs):
-        raise NotImplementedError()
-
-    def reweight(self, beta, u_bias):
-        raise NotImplementedError()
-
     ############################################################################
     # Binning point weights
     ############################################################################
 
-    def bin_betaF_profile(self, bin_list, G_l=None, bin_style='left'):
+    def bin_betaF_profile(self, x_bin, G_l=None):
+        """Bins weights corresponding to each sample into a D-dimensional free energy profile.
+        If point weights G_l are not passed as an argument, then the computed WHAM weights are
+        used for binning. You can pass custom weights G_l to compute reweighted
+        free energy profiles.
+
+        Caution:
+            This calculation uses the order parameter samples [self.x_l]. These will be
+            available if you have called the compute function `compute_point_weights`
+            or the main API call `compute_betaF_profile`. If you haven't done so, you must initialize
+            the Calc1D object's x_l variable before calling this function.
+
+        Args:
+            x_bin (ndarray of dimensions (Nbin, D)): List of arrays of bin left-edges of length M. Used only for computing final PMF.
+            G_l (ndarray): Array of weights corresponding to each data point/order parameter x_l.
+
+        Returns:
+            betaF_bin (ndarray): Free energy profile, binned as per x_bin.
+            betaF_bin_counts (ndarray): Bin counts
+        """
         raise NotImplementedError()
-
-    ############################################################################
-    # Checks
-    ############################################################################
-
-    def check_data(self):
-        """Verifies that x_l is not None, else raises RuntimeError.
-
-        Raises:
-            RuntimeError"""
-        if self.x_l is None:
-            raise RuntimeError("Data points not available.")
-
-    def check_weights(self):
-        """Verifies that g_i and G_l are not None, else raises RuntimeError.
-
-        Raises:
-            RuntimeError"""
-        if self.g_i is None:
-            raise RuntimeError("Window free energies not available.")
-        if self.G_l is None:
-            raise RuntimeError("Point weights not available.")
 
     ############################################################################
     # One-step API call to compute free energy profile
