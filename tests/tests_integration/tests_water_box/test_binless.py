@@ -1,5 +1,5 @@
 """
-Calculates free energy profile of test INDUS data using binless WHAM
+Calculates free energy profiles from test INDUS data using binless WHAM.
 """
 import inspect
 from multiprocessing import Pool
@@ -76,7 +76,10 @@ def get_test_data():
 
 
 def test_binless_self_consistent():
-    """Tests self consistent solver and starting from a given state"""
+    """
+    Compares 1D free energy profile computed by self-consistent WHAM against reference free energy profile.
+    Checks that KLD < 0.1 across umbrellas.
+    """
     n_star_win, Ntw_win, bin_points, umbrella_win, beta = get_test_data()
 
     # Perform WHAM calculation
@@ -214,7 +217,10 @@ def test_binless_self_consistent():
 
 
 def test_binless_log_likelihood():
-    """Tests log liklihood solver"""
+    """
+    Compares 1D free energy profile computed by log-likelihood WHAM against reference free energy profile.
+    Checks that KLD < 0.1 across umbrellas.
+    """
     n_star_win, Ntw_win, bin_points, umbrella_win, beta = get_test_data()
 
     # Perform WHAM calculation
@@ -284,8 +290,10 @@ def test_binless_log_likelihood():
 
 
 def test_binless_log_likelihood_phi_ensemble():
-    """Tests reweighting to linear potentials (phi-ensemble), by calculating
-    <Nv> v/s phi and <dNv^2> v/s phi profiles"""
+    """
+    Compares variance <dx^2> in a phi-ensemble against the derivative of the mean d<x>/dphi,
+    where <x> and <x^2> are computed from log-likelihood WHAM free energy profiles.
+    """
     n_star_win, Ntw_win, bin_points, umbrella_win, beta = get_test_data()
 
     # Perform WHAM calculation
@@ -344,8 +352,10 @@ def boot_worker(boot_worker_idx):
 
 
 def test_bootstrap_binless_log_likelihood_phi_ensemble():
-    """Tests reweighting to linear potentials (phi-ensemble) while calculating
-    error bars using bootstrapping"""
+    """
+    Tests reweighting to linear potentials (phi-ensemble) while calculating
+    error bars using bootstrapping.
+    """
     n_star_win, Ntw_win, bin_points, umbrella_win, beta = get_test_data()
 
     phi_vals = np.linspace(0, 10, 101)  # phi-ensemble definition

@@ -1,5 +1,5 @@
 """
-Calculates free energy profile of test INDUS data using binned WHAM.
+Calculates free energy profile from test INDUS data using binned WHAM.
 """
 import inspect
 import os

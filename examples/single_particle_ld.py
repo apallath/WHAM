@@ -1,3 +1,6 @@
+"""
+Classes for performing langevin dynamics simulations on 2D potential energy surfaces.
+"""
 import multiprocessing
 import pickle
 
