@@ -294,7 +294,6 @@ cdef class Calc1D(CalcBase):
 
         return status
 
-
     def reweight(self, beta, u_bias):
         """Reweights sample weights to a biased ensemble. Does not change computed
         WHAM weights.
@@ -588,6 +587,7 @@ cdef class Calc1D(CalcBase):
 #
 ################################################################################
 
+
 cdef class CalcDD(CalcBase):
     """Class containing methods to compute free energy profiles from D-dimensional umbrella sampling data
     (i.e. data from biasing a D order parameters) using binless WHAM.
@@ -653,7 +653,7 @@ cdef class CalcDD(CalcBase):
     # Binning point weights
     ############################################################################
 
-    def bin_betaF_profile(self, x_bin, G_l=None, bin_style='left'):
+    def bin_betaF_profile(self, bin_list, G_l=None, bin_style='left'):
         raise NotImplementedError()
 
     ############################################################################
@@ -682,5 +682,5 @@ cdef class CalcDD(CalcBase):
     # One-step API call to compute free energy profile
     ############################################################################
 
-    def compute_betaF_profile(self, x_it, x_bin, u_i, beta, bin_style='left', solver='log-likelihood', **solverkwargs):
+    def compute_betaF_profile(self, x_it, bin_list, u_i, beta, bin_style='left', solver='log-likelihood', **solverkwargs):
         raise NotImplementedError()
