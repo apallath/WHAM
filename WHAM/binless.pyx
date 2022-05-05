@@ -75,8 +75,11 @@ cdef class CalcBase:
 
     ############################################################################
 
-    def NLL(self, g_i, N_i, W_il, autograd=True):
-        """Computes the negative log-likelihood objective function to minimize.
+    @classmethod
+    def NLL(cls, g_i, N_i, W_il, autograd=False):
+        r"""Computes the negative log-likelihood objective function to minimize.
+
+        $A = \frac{1}{N_{tot}} \left( \sum_{l=1}^{N_{tot}} \log \sum_{i=1}^{S} \frac{N_i}{N_{tot}} e^{g_i + W_{il}} - \sum_{i=1}^{S} N_i g_i \right)$
 
         Args:
             g_i (ndarray of shape (S,)) Array of total free energies associated with the windows
@@ -94,20 +97,62 @@ cdef class CalcBase:
             with anp.errstate(divide='ignore'):
                 Ntot = anp.sum(N_i)
                 term1 = -anp.sum(N_i / Ntot * g_i)
-                term2 = 1 / Ntot * anp.sum(numeric.alogsumexp(g_i[:, np.newaxis] + W_il, b=N_i[:, np.newaxis] / Ntot, axis=0))
+                term2 = 1 / Ntot * anp.sum(numeric.alogsumexp(g_i[:, anp.newaxis] + W_il, b=N_i[:, anp.newaxis] / Ntot, axis=0))
 
                 A = term1 + term2
 
                 return A
         else:
-            raise NotImplementedError()
+            with np.errstate(divide='ignore'):
+                Ntot = np.sum(N_i)
+                term1 = -np.sum(N_i / Ntot * g_i)
+                term2 = 1 / Ntot * np.sum(numeric.clogsumexp(g_i[:, np.newaxis] + W_il, b=N_i[:, np.newaxis] / Ntot, axis=0))
+
+                A = term1 + term2
+
+                return A
+
+    @classmethod
+    def grad_NLL(cls, g_i, N_i, W_il, autograd=False):
+        r"""Computes the gradient of the negative log likelihood objective function w.r.t g_i.
+
+        $\frac{\partial A}{\partial g_i} = \frac{1}{N_{tot}} \left( \sum_{l=1}^{N_{tot}} \frac{ N_i e^{g_i + W_{il}} }{ \sum_{i=1}^{S} N_i e^{g_i + W_{il}} } - N_i \right)$
+
+        To use the log-sum-exp trick, this is computed as:
+
+        $\frac{\partial A}{\partial g_i} = \frac{1}{N_{tot}} \left( e^{\Theta_i} - N_i \right)$
+
+        $\Theta_i = \log \sum_{l=1}^{N_{tot}} N_i e^{g_i + W_{il} - \Omega_l}$
+
+        $\Omega_l = \log \sum_{i=1}^{S} N_i e^{g_i + W_{il}}$
+
+        Args:
+            g_i (ndarray of shape (S,)) Array of total free energies associated with the windows
+                0, 1, 2, ..., S-1.
+            N_i (ndarray of shape (S,)): Array of total sample counts for the windows
+                0, 1, 2, ..., S-1.
+            W_il (ndarray of shape (S, Ntot)): Array of weights, W_il = -beta * U_i(x_l) for the windows
+                0, 1, 2, ..., S-1.
+            autograd (bool): Use autograd to compute gradient (False). (Note: This is not evaluated.)
+
+        Returns:
+            grad_A(g) (np.float): Gradient of negative log-likelihood objective function w.r.t g_i.
+        """
+        with np.errstate(divide='ignore'):
+            Ntot = np.sum(N_i)
+            Omega_l = numeric.clogsumexp(g_i[:, np.newaxis] + W_il, b=N_i[:, np.newaxis], axis=0)
+            Theta_i = numeric.clogsumexp(g_i[:, np.newaxis] + W_il - Omega_l[np.newaxis, :], b=N_i[:, np.newaxis], axis=1)
+
+            grad_A = 1 / Ntot * (np.exp(Theta_i) - N_i)
+
+            return grad_A
 
     def _min_callback(self, g_i, args, logevery=100000000):
         if self._min_ctr % logevery == 0:
             logger.info("{:10d} {:.5f}".format(self._min_ctr, self.NLL(g_i, *args)))
         self._min_ctr += 1
 
-    def minimize_NLL_solver(self, N_i, W_il, g_i=None, opt_method='L-BFGS-B', logevery=100000000, autograd=True):
+    def minimize_NLL_solver(self, N_i, W_il, g_i=None, opt_method='L-BFGS-B', logevery=100000000, autograd=False):
         """Computes optimal g_i by minimizing the negative log-likelihood
         for jointly observing the bin counts in the independent windows in the dataset.
 
@@ -145,7 +190,10 @@ cdef class CalcBase:
                                           method=opt_method,
                                           callback=partial(self._min_callback, args=(N_i, W_il, True), logevery=logevery))
         else:
-            raise NotImplementedError()
+            res = scipy.optimize.minimize(self.NLL, g_i, jac=self.grad_NLL,
+                                          args=(N_i, W_il, False),
+                                          method=opt_method,
+                                          callback=partial(self._min_callback, args=(N_i, W_il, True), logevery=logevery))
 
         self._min_callback(res.x, args=(N_i, W_il, autograd), logevery=1)
 

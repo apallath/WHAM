@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WHAM.lib package &mdash; WHAM 0.1.0 documentation</title><link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <title>WHAM.lib package &mdash; WHAM 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
-  <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
         <script src="../_static/doctools.js"></script>
-        <script src="../_static/language_data.js"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]]}})</script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]]}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -34,7 +39,7 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption"><span class="caption-text">Contents:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="WHAM.html">WHAM package</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">WHAM.lib package</a><ul>
@@ -70,17 +75,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <div class="section" id="wham-lib-package">
+  <section id="wham-lib-package">
 <h1>WHAM.lib package<a class="headerlink" href="#wham-lib-package" title="Permalink to this headline"></a></h1>
-<div class="section" id="submodules">
+<section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
-</div>
-<div class="section" id="module-WHAM.lib.timeseries">
+</section>
+<section id="module-WHAM.lib.timeseries">
 <span id="wham-lib-timeseries-module"></span><h2>WHAM.lib.timeseries module<a class="headerlink" href="#module-WHAM.lib.timeseries" title="Permalink to this headline"></a></h2>
 <p>Defines functions for dealing with correlated timeseries data.</p>
-<dl class="function">
-<dt id="WHAM.lib.timeseries.bootstrap_independent_sample">
-<code class="sig-prename descclassname">WHAM.lib.timeseries.</code><code class="sig-name descname">bootstrap_independent_sample</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.timeseries.bootstrap_independent_sample" title="Permalink to this definition"></a></dt>
+<dl class="py function">
+<dt class="sig sig-object py" id="WHAM.lib.timeseries.bootstrap_independent_sample">
+<span class="sig-prename descclassname"><span class="pre">WHAM.lib.timeseries.</span></span><span class="sig-name descname"><span class="pre">bootstrap_independent_sample</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.timeseries.bootstrap_independent_sample" title="Permalink to this definition"></a></dt>
 <dd><p>Draws an independent sample of size N_ind = N/g from
 x. If the statistical inefficiency g is not passed as a parameter,
 it will be calculated first.</p>
@@ -100,9 +105,9 @@ it will be calculated first.</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
-<dt id="WHAM.lib.timeseries.bootstrap_window_samples">
-<code class="sig-prename descclassname">WHAM.lib.timeseries.</code><code class="sig-name descname">bootstrap_window_samples</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.timeseries.bootstrap_window_samples" title="Permalink to this definition"></a></dt>
+<dl class="py function">
+<dt class="sig sig-object py" id="WHAM.lib.timeseries.bootstrap_window_samples">
+<span class="sig-prename descclassname"><span class="pre">WHAM.lib.timeseries.</span></span><span class="sig-name descname"><span class="pre">bootstrap_window_samples</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.timeseries.bootstrap_window_samples" title="Permalink to this definition"></a></dt>
 <dd><p>Draws a bootstrap sample from each window.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -125,9 +130,9 @@ data from the i’th window.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="function">
-<dt id="WHAM.lib.timeseries.statisticalInefficiency">
-<code class="sig-prename descclassname">WHAM.lib.timeseries.</code><code class="sig-name descname">statisticalInefficiency</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.timeseries.statisticalInefficiency" title="Permalink to this definition"></a></dt>
+<dl class="py function">
+<dt class="sig sig-object py" id="WHAM.lib.timeseries.statisticalInefficiency">
+<span class="sig-prename descclassname"><span class="pre">WHAM.lib.timeseries.</span></span><span class="sig-name descname"><span class="pre">statisticalInefficiency</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.timeseries.statisticalInefficiency" title="Permalink to this definition"></a></dt>
 <dd><p>Computes the statistical inefficiency of x.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -145,31 +150,31 @@ data from the i’th window.</p></li>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-WHAM.lib.numeric">
+</section>
+<section id="module-WHAM.lib.numeric">
 <span id="wham-lib-numeric-module"></span><h2>WHAM.lib.numeric module<a class="headerlink" href="#module-WHAM.lib.numeric" title="Permalink to this headline"></a></h2>
 <p>Functions defning numeric routines for fast WHAM calculations.</p>
-<dl class="function">
-<dt id="WHAM.lib.numeric.alogsumexp">
-<code class="sig-prename descclassname">WHAM.lib.numeric.</code><code class="sig-name descname">alogsumexp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.numeric.alogsumexp" title="Permalink to this definition"></a></dt>
+<dl class="py function">
+<dt class="sig sig-object py" id="WHAM.lib.numeric.alogsumexp">
+<span class="sig-prename descclassname"><span class="pre">WHAM.lib.numeric.</span></span><span class="sig-name descname"><span class="pre">alogsumexp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.numeric.alogsumexp" title="Permalink to this definition"></a></dt>
 <dd><p>Scipy logsumexp modified for autograd.</p>
 </dd></dl>
 
-<dl class="function">
-<dt id="WHAM.lib.numeric.clogsumexp">
-<code class="sig-prename descclassname">WHAM.lib.numeric.</code><code class="sig-name descname">clogsumexp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.numeric.clogsumexp" title="Permalink to this definition"></a></dt>
+<dl class="py function">
+<dt class="sig sig-object py" id="WHAM.lib.numeric.clogsumexp">
+<span class="sig-prename descclassname"><span class="pre">WHAM.lib.numeric.</span></span><span class="sig-name descname"><span class="pre">clogsumexp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.numeric.clogsumexp" title="Permalink to this definition"></a></dt>
 <dd><p>Cython-compiled Scipy logsumexp.</p>
 </dd></dl>
 
-</div>
-<div class="section" id="module-WHAM.lib.potentials">
+</section>
+<section id="module-WHAM.lib.potentials">
 <span id="wham-lib-potentials-module"></span><h2>WHAM.lib.potentials module<a class="headerlink" href="#module-WHAM.lib.potentials" title="Permalink to this headline"></a></h2>
 <p>Contains definitions of commonly used Umbrella potentials.</p>
-<dl class="function">
-<dt id="WHAM.lib.potentials.harmonic">
-<code class="sig-prename descclassname">WHAM.lib.potentials.</code><code class="sig-name descname">harmonic</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.potentials.harmonic" title="Permalink to this definition"></a></dt>
+<dl class="py function">
+<dt class="sig sig-object py" id="WHAM.lib.potentials.harmonic">
+<span class="sig-prename descclassname"><span class="pre">WHAM.lib.potentials.</span></span><span class="sig-name descname"><span class="pre">harmonic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.potentials.harmonic" title="Permalink to this definition"></a></dt>
 <dd><p>Returns umbrella potential
-U(x) = kappa/2 (x - xstar)^2</p>
+<span class="math notranslate nohighlight">\(U(x) = \frac{\kappa}{2} (x - x^*)^2\)</span></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -180,11 +185,22 @@ U(x) = kappa/2 (x - xstar)^2</p>
 </dl>
 </dd></dl>
 
-<dl class="function">
-<dt id="WHAM.lib.potentials.linear">
-<code class="sig-prename descclassname">WHAM.lib.potentials.</code><code class="sig-name descname">linear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.potentials.linear" title="Permalink to this definition"></a></dt>
+<dl class="py function">
+<dt class="sig sig-object py" id="WHAM.lib.potentials.harmonic_DD">
+<span class="sig-prename descclassname"><span class="pre">WHAM.lib.potentials.</span></span><span class="sig-name descname"><span class="pre">harmonic_DD</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.potentials.harmonic_DD" title="Permalink to this definition"></a></dt>
 <dd><p>Returns umbrella potential
-U(x) = phi * x</p>
+<span class="math notranslate nohighlight">\(U(x) = \frac{1}{2} \sum_{i=0}^{D - 1} \kappa_i (x_i - x_i^*)^2\)</span></p>
+<p><span class="math notranslate nohighlight">\(kappa\)</span> has shape (D,)
+<span class="math notranslate nohighlight">\(x^*\)</span> has shape (D,)
+<span class="math notranslate nohighlight">\(x\)</span> has shape (N, D)
+$U(x) has shape (N,)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="WHAM.lib.potentials.linear">
+<span class="sig-prename descclassname"><span class="pre">WHAM.lib.potentials.</span></span><span class="sig-name descname"><span class="pre">linear</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.potentials.linear" title="Permalink to this definition"></a></dt>
+<dd><p>Returns umbrella potential
+<span class="math notranslate nohighlight">\(U(x) = \phi x\)</span></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>phi</strong> (<em>float</em>) – </p>
@@ -192,8 +208,18 @@ U(x) = phi * x</p>
 </dl>
 </dd></dl>
 
-</div>
-</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="WHAM.lib.potentials.linear_DD">
+<span class="sig-prename descclassname"><span class="pre">WHAM.lib.potentials.</span></span><span class="sig-name descname"><span class="pre">linear_DD</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.potentials.linear_DD" title="Permalink to this definition"></a></dt>
+<dd><p>Returns umbrella potential
+$U(x) = sum_{i=0}^{D - 1} phi_i x_i</p>
+<p><span class="math notranslate nohighlight">\(phi\)</span> has shape (D,)
+<span class="math notranslate nohighlight">\(x\)</span> has shape (N, D)
+$U(x) has shape (N,)</p>
+</dd></dl>
+
+</section>
+</section>
 
 
            </div>

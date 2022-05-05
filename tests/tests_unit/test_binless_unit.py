@@ -5,6 +5,7 @@ import pickle
 import re
 import sys
 
+import autograd
 import numpy as np
 import pytest
 
@@ -19,7 +20,25 @@ def arrange():
 
 
 def test_NLL():
-    pass
+    """Compares analytical gradient against autograd gradient."""
+    g_i = np.random.rand(20)
+    N_i = np.random.randint(low=1, high=10, size=20)
+    Ntot = N_i.sum()
+    W_il = np.random.rand(20, Ntot)
+
+    print(g_i.shape, N_i.shape, W_il.shape)
+
+    # Compare NLL with autograd=True and autograd=False
+    assert np.isclose(WHAM.binless.CalcBase.NLL(g_i, N_i, W_il, autograd=True), WHAM.binless.CalcBase.NLL(g_i, N_i, W_il, autograd=False))
+
+    # autograd.value_and_grad()
+    print(autograd.grad(WHAM.binless.CalcBase.NLL, 0)(g_i, N_i, W_il, autograd=True))
+    print(WHAM.binless.CalcBase.grad_NLL(g_i, N_i, W_il))
+    assert np.allclose(autograd.grad(WHAM.binless.CalcBase.NLL, 0)(g_i, N_i, W_il, autograd=True), WHAM.binless.CalcBase.grad_NLL(g_i, N_i, W_il))
+
+################################################################################
+# Serialization tests
+################################################################################
 
 
 def test_serialization_1D():
