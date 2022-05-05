@@ -21,12 +21,14 @@ Link to [documentation](https://apallath.github.io/WHAM).
 
 ### Binless formulation/MBAR (`WHAM.binless`) [more accurate]
 - Implemented using log-likelihood maximization for superlinear convergence and self-consistent iteration (as a baseline/for debugging)
-- Support for both 1D and multidimensional* umbrella sampling.
+- Support for both 1D and multidimensional umbrella sampling.
 - Support for reweighting 1D profiles to 2D (in a second related order parameter).
 
 ### Binned formulation (`WHAM.binned`) [faster]
 - Implemented using log-likelihood maximization for superlinear convergence and self-consistent iteration (as a baseline/for debugging)
-- Support for both 1D and multidimensional* umbrella sampling.
+- Support for both 1D and multidimensional^ umbrella sampling.
+
+^-> in progress
 
 Both log-likelihood maximization approaches can use multiple nonlinear optimization algorithms. Read the documentation to see which algorithms are available.
 
