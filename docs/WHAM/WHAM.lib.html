@@ -190,10 +190,18 @@ data from the i’th window.</p></li>
 <span class="sig-prename descclassname"><span class="pre">WHAM.lib.potentials.</span></span><span class="sig-name descname"><span class="pre">harmonic_DD</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.potentials.harmonic_DD" title="Permalink to this definition"></a></dt>
 <dd><p>Returns umbrella potential
 <span class="math notranslate nohighlight">\(U(x) = \frac{1}{2} \sum_{i=0}^{D - 1} \kappa_i (x_i - x_i^*)^2\)</span></p>
-<p><span class="math notranslate nohighlight">\(kappa\)</span> has shape (D,)
+<p><span class="math notranslate nohighlight">\(\kappa\)</span> has shape (D,)
 <span class="math notranslate nohighlight">\(x^*\)</span> has shape (D,)
 <span class="math notranslate nohighlight">\(x\)</span> has shape (N, D)
-$U(x) has shape (N,)</p>
+<span class="math notranslate nohighlight">\(U(x)\)</span> has shape (N,)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>kappa</strong> (<em>ndarray of shape</em><em> (</em><em>D</em><em>,</em><em>)</em>) – </p></li>
+<li><p><strong>xstar</strong> (<em>ndarray of shape</em><em> (</em><em>D</em><em>,</em><em>)</em>) – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -213,9 +221,14 @@ $U(x) has shape (N,)</p>
 <span class="sig-prename descclassname"><span class="pre">WHAM.lib.potentials.</span></span><span class="sig-name descname"><span class="pre">linear_DD</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.lib.potentials.linear_DD" title="Permalink to this definition"></a></dt>
 <dd><p>Returns umbrella potential
 $U(x) = sum_{i=0}^{D - 1} phi_i x_i</p>
-<p><span class="math notranslate nohighlight">\(phi\)</span> has shape (D,)
+<p><span class="math notranslate nohighlight">\(\phi\)</span> has shape (D,)
 <span class="math notranslate nohighlight">\(x\)</span> has shape (N, D)
-$U(x) has shape (N,)</p>
+<span class="math notranslate nohighlight">\(U(x)\)</span> has shape (N,)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>phi</strong> (<em>ndarray of shape</em><em> (</em><em>D</em><em>,</em><em>)</em>) – </p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

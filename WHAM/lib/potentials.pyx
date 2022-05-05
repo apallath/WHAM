@@ -34,10 +34,14 @@ def harmonic_DD(kappa, xstar):
     Returns umbrella potential
     $U(x) = \frac{1}{2} \sum_{i=0}^{D - 1} \kappa_i (x_i - x_i^*)^2$
 
-    $kappa$ has shape (D,)
+    $\kappa$ has shape (D,)
     $x^*$ has shape (D,)
     $x$ has shape (N, D)
-    $U(x) has shape (N,)
+    $U(x)$ has shape (N,)
+
+    Args:
+        kappa (ndarray of shape (D,))
+        xstar (ndarray of shape (D,))
     """
     # Reshape kappa and xstar for matrix multiply
     kappa = np.array(kappa).reshape(-1, 1)  # reshape to (D, 1)
@@ -61,9 +65,12 @@ def linear_DD(phi):
     Returns umbrella potential
     $U(x) = \sum_{i=0}^{D - 1} \phi_i x_i
 
-    $phi$ has shape (D,)
+    $\phi$ has shape (D,)
     $x$ has shape (N, D)
-    $U(x) has shape (N,)
+    $U(x)$ has shape (N,)
+
+    Args:
+        phi (ndarray of shape (D,))
     """
     # Reshape phi for matrix multiply
     phi = np.array(phi).reshape(-1, 1)  # reshape to (D, 1)

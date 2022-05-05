@@ -1,6 +1,6 @@
 """
 Implementation of binless WHAM (described in Shirts M., & Chodera J. D. (2008)) using
-    - Negative log-likelihood maximization, inspired by Zhu, F., & Hummer, G. (2012), with automatic differentiation.
+    - Negative log-likelihood maximization, inspired by Zhu, F., & Hummer, G. (2012).
     - Self-consistent iteration.
 """
 from functools import partial
@@ -647,7 +647,7 @@ cdef class CalcDD(CalcBase):
     (i.e. data from biasing D order parameters) using binless WHAM.
 
     Attributes:
-        x_l (ndarray): DxN matrix containing unrolled order parameter
+        x_l (ndarray): NxD matrix containing unrolled order parameter
             which is being biased, where (D=no of dimensions, N=no of data points).
         G_l (ndarray): 1-dimensional array of length N (=no of data points) containing WHAM-computed weights corresponding to
             each (unrolled) order parameter.
@@ -686,11 +686,13 @@ cdef class CalcDD(CalcBase):
         free energy profiles.
 
         Caution:
-            - This calculation uses the order parameter samples [self.x_l]. These will be
+            This calculation uses the order parameter samples [self.x_l]. These will be
             available if you have called the compute function `compute_point_weights`
             or the main API call `compute_betaF_profile`. If you haven't done so, you must initialize
             the Calc1D object's x_l variable before calling this function.
-            - The bins in each dimension must be uniform.
+
+        Important:
+            The bins in each dimension must be uniform (unlike in Calc1D).
 
         Args:
             x_bin_list (list of ndarrays of dimensions (Nbin,)): List of arrays of bin left edges/bin centers of length M. Used only for computing final PMF.

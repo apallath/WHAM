@@ -85,7 +85,7 @@
 <span id="wham-binless-module"></span><h2>WHAM.binless module<a class="headerlink" href="#module-WHAM.binless" title="Permalink to this headline"></a></h2>
 <dl class="simple">
 <dt>Implementation of binless WHAM (described in Shirts M., &amp; Chodera J. D. (2008)) using</dt><dd><ul class="simple">
-<li><p>Negative log-likelihood maximization, inspired by Zhu, F., &amp; Hummer, G. (2012), with automatic differentiation.</p></li>
+<li><p>Negative log-likelihood maximization, inspired by Zhu, F., &amp; Hummer, G. (2012).</p></li>
 <li><p>Self-consistent iteration.</p></li>
 </ul>
 </dd>
@@ -282,6 +282,7 @@ acting on the i’th window.</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Free energy profile, binned as per x_bin.
+betaF_bin_counts (ndarray): Number of points in each bin.
 status (bool): Solver status.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
@@ -546,7 +547,7 @@ until convergence.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="WHAM.binless.CalcDD.x_l">
 <span class="sig-name descname"><span class="pre">x_l</span></span><a class="headerlink" href="#WHAM.binless.CalcDD.x_l" title="Permalink to this definition"></a></dt>
-<dd><p>DxN matrix containing unrolled order parameter
+<dd><p>NxD matrix containing unrolled order parameter
 which is being biased, where (D=no of dimensions, N=no of data points).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -599,6 +600,11 @@ WHAM-computed free energies for each window.</p>
 </div>
 <p>For comprehensive examples, check out the Jupyter notebooks in the <cite>examples/</cite> folder.</p>
 <dl class="py method">
+<dt class="sig sig-object py" id="WHAM.binless.CalcDD.betaF_stat">
+<span class="sig-name descname"><span class="pre">betaF_stat</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.CalcDD.betaF_stat" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="WHAM.binless.CalcDD.bin_betaF_profile">
 <span class="sig-name descname"><span class="pre">bin_betaF_profile</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.CalcDD.bin_betaF_profile" title="Permalink to this definition"></a></dt>
 <dd><p>Bins weights corresponding to each sample into a D-dimensional free energy profile.
@@ -612,11 +618,16 @@ available if you have called the compute function <cite>compute_point_weights</c
 or the main API call <cite>compute_betaF_profile</cite>. If you haven’t done so, you must initialize
 the Calc1D object’s x_l variable before calling this function.</p>
 </div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The bins in each dimension must be uniform (unlike in Calc1D).</p>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x_bin</strong> (<em>ndarray of dimensions</em><em> (</em><em>Nbin</em><em>, </em><em>D</em><em>)</em>) – List of arrays of bin left-edges of length M. Used only for computing final PMF.</p></li>
+<li><p><strong>x_bin_list</strong> (<em>list of ndarrays of dimensions</em><em> (</em><em>Nbin</em><em>,</em><em>)</em>) – List of arrays of bin left edges/bin centers of length M. Used only for computing final PMF.</p></li>
 <li><p><strong>G_l</strong> (<em>ndarray</em>) – Array of weights corresponding to each data point/order parameter x_l.</p></li>
+<li><p><strong>in_style</strong> (<em>string</em>) – ‘left’ or ‘center’.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -632,7 +643,31 @@ betaF_bin_counts (ndarray): Bin counts</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="WHAM.binless.CalcDD.compute_betaF_profile">
 <span class="sig-name descname"><span class="pre">compute_betaF_profile</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#WHAM.binless.CalcDD.compute_betaF_profile" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Computes the binned free energy profile and window total free energies.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x_it</strong> (<em>list</em>) – Nested list of length S, x_it[i] is an array containing timeseries
+data from the i’th window.</p></li>
+<li><p><strong>x_bin_list</strong> (<em>list</em>) – List of arrays of bin left edges/bin centers of length M. Used only for computing final PMF.</p></li>
+<li><p><strong>u_i</strong> (<em>list</em>) – List of length S, u_i[i] is the umbrella potential function u_i(x)
+acting on the i’th window.</p></li>
+<li><p><strong>beta</strong> – beta, in inverse units to the units of u_i(x).</p></li>
+<li><p><strong>bin_style</strong> (<em>string</em>) – ‘left’ or ‘center’.</p></li>
+<li><p><strong>solver</strong> (<em>string</em>) – Solution technique to use [‘log-likelihood’, ‘self-consistent’, default=’log-likelihood’].</p></li>
+<li><p><strong>**solverkwargs</strong> – Arguments for solver.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Free energy profile, binned as per x_bin.
+betaF_bin_counts (ndarray): Number of points in each bin.
+status (bool): Solver status.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>betaF_bin (ndarray)</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
