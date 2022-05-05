@@ -10,6 +10,7 @@ from autograd import value_and_grad
 import autograd.numpy as anp
 import numpy as np
 import scipy.optimize
+import scipy.stats
 from tqdm import tqdm
 
 import WHAM.lib.potentials
@@ -485,6 +486,7 @@ cdef class Calc1D(CalcBase):
 
         Returns:
             betaF_bin (ndarray): Free energy profile, binned as per x_bin.
+            betaF_bin_counts (ndarray): Number of points in each bin.
             status (bool): Solver status.
         """
         # Unroll x_it into a single array
@@ -674,31 +676,111 @@ cdef class CalcDD(CalcBase):
     # Binning point weights
     ############################################################################
 
-    def bin_betaF_profile(self, x_bin, G_l=None):
+    def betaF_stat(self, G_l_bin):
+        return numeric.clogsumexp(-G_l_bin)
+
+    def bin_betaF_profile(self, x_bin_list, G_l=None, bin_style='left', compute_bin_counts=False):
         """Bins weights corresponding to each sample into a D-dimensional free energy profile.
         If point weights G_l are not passed as an argument, then the computed WHAM weights are
         used for binning. You can pass custom weights G_l to compute reweighted
         free energy profiles.
 
         Caution:
-            This calculation uses the order parameter samples [self.x_l]. These will be
+            - This calculation uses the order parameter samples [self.x_l]. These will be
             available if you have called the compute function `compute_point_weights`
             or the main API call `compute_betaF_profile`. If you haven't done so, you must initialize
             the Calc1D object's x_l variable before calling this function.
+            - The bins in each dimension must be uniform.
 
         Args:
-            x_bin (ndarray of dimensions (Nbin, D)): List of arrays of bin left-edges of length M. Used only for computing final PMF.
+            x_bin_list (list of ndarrays of dimensions (Nbin,)): List of arrays of bin left edges/bin centers of length M. Used only for computing final PMF.
             G_l (ndarray): Array of weights corresponding to each data point/order parameter x_l.
+            in_style (string): 'left' or 'center'.
 
         Returns:
             betaF_bin (ndarray): Free energy profile, binned as per x_bin.
             betaF_bin_counts (ndarray): Bin counts
         """
-        raise NotImplementedError()
+        self.check_data()
+        x_l = self.x_l
+        if G_l is None:
+            self.check_weights()
+            G_l = self.G_l
+
+        # Compute dimension
+        D = len(x_bin_list)
+
+        M = np.zeros(D)
+        for dim in range(D):
+            M[dim] = len(x_bin_list[D])
+
+        # Compute bin edges in each dimension
+        x_bin_edge_list = []
+        for dim in range(D):
+            x_bin_edge_list.append(np.zeros(M[dim] + 1))
+
+        # Adjust bin edges according to bin style
+        for dim in range(D):
+            if bin_style == 'left':
+                x_bin_edge_list[dim][:-1] = x_bin_list[dim]
+                # add an artificial edge after the last center
+                x_bin_edge_list[dim][-1] = x_bin_list[dim][-1] + (x_bin_list[dim][-1] - x_bin_list[dim][-2])
+            elif bin_style == 'center':
+                # add an artificial edge before the first center
+                x_bin_edge_list[dim][0] = x_bin_list[dim][0] - (x_bin_list[dim][1] - x_bin_list[dim][0]) / 2
+                # add an artificial edge after the last center
+                x_bin_edge_list[dim][-1] = x_bin_list[dim][-1] + (x_bin_list[dim][-1] - x_bin_list[dim][-2]) / 2
+                # bin edges are at the midpoints of bin centers
+                x_bin_edge_list[dim][1:-1] = (x_bin_list[dim][1:] + x_bin_list[dim][:-1]) / 2
+            else:
+                raise ValueError('bin style not recognized.')
+
+        # Construct consensus free energy profiles by constructing weighted histogram
+        # using individual point weights G_l obtained from solver
+
+        # Perform binning in D-dimensions using scipy
+        betaF_bin, _, _ = scipy.stats.binned_statistic_dd(x_l, G_l, statistic=self.betaF_stat, bins=x_bin_edge_list)
+
+        # Compute bin counts
+        betaF_bin_counts = None
+        if compute_bin_counts:
+            betaF_bin_counts = scipy.stats.binned_statistic_dd(x_l, G_l, statistic='count', bins=x_bin_edge_list)
+
+        return betaF_bin, betaF_bin_counts
 
     ############################################################################
     # One-step API call to compute free energy profile
     ############################################################################
 
-    def compute_betaF_profile(self, x_it, bin_list, u_i, beta, bin_style='left', solver='log-likelihood', **solverkwargs):
-        raise NotImplementedError()
+    def compute_betaF_profile(self, x_it, x_bin_list, u_i, beta, bin_style='left', solver='log-likelihood', **solverkwargs):
+        """Computes the binned free energy profile and window total free energies.
+
+        Args:
+            x_it (list): Nested list of length S, x_it[i] is an array containing timeseries
+                data from the i'th window.
+            x_bin_list (list): List of arrays of bin left edges/bin centers of length M. Used only for computing final PMF.
+            u_i (list): List of length S, u_i[i] is the umbrella potential function u_i(x)
+                acting on the i'th window.
+            beta: beta, in inverse units to the units of u_i(x).
+            bin_style (string): 'left' or 'center'.
+            solver (string): Solution technique to use ['log-likelihood', 'self-consistent', default='log-likelihood'].
+            **solverkwargs: Arguments for solver.
+
+        Returns:
+            betaF_bin (ndarray): Free energy profile, binned as per x_bin.
+            betaF_bin_counts (ndarray): Number of points in each bin.
+            status (bool): Solver status.
+        """
+        # Unroll x_it into a single array
+        x_l = x_it[0, :]
+        for i in range(1, len(x_it)):
+            x_l = np.hstack((x_l, x_it[i, :]))
+
+        # Compute window counts
+        N_i = np.array([arr.shape[0] for arr in x_it])
+
+        status = self.compute_point_weights(x_l, N_i, u_i, beta, solver=solver, **solverkwargs)
+
+        betaF_bin, betaF_bin_counts = self.bin_betaF_profile(x_bin_list, bin_style='left')
+
+        return betaF_bin, betaF_bin_counts, status
