@@ -324,7 +324,7 @@ def test_binless_log_likelihood_phi_ensemble():
     ax[1].set_ylabel(r"$\langle \delta \tilde{N}^2 \rangle_\phi$")
 
     susc = np.gradient(N_avg_vals, phi_vals)
-    ax[1].plot(phi_vals, -1 / beta * susc, label=r"From derivatives, $-\frac{1}{\beta} \frac{\partial \langle \tilde{N} \rangle}{\partial \beta \phi}$")
+    ax[1].plot(phi_vals, -1 / beta * susc, label=r"From derivatives, $-\frac{1}{\beta} \frac{\partial \langle \tilde{N} \rangle}{\partial \phi}$")
 
     ax[1].legend()
 

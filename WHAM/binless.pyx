@@ -676,10 +676,7 @@ cdef class CalcDD(CalcBase):
     # Binning point weights
     ############################################################################
 
-    def betaF_stat(self, G_l_bin):
-        return numeric.clogsumexp(-G_l_bin)
-
-    def bin_betaF_profile(self, x_bin_list, G_l=None, bin_style='left', compute_bin_counts=False):
+    def bin_betaF_profile(self, x_bin_list, G_l=None, bin_style='left'):
         """Bins weights corresponding to each sample into a D-dimensional free energy profile.
         If point weights G_l are not passed as an argument, then the computed WHAM weights are
         used for binning. You can pass custom weights G_l to compute reweighted
@@ -712,9 +709,9 @@ cdef class CalcDD(CalcBase):
         # Compute dimension
         D = len(x_bin_list)
 
-        M = np.zeros(D)
+        M = np.zeros(D, dtype=int)
         for dim in range(D):
-            M[dim] = len(x_bin_list[D])
+            M[dim] = len(x_bin_list[dim])
 
         # Compute bin edges in each dimension
         x_bin_edge_list = []
@@ -741,12 +738,12 @@ cdef class CalcDD(CalcBase):
         # using individual point weights G_l obtained from solver
 
         # Perform binning in D-dimensions using scipy
-        betaF_bin, _, _ = scipy.stats.binned_statistic_dd(x_l, G_l, statistic=self.betaF_stat, bins=x_bin_edge_list)
+        # TODO: This may be numerically unstable; convert to logsumexp
+        p_bin, _, _ = scipy.stats.binned_statistic_dd(x_l, np.exp(-G_l), statistic='sum', bins=x_bin_edge_list)
+        betaF_bin = -np.log(p_bin)
 
         # Compute bin counts
-        betaF_bin_counts = None
-        if compute_bin_counts:
-            betaF_bin_counts = scipy.stats.binned_statistic_dd(x_l, G_l, statistic='count', bins=x_bin_edge_list)
+        betaF_bin_counts = scipy.stats.binned_statistic_dd(x_l, G_l, statistic='count', bins=x_bin_edge_list)
 
         return betaF_bin, betaF_bin_counts
 
@@ -774,15 +771,15 @@ cdef class CalcDD(CalcBase):
             status (bool): Solver status.
         """
         # Unroll x_it into a single array
-        x_l = x_it[0, :]
+        x_l = x_it[0]
         for i in range(1, len(x_it)):
-            x_l = np.hstack((x_l, x_it[i, :]))
+            x_l = np.vstack((x_l, x_it[i]))
 
         # Compute window counts
         N_i = np.array([arr.shape[0] for arr in x_it])
 
         status = self.compute_point_weights(x_l, N_i, u_i, beta, solver=solver, **solverkwargs)
 
-        betaF_bin, betaF_bin_counts = self.bin_betaF_profile(x_bin_list, bin_style='left')
+        betaF_bin, betaF_bin_counts = self.bin_betaF_profile(x_bin_list, bin_style=bin_style)
 
         return betaF_bin, betaF_bin_counts, status
