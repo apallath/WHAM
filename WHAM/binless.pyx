@@ -182,7 +182,7 @@ cdef class CalcBase:
             g_i = np.random.rand(len(N_i))
 
         # Optimize
-        logger.debug("      Iter NLL")
+        logger.info("      Iter NLL")
         self._min_ctr = 0
 
         if autograd:
