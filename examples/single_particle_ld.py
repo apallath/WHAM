@@ -523,3 +523,21 @@ class VisualizePotential2D:
             ypt = Fx[yloc]
             ax.scatter(xpt, ypt, s=s, c=c)
         return (fig, ax)
+
+    def scatter_traj_projection_y(self, traj, every=1, s=1, c='black'):
+        """
+        Scatters x-projection of entire trajectory onto potential energy surface.
+        Args:
+            traj (numpy.ndarray): Array of shape (T, 3) containing the (x, y, z) coordinates at each timestep.
+            outimg (str): Filename of the output image.
+            every (int): Interval to plot point at (default = 1).
+            s (int): Size of points (default = 1).
+            c (str): Color of points (default = 'black').
+        """
+        fig, ax, y, Fy = self.plot_projection_y()
+        for i in tqdm(range(0, traj.shape[0], every)):
+            xpt = traj[i, 1]
+            xloc = np.argmin((y - xpt)**2)
+            ypt = Fy[xloc]
+            ax.scatter(xpt, ypt, s=s, c=c)
+        return (fig, ax)
