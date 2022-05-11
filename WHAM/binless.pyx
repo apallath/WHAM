@@ -506,11 +506,16 @@ cdef class Calc1D(CalcBase):
     # 2D reweighting API calls
     ############################################################################
 
-    def bin_2D_betaF_profile(self, y_l, x_bin, y_bin, G_l=None, x_bin_style='left', y_bin_style='left'):
+    def bin_2D_betaF_profile(self, y_l, x_bin, y_bin, G_l=None, x_bin_style='left', y_bin_style='left', method='fast'):
         """Bins weights corresponding to each sample into a 2D free energy profile in order parameters x_l (which is biased) and y_l (a related unbiased order parameter).
         If point weights G_l are not passed as an argument, then the computed WHAM weights are
         used for binning. You can pass custom weights G_l to compute reweighted
         free energy profiles.
+
+        The 'fast' method (default) can be used to perform binning efficiently in cases
+        where x_bin and y_bin are both uniform. It does not use the log-sum-exp trick, so
+        it may be less accurate (however, it should work in most cases). In case x_bin or
+        y_bin is not uniform or more accuracy is needed, use method='slow'.
 
         Caution:
             This calculation uses the order parameter samples [self.x_l]. These will be
@@ -522,9 +527,10 @@ cdef class Calc1D(CalcBase):
             y_l (ndarray): Second dimension order parameter values.
             x_bin (list): Array of x-bin left-edges/centers of length M_x.
             y_bin (list): Array of y-bin left-edges/centers of length M_y.
-            G_l (ndarray): Array of weights corresponding to each data point/order parameter x_l.
-            x_bin_style (string): 'left' or 'center'.
-            y_bin_style (string): 'left' or 'center'.
+            G_l (ndarray): Array of weights corresponding to each data point/order parameter x_l (default=None).
+            x_bin_style (string): 'left' or 'center' (default='left').
+            y_bin_style (string): 'left' or 'center' (default='left').
+            method (string): 'fast' or 'slow' (default='fast').
 
         Returns:
             tuple(betaF_bin, tuple(betaF_bin_counts, delta_x_bin, delta_y_bin))
@@ -580,32 +586,51 @@ cdef class Calc1D(CalcBase):
 
         delta_y_bin = y_bin_edges[1:] - y_bin_edges[:-1]
 
-        # Construct consensus free energy profiles by constructing weighted histogram
-        # using individual point weights G_l obtained from solver
-        betaF_bin = np.zeros((M_x, M_y))
-        betaF_bin_counts = np.zeros((M_x, M_y))
+        if method == 'slow':
+            # Construct consensus free energy profiles by constructing weighted histogram
+            # using individual point weights G_l obtained from solver
+            betaF_bin = np.zeros((M_x, M_y))
+            betaF_bin_counts = np.zeros((M_x, M_y))
 
-        for b_x in range(1, M_x + 1):
-            for b_y in range(1, M_y + 1):
-                sel_mask = np.logical_and.reduce((x_l >= x_bin_edges[b_x - 1],
-                                                  x_l < x_bin_edges[b_x],
-                                                  y_l >= y_bin_edges[b_y - 1],
-                                                  y_l < y_bin_edges[b_y]))
-                betaF_bin_counts[b_x - 1, b_y - 1] = np.sum(sel_mask)
+            for b_x in range(1, M_x + 1):
+                for b_y in range(1, M_y + 1):
+                    sel_mask = np.logical_and.reduce((x_l >= x_bin_edges[b_x - 1],
+                                                      x_l < x_bin_edges[b_x],
+                                                      y_l >= y_bin_edges[b_y - 1],
+                                                      y_l < y_bin_edges[b_y]))
+                    betaF_bin_counts[b_x - 1, b_y - 1] = np.sum(sel_mask)
 
-                if np.any(sel_mask != False):
-                    G_l_bin = G_l[sel_mask]
-                    betaF_bin[b_x - 1, b_y - 1] = np.log(delta_x_bin[b_x - 1]) + np.log(delta_y_bin[b_y - 1]) - numeric.clogsumexp(-G_l_bin)
-                else:
-                    betaF_bin[b_x - 1, b_y - 1] = np.inf
+                    if np.any(sel_mask != False):
+                        G_l_bin = G_l[sel_mask]
+                        betaF_bin[b_x - 1, b_y - 1] = np.log(delta_x_bin[b_x - 1]) + np.log(delta_y_bin[b_y - 1]) - numeric.clogsumexp(-G_l_bin)
+                    else:
+                        betaF_bin[b_x - 1, b_y - 1] = np.inf
+
+        elif method == 'fast':
+            edge_list = [x_bin_edges, y_bin_edges]
+            # Perform binning in 2-dimensions using scipy
+            # TODO: This may be numerically unstable; convert to logsumexp
+            p_bin, _, _, _ = scipy.stats.binned_statistic_2d(x_l, y_l, np.exp(-G_l), statistic='sum', bins=edge_list)
+            betaF_bin = -np.log(p_bin)
+
+            # Compute bin counts
+            betaF_bin_counts, _, _, _ = scipy.stats.binned_statistic_2d(x_l, y_l, G_l, statistic='count', bins=edge_list)
+
+        else:
+            raise ValueError("Method {} not recognized. Valid options are 'slow' or 'fast'.".format(method))
 
         return betaF_bin, (betaF_bin_counts, delta_x_bin, delta_y_bin)
 
-    def bin_second_betaF_profile(self, y_l, x_bin, y_bin, G_l=None, x_bin_style='left', y_bin_style='left'):
+    def bin_second_betaF_profile(self, y_l, x_bin, y_bin, G_l=None, x_bin_style='left', y_bin_style='left', method='fast'):
         """Bins weights corresponding to each sample into a into a 2D free energy profile in x_l (which is biased) and y_l (a related unbiased order parameter), then integrates out x_l
         to get a free energy profile in y_l. If point weights G_l are not passed as an argument, then the computed WHAM weights are
         used for binning. You can pass custom weights G_l to compute reweighted
         free energy profiles.
+
+        The 'fast' method (default) can be used to perform binning efficiently in cases
+        where x_bin and y_bin are both uniform. It does not use the log-sum-exp trick, so
+        it may be less accurate (however, it should work in most cases). In case x_bin or
+        y_bin is not uniform or more accuracy is needed, use method='slow'.
 
         Caution:
             This calculation uses the order parameter samples [self.x_l]. These will be
@@ -617,15 +642,18 @@ cdef class Calc1D(CalcBase):
             y_l (ndarray): Second dimension order parameter values.
             x_bin (list): Array of x-bin left-edges/centers of length M_x.
             y_bin (list): Array of y-bin left-edges/centers of length M_y.
-            G_l (ndarray): Array of weights corresponding to each data point/order parameter x_l.
-            x_bin_style (string): 'left' or 'center'.
-            y_bin_style (string): 'left' or 'center'.
+            G_l (ndarray): Array of weights corresponding to each data point/order parameter x_l (default=None).
+            x_bin_style (string): 'left' or 'center' (default='left').
+            y_bin_style (string): 'left' or 'center' (default='left').
+            method (string): 'fast' or 'slow' (default='fast').
 
         Returns:
             betaF_y (ndarray): Free energy profile of length M_y,
                 binned as per y-bin (2nd dim).
         """
-        betaF_xy, (betaF_bin_counts, delta_x_bin, delta_y_bin) = self.bin_2D_betaF_profile(y_l, x_bin, y_bin, G_l=G_l, x_bin_style=x_bin_style, y_bin_style=y_bin_style)
+        betaF_xy, (betaF_bin_counts, delta_x_bin, delta_y_bin) = self.bin_2D_betaF_profile(y_l, x_bin, y_bin, G_l=G_l,
+                                                                                           x_bin_style=x_bin_style, y_bin_style=y_bin_style,
+                                                                                           method=method)
         betaF_xy = np.nan_to_num(betaF_xy)
         logger.debug(betaF_xy.shape)
         logger.debug(delta_x_bin.shape)
