@@ -654,7 +654,6 @@ cdef class Calc1D(CalcBase):
         betaF_xy, (betaF_bin_counts, delta_x_bin, delta_y_bin) = self.bin_2D_betaF_profile(y_l, x_bin, y_bin, G_l=G_l,
                                                                                            x_bin_style=x_bin_style, y_bin_style=y_bin_style,
                                                                                            method=method)
-        betaF_xy = np.nan_to_num(betaF_xy)
         logger.debug(betaF_xy.shape)
         logger.debug(delta_x_bin.shape)
         betaF_y = np.zeros(len(y_bin))
