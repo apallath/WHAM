@@ -46,7 +46,7 @@ pip install -r requirements.txt
 python setup.py build_ext --inplace
 ```
 
-2. Install package
+3. Install package
 
 ```sh
 pip install .
