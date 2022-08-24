@@ -6,7 +6,7 @@ autograd
 matplotlib
 
 #Other requirements
-pymbar
+pymbar==3.*
 statsmodels
 tqdm
 
