@@ -8,6 +8,11 @@ except AttributeError:
     numpy_include = numpy.get_numpy_include()
 from Cython.Distutils import build_ext
 
+requirements = []
+with open('requirements.txt', 'r') as fh:
+    for line in fh:
+        requirements.append(line.strip())
+
 ext_modules = [Extension("WHAM.binned", ["WHAM/binned.pyx"],
                include_dirs=[numpy_include],
                define_macros=[("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")]),
@@ -29,5 +34,6 @@ setup(
     version='1.0',
     packages=['WHAM'],
     cmdclass={'build_ext': build_ext},
-    ext_modules=ext_modules
+    ext_modules=ext_modules,
+    install_requires=requirements
 )
