@@ -134,3 +134,6 @@ test_potentials_outputs/
 # examples output
 examples_out/
 */examples_out/*
+
+# Cython
+*.c
