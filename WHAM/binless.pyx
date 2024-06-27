@@ -274,8 +274,7 @@ cdef class CalcBase:
 
     def compute_point_weights(self, x_l, N_i, u_i, beta, solver='log-likelihood', **solverkwargs):
         """Computes WHAM weights corresponding to each order parameter sample
-        and total window free energies. This is the main computation call
-        for the Calc1D class.
+        and total window free energies. This is the main computation call.
 
         Args:
             x_l (ndarray): Array containing each sample (unrolled).
@@ -295,6 +294,34 @@ cdef class CalcBase:
         W_il = np.zeros((S, Ntot))
         for i in range(S):
             W_il[i, :] = -beta * u_i[i](x_l)
+
+        # Get free energy profile through binless WHAM/MBAR
+        if solver == 'log-likelihood':
+            G_l, g_i, status = self.minimize_NLL_solver(N_i, W_il, **solverkwargs)
+        elif solver == 'self-consistent':
+            G_l, g_i, status = self.self_consistent_solver(N_i, W_il, **solverkwargs)
+        else:
+            raise ValueError("Requested solution technique not a recognized option.")
+
+        self.G_l = G_l
+        self.g_i = g_i
+
+        return status
+
+    def compute_point_weights_W(self, x_l, N_i, W_il, beta, solver='log-likelihood', **solverkwargs):
+        """Computes WHAM weights corresponding to each order parameter sample
+        and total window free energies, given W_il as an input.
+
+        Args:
+            x_l (ndarray): Array containing each sample (unrolled).
+            N_i (ndarray): Counts for each window.
+            W_il (ndarray): W_il[i, :] = -beta * u_i[i](x_l), where u_i[i] is the umbrella potential function u_i(x)
+                acting on the i'th window.
+            beta: beta, in inverse units to the units of u_i(x).
+            solver (string): Solution technique to use ['log-likelihood', 'self-consistent', default='log-likelihood'].
+            **solverkwargs: Arguments for solver.
+        """
+        self.x_l = x_l
 
         # Get free energy profile through binless WHAM/MBAR
         if solver == 'log-likelihood':
